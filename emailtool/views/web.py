@@ -171,12 +171,16 @@ class SpamEmailCheckView(TemplateView):
             
         return context
 
-class BulkEmailCheckView(LoginRequiredMixin, TemplateView):
+class BulkEmailCheckView(TemplateView):
     template_name = 'emailtool/upload_document.html'
 
     def get_context_data(self, **kwargs):
         context = super(BulkEmailCheckView, self).get_context_data(**kwargs)
-        emailuploadfiles = EmailBulkUpload.objects.filter(added_by=self.request.user).order_by('-modify_date')
+        if self.request.user.is_authenticated:
+            emailuploadfiles = EmailBulkUpload.objects.filter(added_by=self.request.user).order_by('-modify_date')
+        else:
+            emailuploadfiles = EmailBulkUpload.objects.filter(added_by=None).order_by('-modify_date')
+
         
         context.update({
             
@@ -214,7 +218,8 @@ class BulkEmailCheckView(LoginRequiredMixin, TemplateView):
                     emailuploadfolder.existing_path = updated_file_name
                     emailuploadfolder.eof = end
                     emailuploadfolder.name = file_name
-                    emailuploadfolder.added_by = request.user
+                    if request.user.is_authenticated:
+                        emailuploadfolder.added_by = request.user
                     emailuploadfolder.email_count = total_email
                     emailuploadfolder.save()
                 if int(end):
@@ -276,7 +281,7 @@ class ProcessEmailCheckView(LoginRequiredMixin, View):
             return JsonResponse({'data': 'errorin request'})     
         emailuploadfolder.status = EmailBulkUpload.INPROGRESS
         emailuploadfolder.save()       
-        EmailBulkUploadHelper(emailuploadfolder).get_email_result()
+        EmailBulkUploadHelper(emailuploadfolder, request).get_email_result()
         res = JsonResponse({'data':'Success',})
         return res
 
@@ -411,10 +416,24 @@ class ProcessEmailCheckView(View):
             for data in ast.literal_eval(emailchecklists.patterns):
                 row = []
                 code, message = EmailCheckHelper().validate_email_smtp_dns(data)
+                try:
+                    email_data = EmailSearch.objects.get(email_address=data)
+                except EmailSearch.MultipleObjectsReturned:
+                    EmailSearch.objects.filter(email_address=data).delete()
+                    email_data = EmailSearch.objects.create(email_address=data)
+                except EmailSearch.DoesNotExist:
+                    email_data = EmailSearch.objects.create(email_address=data)
+                email_data.message = str(message)
+                email_data.verified = False
+                email_data.code = code
+                if request.user.is_authenticated:
+                    email_data.added_by = request.user
                 if code == 250:
+                    email_data.verified = True
                     emailchecklists.email_count += 1
                     row.append(data)
                     all.append(row)
+                email_data.save()
             with open('public/media/documents/' + emailchecklists.existing_path, 'w', encoding='utf-8') as csv_file:            
                 write_file = csv.writer(csv_file, lineterminator='\n')
                 write_file.writerows(all)

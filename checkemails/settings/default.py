@@ -378,7 +378,7 @@ SITE_DOMAIN = os.environ.get('SITE_DOMAIN')
 SESSION_COOKIE_SECURE = True
 
 # These persons receive error notification
-SERVER_EMAIL = 'sophic.services@gmail.com'
+SERVER_EMAIL = 'anjali.dhingra@sophicservices.com'
 
 ADMINS = (
     ('Anjali', 'anjali.dhingra@sophicservices.com')

@@ -151,8 +151,9 @@ class EmailCheckHelper(object):
         return self.response
 
 class EmailBulkUploadHelper(object):
-    def __init__(self, instance, *args, **kwargs):
+    def __init__(self, instance, request, *args, **kwargs):
         self.instance = instance
+        self.request = request
 
     def get_email_result(self):
         try:
@@ -169,10 +170,23 @@ class EmailBulkUploadHelper(object):
                     index = 0
                     for data in email_addresses:
                         code, message = EmailCheckHelper().validate_email_smtp_dns(data[1])
+                        try:
+                            email_data = EmailSearch.objects.get(email_address=data[1])
+                        except EmailSearch.MultipleObjectsReturned:
+                            EmailSearch.objects.filter(email_address=data[1]).delete()
+                            email_data = EmailSearch.objects.create(email_address=data[1])
+                        except EmailSearch.DoesNotExist:
+                            email_data = EmailSearch.objects.create(email_address=data[1])
+                        email_data.message = str(message)
+                        email_data.verified = False
+                        email_data.code = code
+                        if self.request.user.is_authenticated:
+                            email_data.added_by = self.request.user
                         index_value = data[0]
                         index_set.append(index_value + index)
                         index += 1
                         if code == 250:
+                            email_data.verified = True
                             self.instance.valid_count += 1
                             row.insert(index_value + index, 'Valid')
                             all.append(row)
@@ -180,6 +194,8 @@ class EmailBulkUploadHelper(object):
                             self.instance.invalid_count += 1
                             row.insert(index_value + index, 'InValid')
                             all.append(row)
+
+                        email_data.save()
                 for data in sorted(set(index_set)):
                     write_row.insert(data+1, 'Output')
                 all.insert(0, write_row)
