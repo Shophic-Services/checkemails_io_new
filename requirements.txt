@@ -1,6 +1,6 @@
 amqp==2.6.1
 appdirs==1.4.3
-#arabic-reshaper==2.1.1
+arabic-reshaper==2.1.1
 asgiref==3.2.10
 autopep8==1.4.4
 beautifulsoup4==4.9.1
@@ -13,6 +13,7 @@ celery==4.4.2
 certifi==2019.9.11
 cffi==1.15.1
 chardet==3.0.4
+channels==2.3.0
 charset-normalizer==2.1.1
 click==7.1.2
 click-didyoumean==0.0.3
@@ -150,6 +151,4 @@ zope.interface==5.4.0
 py3-validate-email==1.0.5.post1
 django-admin-sortable2==1.0.2
 django-admin-list-filter-dropdown==1.0.3
-django-rangefilter==0.9.1
-django_admin_rangefilter==0.12.0
-channels==2.3.0
+django-admin-rangefilter==0.11.2
