@@ -1,0 +1,70 @@
+{% extends 'home.html' %}
+{% load static %}
+{% block content %}
+
+<div class="main-content">
+
+    <div class="page-content">
+        <div class="container-fluid">
+
+
+            <div class="row">
+                <div class="col-lg-12 page-content-div">
+                    <div class="card">
+                        <div class="card-body">
+                            
+                            <div class="row">
+                                                            
+                                                    
+                                <div class="col-md-9">
+                                    <div class="search-box ">
+                                        <div class="position-relative search-field">
+                                            <input type="text" class="form-control bg-light border-light rounded" placeholder="Search keyword">
+                                            <i class="icon nav-icon search-icon" data-feather="search"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="d-flex flex-wrap align-items-start justify-content-md-end gap-2 mb-3">
+                                        
+                                        
+                                        <div class="">
+                                            <ul class="nav nav-pills result-listing-head">
+                                                <li class="nav-item result-listing-li">
+                                                    <a class="nav-link {% if listing %}active{% endif %}" href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="List">
+                                                        <i class="icon nav-icon" data-feather="list"></i>
+                                                        <label for="id_result-listing-0" class="mb-0 cursor-pointer">
+                                                        <input type="radio" id="id_result-listing-0" name="result-listing" value="list" class="result-listing opacity-0 width-0 height-0"></label>
+                                                    </a>
+                                                </li>
+                                                <li class="nav-item result-listing-li">
+                                                    <a class="nav-link {% if grid %}active{% endif %}" href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="Grid">
+                                                        <i class="icon nav-icon" data-feather="grid"></i>
+                                                        <label for="id_result-listing-1" class="mb-0 cursor-pointer"> 
+                                                        <input type="radio" id="id_result-listing-1" name="result-listing" value="grid" class="result-listing opacity-0 width-0 height-0"></label>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div><!-- end col -->
+                            </div><!-- end row -->
+                            <div class="search-results">
+                                {% include 'app/partials/people-list-view.html' %}
+                            </div>
+                            <!-- end tab pane -->
+
+                            <!-- end tab content -->
+                        </div><!-- end card body -->
+                    </div><!-- end card -->
+                </div><!-- end col -->
+            </div><!-- end col -->
+        </div><!-- end col -->
+    </div><!-- end col -->
+</div><!-- end row -->
+{% endblock %}
+
+{% block extrajs %}
+    <script src="{% static 'assets/js/app/search.js' %}"></script>
+{% endblock %}
+{% block footer_class %}{% endblock %}

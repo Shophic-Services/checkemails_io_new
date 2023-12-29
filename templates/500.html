@@ -1,0 +1,16 @@
+{% extends  'home.html' %}
+{% load static %}
+{% block content %}
+<div class="page-error">
+    <div class="page-500">
+        <img src="{% static 'images/500.svg' %}" alt="img"/>
+        <h5>Internal Server Error
+        </h5>
+        <p>Oops, Something went wrong.
+            Try to refresh this page or feel free to contact us if the problem persists. </p>
+        
+        <button class="btn btn-info" title="Home Page"><a class="text-white" href="/">
+            Home</a></button>
+    </div>
+</div>
+{% endblock %}

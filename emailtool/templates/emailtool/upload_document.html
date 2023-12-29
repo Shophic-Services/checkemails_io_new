@@ -1,0 +1,91 @@
+{% extends 'home.html' %}
+{% load static mathfilters %}
+{% load humanize %} 
+
+{% block titlename %}File Upload Email Checker{% endblock %}
+    {% block common_css %}
+    <!-- Bootstrap Css -->
+    <link href="{% static 'assets/css/bootstrap.min.css' %}" id="bootstrap-style" rel="stylesheet" type="text/css" />
+    <!-- Icons Css -->
+    <link href="{% static 'assets/css/icons.min.css' %}" rel="stylesheet" type="text/css" />
+    <!-- App Css-->
+    <link href="{% static 'assets/css/app.min.css' %}" id="app-style" rel="stylesheet" type="text/css" />
+    <link  rel="stylesheet" type="text/css" href='{% static "assets/css/common-style.css" %}'></link>
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0-10/css/all.min.css" integrity="sha512-Pv1WJMqAtVgNNct5vhq+4cgkKinKpV1jCwSWD4am9CjwxsJSCkLWKcE/ZBqHnEE1mHs01c8B0GMvcn/pQ/yrog==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  {% endblock %}
+
+
+
+{% block content %}
+<div class="main-section-body page-content-div mb-5">
+	<div class="left-side-bar">
+		<a href="{% url 'emailtool:app_dashboard' %}" class="btn btn-soft-secondary btn-md m-4"> <i class="mdi mdi-arrow-left ms-1"></i></a>
+	<form enctype="multipart/form-data" method="POST" action="." >
+        {% csrf_token %}
+		<div class="upload-image">
+			<p>
+				Upload your file</p>
+			<div class="file-upload" id="dropBox">
+				<span class="file-upload__label"><i class="fas fa-download"></i>Csv file only</span>
+				<input id="fileupload" class="file-upload__input" type="file" name="file-upload">
+			</div>
+			<button id="fileupload_button" type="button" class="btn btn-labeled btn-info upload-file w-100">
+                <span class="btn-label"><i class="fas fa-file-export mx-2"></i></span>Import file</button>
+		</div>
+	</form>
+	</div>
+	<div class="right-side-bar pt-4">
+		<div class="right-side-searchbar">
+			<div class="inner-search-bar">
+				<i class="fas fa-search"></i>
+				<input type="text" placeholder="Search your complete list">
+			</div>
+            
+            <div class="data-list" id="uploaded_files">
+
+            </div>
+			<div class="data-list">
+                {% for file in emailuploadfiles %}
+				<div class="data-list-inner">
+					<div class="data-list-left">
+						<div class="icon-sec">
+							<i class="far fa-file"></i>
+						</div>
+						<div class="data-content">
+							<h4>{{file.name}}</h4>
+							<p><span class="green">{{file.email_count|default:"-"}} Emails</span> <i class="far fa-clock"></i> {{file.create_date|date:'Y-m-d H:m:s'}}</p>
+						</div>
+					</div>
+					<ul class="data-validation">
+						<li><p>Valid</p><span class="green">{{file.valid_count|default:"-"}}</span></li>
+						<li><p>Invalid</p><span class="red">{{file.invalid_count|default:"-"}}</span></li>
+						<li class="ps-2 me-3"><p>Status</p><span class="grey"><span class="status-pill-button status-pill-button-{{file.status}}">{{file.get_status_display}}</span></span></li>
+						{% if file.status == 3 %}
+						<li><p>Download</p><span class="grey">
+							<a href="/media/documents/{{file.existing_path}}" download="{{file.name}}" class="bt p-0"><i class="fa fa-download"></i></a>
+						</span></li>
+						{% endif %}
+					</ul>
+				</div>
+				{% empty %}
+          <div class="no-data-found my-5  bg-white">
+            <div class="div-img-box">
+                <img src="{% static 'images/no-data.png' %}">
+            </div>
+            <h5 class="font-size-24 mt-4">No data found</h5>
+           </div>
+                {% endfor %}
+			</div>
+		</div>
+	</div >
+</div>
+{% endblock %}
+
+{% block extrajs %}
+
+<script src="{% static 'assets/js/dragdrop.js' %}"></script>
+
+
+
+{% endblock %}

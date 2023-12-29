@@ -1,0 +1,67 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% block title %} Login {% endblock %}
+{% block content %}
+<div class="peers ai-s fxw-nw h-100vh">
+    <div class="d-n@sm- peer peer-greed h-100 pos-r bgr-n bgpX-c bgpY-c bgsz-cv" style="background-image: url(../../static/images/login_bg.jpg)">
+      <div class="pos-a centerXY">
+        <div class="bgc-white bdrs-50p pos-r" style="width: 290px; height: 290px;">
+          <img class="pos-a centerXY" src="{% static 'images/logo.png' %}" alt="">
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-md-4 peer pX-40 pY-80 h-100 bgc-white scrollable pos-r ps ps--active-y" style="min-width: 320px;">
+      <h4 class="fw-300 c-grey-900 mB-40">Sophic Services</h4>
+      
+      <form class="form-signin" method="POST">
+        {% csrf_token %}
+            {% if form.non_field_errors %}
+                {% for error in form.non_field_errors %}
+                    <div class="alert alert-danger">
+                        {{ error }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        <div class="mb-3">
+          <label class="text-normal text-dark form-label">Email</label>
+          <input type="text" class="form-control" placeholder="Email" name="username" id="id_username">
+          {% if form.username.errors %}
+          {% for error in form.username.errors %}
+          <div class="text-end text-danger">
+              {{ error }}
+            </div>
+            {% endfor %}
+            {% endif %}
+        </div>
+        <div class="mb-3">
+          <label class="text-normal text-dark form-label">Password</label>
+          <input type="password" class="form-control" placeholder="Password" name="password" id="id_password">
+          {% if form.password.errors %}
+          {% for error in form.password.errors %}
+              <div class="text-end text-danger">
+                  {{ error }}
+              </div>
+          {% endfor %}
+      {% endif %}
+        </div>
+        
+        <div class="">
+          <div class="peers ai-c jc-sb fxw-nw">
+            <div class="peer">
+              <div class="checkbox checkbox-circle checkbox-info peers ai-c">
+                <input type="checkbox" id="input_remember_me" name="remember_me" class="peer">
+                <label for="input_remember_me" class=" peers peer-greed js-sb ai-c form-label">
+                  <span class="peer peer-greed">Remember Me</span>
+                </label>
+              </div>
+            </div>
+            <div class="peer">
+              <button class="btn btn-primary btn-color" type="submit">Login</button>
+            </div>
+          </div>
+        </div>
+      </form>
+    
+  </div>
+
+{% endblock %}

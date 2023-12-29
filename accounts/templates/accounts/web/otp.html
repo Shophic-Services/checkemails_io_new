@@ -1,0 +1,52 @@
+{% extends 'layouts/base_without_login.html' %}
+{% load static %}
+{% block title %}OTP{% endblock %}
+{% block content %}
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="fxt-column-wrap justify-content-between">
+                        <div class="fxt-animated-img">
+                            <div class="fxt-transformX-L-50 fxt-transition-delay-10">
+                                <img src="/static/images/validate_email.png" alt="">
+                            </div>
+                        </div>
+                        <div class="fxt-transformX-L-50 fxt-transition-delay-5">
+                            <div class="fxt-middle-content">
+                                <h1 class="fxt-main-title">Validate OTP</h1>
+                                <div class="fxt-switcher-description1">Please enter the OTP (one time password) to verify your account. Please note this OTP is valid for 15 mins only.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="fxt-column-wrap justify-content-center">
+                        <div class="fxt-form">
+                            <form method="POST" id="otp-form">
+                                {% csrf_token %}
+                                <input name="token" type="hidden" value="{{token}}">
+                                <label for="reset" class="fxt-label">Enter OTP Code Here</label>
+                                <div class="fxt-otp-row">
+                                    <input type="text" name="otp" class="fxt-otp-col otp-input form-control" maxlength="1" required="required">
+                                    <input type="text" name="otp" class="fxt-otp-col otp-input form-control" maxlength="1" required="required">
+                                    <input type="text" name="otp" class="fxt-otp-col otp-input form-control" maxlength="1" required="required">
+                                    <input type="text" name="otp" class="fxt-otp-col otp-input form-control" maxlength="1" required="required">
+                                </div>
+                                {% if form.otp.errors %}
+                                {% for error in form.otp.errors %}
+                                    <div class="text-end text-danger font-size-12 mb-3">
+                                        {{ error }}
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+                                <div class="fxt-otp-btn">
+                                    <button type="submit" class="fxt-btn-fill">Verify</button>
+                                </div>
+                            </form>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endblock %}

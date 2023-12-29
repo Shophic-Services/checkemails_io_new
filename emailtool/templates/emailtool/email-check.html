@@ -1,0 +1,166 @@
+{% extends 'home.html' %}
+{% load static mathfilters %}
+{% load humanize %} 
+
+{% block titlename %}Lead Multiple Email Validation{% endblock %}
+    {% block common_css %}
+    <!-- Bootstrap Css -->
+    <link href="{% static 'assets/css/bootstrap.min.css' %}" id="bootstrap-style" rel="stylesheet" type="text/css" />
+    <!-- Icons Css -->
+    <link href="{% static 'assets/css/icons.min.css' %}" rel="stylesheet" type="text/css" />
+    <!-- App Css-->
+    <link href="{% static 'assets/css/app.min.css' %}" id="app-style" rel="stylesheet" type="text/css" />
+    <link  rel="stylesheet" type="text/css" href='{% static "assets/css/common-style.css" %}'></link>
+  
+  
+  <link href="{% static 'assets/css/email-validation.css' %}" rel="stylesheet" />
+  <link type="text/css" rel="stylesheet" href="{% static 'assets/css/multiple-emails.css' %}" />
+  {% endblock %}
+
+{% block bodyclass %}search_emails{% endblock %}
+
+    
+
+
+{% block content %}
+<div class="main-content">
+
+  <div class="page-content">
+      <div class="container-fluid">
+
+
+  <div class="row col-md-12 page-content-div pt-4">
+
+  <div class="col-md-12">
+    <div class=" email-search ">
+    <div class="text-muted">
+      <a href="{% url 'emailtool:app_dashboard' %}" class="btn btn-soft-secondary btn-lg"> <i class="mdi mdi-arrow-left ms-1"></i></a>
+      <h2 class="font-size-24 my-4 text-center">Multiple Email Validator</h2>
+      <h5><i class="bx bx-info-circle font-size-20"></i>&nbsp;Enter email or comma separated emails continues by pressing enter after that click on validate button to check results</h5>
+  </div>
+    <form  method="POST" action="." class="col-md-12 position-relative d-flex search-content">
+      
+        {% csrf_token %}
+      <svg class="email-search__icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="min-width: 24px;" viewBox="0 0 24 24" fill="none">
+        <path d="M16 12C16 14.2091 14.2091 16 12 16C9.79086 16 8 14.2091 8 12C8 9.79086 9.79086 8 12 8C14.2091 8 16 9.79086 16 12ZM16 12V13.5C16 14.8807 17.1193 16 18.5 16V16C19.8807 16 21 14.8807 21 13.5V12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21H16" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+       <div class="email-search__result w-100">
+        <input type="text" id="email-id" style="opacity: 0;" name="email_address" keywords="" placeholder="Enter email" value="[]">
+      </div>
+        
+      <button class="email-search__submit btn btn-primary" onclick="checker(event)" type="button">Validate
+        <img alt="" class="search-submit-icon" src="{%static 'images/validating.svg' %}"></button>
+      </form>
+    </div>
+    </div>
+    <div class="col-md-12 mt-3">
+      <div class="card border shadow-none">
+        <div class="card-body  search-content">
+          <div class="row">
+        
+            <div class="col-lg-12">
+              <h3>Result Highlights</h3>
+                <div class="row">
+                    <div class="col-xl-4 col-sm-6">
+                        <div class="d-flex align-items-center mt-4">
+                            <div class="flex-shrink-0 me-3">
+                                <i class="bx bxs-detail font-size-24 text-primary"></i>
+                            </div>
+                            <div class="flex-grow-1">
+                                <h5 class="font-size-12 mb-1">Total</h5>
+                                <p class="text-muted mb-0 total-count">0</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end col -->
+
+                    <div class="col-xl-4 col-sm-6">
+                        <div class="d-flex align-items-center mt-4">
+                            <div class="flex-shrink-0 me-3">
+                                <i class="bx bxs-check-shield font-size-24 text-success"></i>
+                            </div>
+                            <div class="flex-grow-1">
+                                <h5 class="font-size-12 mb-1">Valid</h5>
+                                <p class="text-muted mb-0 valid-count">0</p>
+                            </div>
+                        </div>
+                    </div>
+                        
+                        <div class="col-xl-4 col-sm-6">
+                            <div class="d-flex align-items-center mt-4">
+                                <div class="flex-shrink-0 me-3">
+                                    <i class="mdi mdi-shield-alert font-size-24 text-danger"></i>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <h5 class="font-size-12 mb-1">In-Valid</h5>
+                                    <p class="text-muted mb-0 invalid-count">0</p>
+                                </div>
+                            </div>
+                        </div><!-- end col -->
+                        
+                    <div class="col-xl-12 mt-3">
+                      <div id="error-msg" class="alert alert-danger d-none"> Error in verifying email(s) contact administor for more details</div>
+                    </div>
+                    </div><!-- end row -->
+
+            
+        </div><!-- end row -->
+    </div>
+        </div>
+      </div>
+      <div class="row tab-pane active" id="team" role="tabpanel">
+            <div class="col-md-6">
+              <div class="card">
+                <div class="card-body search-results search-content">
+                    
+
+
+<!-- Tab content -->
+<div class="tab-content">
+<div class="col-md-6 mb-2">
+
+
+<div>
+<p class="mb-sm-0">Valid Emails</p>
+</div>
+
+</div><!-- end col -->
+<div class="multiple_emails-container valid-container-box"><ul class="multiple_emails-ul valid-box">
+ -
+</ul></div>
+
+</div>
+                </div>
+            </div>
+          </div>
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-body search-results search-content">
+              
+
+
+<!-- Tab content -->
+<div class="tab-content">
+<div class="col-md-6 mb-2">
+
+
+<div>
+<p class="mb-sm-0">In Valid Emails</p>
+</div>
+
+</div><!-- end col -->
+<div class="multiple_emails-container invalid-container-box"><ul class="multiple_emails-ul invalid-box">
+ -
+</ul></div>
+
+</div>
+          </div>
+      </div>
+</div>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+</div>
+{% endblock %}

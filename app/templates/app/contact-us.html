@@ -1,0 +1,86 @@
+{% extends 'layouts/base_without_login.html' %}
+{% load static %}
+{% block title %}Contact Us{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="fxt-column-wrap justify-content-between">
+                <div class="fxt-animated-img">
+                    <div class="fxt-transformX-L-50 fxt-transition-delay-10">
+                        <img src="/static/images/validate_email.png" alt="">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="fxt-column-wrap justify-content-center">
+                <div class="fxt-form">
+    <h2 class="title">Contact Us</h2>
+    <form data-toggle="validator" method="POST">
+        {% csrf_token %}
+        {% if form.non_field_errors %}
+            {% for error in form.non_field_errors %}
+                <div class="alert alert-danger">
+                    {{ error }}
+                </div>
+            {% endfor %}
+        {% endif %}
+        <div class="form-group">
+            <input id="id_name" type="text" class="form-control" autocomplete="off" name="name"  required="required" placeholder="Enter name">
+            <i class="fa fa-fw fa-user field-icon"></i>
+            {% if form.name.errors %}
+                {% for error in form.name.errors %}
+                    <div class="text-end text-danger">
+                        {{ error }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+        <div class="form-group">
+            <input id="id_email" type="email" class="form-control" autocomplete="off" name="email"  required="required" placeholder="Enter email address">
+            <i class="fa fa-fw fa-envelope field-icon"></i>
+            {% if form.email.errors %}
+                {% for error in form.email.errors %}
+                    <div class="text-end text-danger">
+                        {{ error }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+            <div class="form-group">
+                <input id="id_subject" type="text" class="form-control" autocomplete="off" name="subject"  required="required" placeholder="Enter subject">
+                <i class="fa fa-fw fa-file field-icon"></i>
+                {% if form.subject.errors %}
+                    {% for error in form.subject.errors %}
+                        <div class="text-end text-danger">
+                            {{ error }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+            
+            <div class="form-group">
+                <textarea id="id_message" class="form-control" autocomplete="off" name="message"  required="required" placeholder="Enter message" rows="8"></textarea>
+                {% if form.message.errors %}
+                    {% for error in form.message.errors %}
+                        <div class="text-end text-danger">
+                            {{ error }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+            
+            <div class="form-group">
+                <button type="submit" class="fxt-btn-fill">Submit</button>
+            </div>
+        
+        </form>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+{% endblock %}

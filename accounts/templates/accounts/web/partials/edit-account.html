@@ -1,0 +1,262 @@
+{% extends 'home.html' %}
+{% load static %}
+{% block content %}
+<div class="main-content page-content-div">
+
+    <div class="page-content">
+        <div class="container-fluid">
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="row">
+            
+            <div class="col-xxl-3 col-lg-4">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="text-center">
+                            <div class="position-relative d-inline-block mx-auto mb-4">
+                                <div class="profile-img">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="100" height="130" viewBox="0 0 25 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user icon nav-icon"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                                </div>
+                                <!-- <a href="#" class="d-block position-absolute bottom-0 end-0">
+                                    <div class="avatar-sm">
+                                        <div class="avatar-title rounded-circle bg-light text-primary">
+                                            <i class="mdi mdi-pencil"></i>
+                                        </div>
+                                    </div>
+                                </a> -->
+                            </div>
+
+                        </div>
+                        <hr class="my-4">
+                        <div>
+                            <h5 class="font-size-16">Info :</h5>
+
+                            <div class="mt-4">
+                                <p class="text-muted mb-1">Full Name :</p>
+                                <h5 class="font-size-14 text-truncate">{{request.user.first_name}} {{request.user.last_name}}</h5>
+                            </div>
+
+                            <div class="mt-4">
+                                <p class="text-muted mb-1">E-mail :</p>
+                                <h5 class="font-size-14 text-truncate">{{request.user.email}}</h5>
+                            </div>
+
+                            <div class="mt-4">
+                                <p class="text-muted mb-1">Contact Number :</p>
+                                <h5 class="font-size-14 text-truncate">{{request.user.phone}}</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- end card -->
+
+            </div>
+            <div class="col-xxl-9 col-lg-8">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                        <div class="col-md-6">
+                            <h5 class="card-title mb-4">My Account</h5>
+                        </div>
+                    </div>
+                        <div class="row no-gutters align-items-center">
+                            {% if messages %}
+                            <ul class="messages">
+                                {% for msg in messages %}       
+                                <li>
+                                    <div class="alert alert-{{msg.level_tag}}" role="alert">
+                                    {{msg.message}}
+                                    </div>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                            {% endif %}
+                    </div>
+                        <form method="POST" action=".">
+                            {% csrf_token %}
+                            
+                            {{ form.user.as_hidden }}
+                            {% if form.non_field_errors %}
+                                {% for error in form.non_field_errors %}
+                                    <div class="alert alert-danger">
+                                        {{ error }}
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+                            <div class="row">
+                            <div class="card border shadow-none mb-5">
+                                <div class="card-header d-flex align-items-center">
+                                    <div class="flex-shrink-0 me-3">
+                                        <div class="avatar-sm">
+                                            <div class="avatar-title rounded-circle bg-soft-primary text-primary">
+                                                01
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <h5 class="card-title">General Info</h5>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div>
+                                                
+                                        <div class="row">
+                                            <div class="col-lg-6">
+                                                <div class="mb-3">
+                                                    <label class="form-label" for="first-name-input">First Name</label>
+                                                    <input type="text" name="first_name" class="form-control" required value="{{user.first_name}}" id="first-name-input">
+                                                </div>
+                                                {% if form.first_name.errors %}
+                                                    {% for error in form.first_name.errors %}
+                                                        <div class="text-end text-danger">
+                                                            <span> {{ error }} </span>
+                                                        </div>
+                                                    {% endfor %}
+                                                {% endif %}
+                                                
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <div class="mb-3">
+                                                    <label class="form-label" for="last-name-input">Last Name</label>
+                                                    <input type="text" name="last_name" class="form-control" required value="{{user.last_name}}" id="last-name-input">
+                                                </div>
+                                                {% if form.last_name.errors %}
+                                                    {% for error in form.last_name.errors %}
+                                                        <div class="text-end text-danger">
+                                                            <span> {{ error }} </span>
+                                                        </div>
+                                                    {% endfor %}
+                                                {% endif %}
+                                            </div>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label for="contact-info-email-input">E-mail</label>
+                                            <input type="email" readonly disabled class="form-control" id="contact-info-email-input" value="{{request.user.email}}" placeholder="Enter Email">
+                                        </div>
+                                        <div class="form-check mb-3" data-bs-toggle="collapse" data-bs-target="#collapseChangePassword" aria-expanded="false" aria-controls="collapseChangePassword">
+                                            <input type="checkbox" class="form-check-input" id="gen-info-change-password" {% if form.change_password.errors %}checked{% endif %} name="change_password">
+                                            <label class="form-check-label" for="gen-info-change-password">Change password?</label>
+                                        </div>
+
+                                        <div class="collapse {% if form.change_password.errors %}show{% endif %}" id="collapseChangePassword">
+                                            <div class="card border shadow-none card-body">
+                                                <div class="row">
+                                                    <div class="col-lg-4">
+                                                        <div class="mb-lg-0">
+                                                            <label for="current-password-input" class="form-label">Current password</label>
+                                                            <input type="password" class="form-control" placeholder="Enter Current password" id="current-password-input" name="old_password">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <div class="mb-lg-0">
+                                                            <label for="new-password-input" class="form-label">New password</label>
+                                                            <input type="password" class="form-control" placeholder="Enter New password" id="new-password-input" name="new_password1">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <div class="mb-lg-0">
+                                                            <label for="confirm-password-input" class="form-label">Confirm password</label>
+                                                            <input type="password" class="form-control" placeholder="Enter Confirm password" id="confirm-password-input" name="new_password2">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                
+                                            </div>
+                                        </div>
+                                        {% if form.change_password.errors %}
+                                                    {% for error in form.change_password.errors %}
+                                                        <div class="text-end text-danger">
+                                                            <span> {{ error }} </span>
+                                                        </div>
+                                                    {% endfor %}
+                                                {% endif %}
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card border shadow-none mb-5">
+                                <div class="card-header d-flex align-items-center">
+                                    <div class="flex-shrink-0 me-3">
+                                        <div class="avatar-sm">
+                                            <div class="avatar-title rounded-circle bg-soft-primary text-primary">
+                                                02
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <h5 class="card-title">Contact Info</h5>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="mb-md-0">
+                                                <label for="contact-number-input" class="form-label">Contact Number</label>
+                                                <input type="text" name="phone" class="form-control" value="{{form.phone.value|default:user.phone}}" required="" id="id_phone">
+                                            </div>
+                                            {% if form.phone.errors %}
+                                                    {% for error in form.phone.errors %}
+                                                        <div class="text-end text-danger">
+                                                            <span> {{ error }} </span>
+                                                        </div>
+                                                    {% endfor %}
+                                                {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card border shadow-none d-none">
+                                <div class="card-header d-flex align-items-center">
+                                    <div class="flex-shrink-0 me-3">
+                                        <div class="avatar-sm">
+                                            <div class="avatar-title rounded-circle bg-soft-primary text-primary">
+                                                03
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <h5 class="card-title">Email Settings</h5>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <div class="mb-3">
+                                                <p class="text-muted">Turn on toggle to receive data credit low balance</p>
+                                                <input type="checkbox" id="switch1" switch="none" {% if user.user_profile.balance_notify %}checked {% endif %} name="balance_notify">
+                                                <label for="switch1" data-on-label="On" data-off-label="Off" class="mb-0"></label>
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        
+                    </div>
+                            <!-- end card -->
+
+
+                            <div class="text-end">
+                                <button type="submit" class="btn btn-info"><i class="uil uil-times me-2"></i> Cancel</button>
+                                <button type="submit" class="btn btn-success"><i class="uil uil-check me-2"></i> Save</button>
+                            </div>
+                        </form>
+                        <!-- end form -->
+                    </div>
+                    <!-- end card body -->
+                </div>
+                <!-- end card -->
+            </div>
+            <!-- end col -->
+        </div>
+                   
+                
+</div>
+</div>
+</div>
+</div>
+</div>
+{% endblock %}

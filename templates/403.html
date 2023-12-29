@@ -1,0 +1,14 @@
+{% extends  'home.html' %}
+{% load static %}
+{% block content %}
+<div class="page-error">
+    <div class="page-404">
+        <img src="{% static 'images/403.svg' %}" alt="img"/>
+        <h5>Sorry, You don't have the permission to perform this action.
+        </h5>
+
+        <button class="btn btn-info" title="Home Page"><a class="text-white" href="/">
+            Home Page</a></button>
+    </div>
+</div>
+{% endblock %}

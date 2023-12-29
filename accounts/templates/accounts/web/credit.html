@@ -1,0 +1,57 @@
+{% extends 'home.html' %}
+
+{% load static mathfilters %}
+{% load humanize %} 
+
+{% block content %}
+<div class="main-content page-content-div">
+
+    <div class="page-content">
+        <div class="container-fluid">
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header bg-transparent">
+                <div class="d-flex align-items-start">
+                    <div class="flex-grow-1">
+                        <h5 class="card-title mb-0">Current Credits Plan ({{credit_activated.activated_on }} - {{credit_activated.expire_date }})</h5>
+                        <p class="text-muted font-size-14 fw-bold my-2">Plan name: {{credit_activated.plan_data.name}}</p>
+                        <p class="text-muted font-size-14 fw-bold my-2">Plan Price in USD: {% if credit_activated.plan_data.price|add:'0' == 0 %}Free{% else %}${{credit_activated.plan_data.price}}{% endif %}</p>
+                    </div>
+                </div>
+            </div>
+            <!-- end card-body -->
+        </div>
+        <!-- end card -->
+    </div>
+    <!-- end col -->
+
+    
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header bg-transparent">
+                <div class="d-flex align-items-start">
+                    <div class="flex-grow-1">
+                        <h5 class="card-title mb-0">Credit History</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body border-bottom py-4 search-results">
+                {% include 'accounts/web/partials/credit-listing.html' %}
+               
+            </div>
+            <!-- end card-body -->
+        </div>
+        <!-- end card -->
+    </div>
+</div>
+</div>
+</div>
+</div>
+{% endblock %}
+
+
+{% block extrajs %}
+    <script src="{% static 'assets/js/accounts/pagination.js' %}"></script>
+{% endblock %}

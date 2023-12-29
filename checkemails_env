@@ -1,0 +1,14 @@
+export SECRET_KEY='3$b)s72656ab2f9&q#hr(u6dqr@lt+@y^p$&@w+_tzw)#bpp7^'
+export CHECK_EMAILS_DATABASE_USER=sophic
+export CHECK_EMAILS_DATABASE_NAME=checkemails
+export CHECK_EMAILS_DATABASE_PASSWORD=x4J9K5dbx8Tv
+export CHECK_EMAILS_DATABASE_HOST=localhost
+export CHECK_EMAILS_DATABASE_PORT=5432
+export CHECK_EMAILS_EMAIL_HOST='smtp.gmail.com'
+export CHECK_EMAILS_EMAIL_PORT=587
+export CHECK_EMAILS_EMAIL_HOST_USER='marketing@sophicservices.com'
+export CHECK_EMAILS_EMAIL_HOST_PASSWORD='8e=CHBg98e=CHBg9'
+export CHECK_EMAILS_EMAIL_DEFAULT='marketing@sophicservices.com'
+export REDIS_DB=1
+export DEFAULT_URL=localhost
+export CHECK_EMAILS_LOCAL_IP=127.0.0.1

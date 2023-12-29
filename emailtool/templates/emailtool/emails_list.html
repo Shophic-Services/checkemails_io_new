@@ -1,0 +1,97 @@
+{% extends 'home.html' %}
+{% load static mathfilters %}
+{% load humanize checkemails_tags %} 
+
+{% block titlename %}Generate Email List{% endblock %}
+    {% block common_css %}
+    <!-- Bootstrap Css -->
+    <link href="{% static 'assets/css/bootstrap.min.css' %}" id="bootstrap-style" rel="stylesheet" type="text/css" />
+    <!-- Icons Css -->
+    <link href="{% static 'assets/css/icons.min.css' %}" rel="stylesheet" type="text/css" />
+    <!-- App Css-->
+    <link href="{% static 'assets/css/app.min.css' %}" id="app-style" rel="stylesheet" type="text/css" />
+    <link  rel="stylesheet" type="text/css" href='{% static "assets/css/common-style.css" %}'></link>
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0-10/css/all.min.css" integrity="sha512-Pv1WJMqAtVgNNct5vhq+4cgkKinKpV1jCwSWD4am9CjwxsJSCkLWKcE/ZBqHnEE1mHs01c8B0GMvcn/pQ/yrog==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+  {% endblock %}
+
+
+
+{% block content %}
+<div class="main-section-body page-content-div mb-5 pb-5">
+	<div class="container pt-4">
+        <div class="col-md-12 text-end my-3">
+        <a href="{% url 'emailtool:generate_email_list' %}" class="btn btn-soft-secondary btn-lg"> <i class="mdi mdi-shape-rectangle-plus ms-1"></i> Generate</a>
+    </div>
+        <div class="right-side-searchbar">
+            <div class="inner-search-bar">
+                <i class="fas fa-search"></i>
+				<input type="text" placeholder="Search your complete list">
+			</div>
+			<div class="data-list">
+                {% for file in emailchecklists %}
+				<div class="data-list-inner">
+					<div class="data-list-left">
+						<div class="icon-sec">
+							<i class="far fa-file"></i>
+						</div>
+						<div class="data-content">
+							<h4>{{file.name}}</h4>
+							<p> <i class="far fa-clock"></i> {{file.create_date|date:'Y-m-d H:m:s'}}</p>
+						</div>
+					</div>
+					<ul class="data-validation">
+                        
+						<li><p>Total Emails</p><span class="red">{{file|obj_field_list:'patterns'|length}}</span>
+                            <svg class="cursor-pointer" data-bs-toggle="modal" data-bs-target="#totalemailsModal{{forloop.counter}}" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M12 9a3 3 0 0 0-3 3a3 3 0 0 0 3 3a3 3 0 0 0 3-3a3 3 0 0 0-3-3m0 8a5 5 0 0 1-5-5a5 5 0 0 1 5-5a5 5 0 0 1 5 5a5 5 0 0 1-5 5m0-12.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5"/></svg>
+                            <div class="modal fade" id="totalemailsModal{{forloop.counter}}" tabindex="-1" aria-labelledby="totalemailsModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-lg modal-dialog-centered">
+                                  <div class="modal-content">
+                                    <div class="modal-header">
+                                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body list_emails">
+                                            {% for data in file|obj_field_list:'patterns' %}<span class="multiple_emails-email valid-email">{{data}}</span>
+                                            {% endfor %}
+                                        
+                                        
+
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                        </li>
+						<li><p>Valid</p><span class="green">{{file.email_count}}</span>
+                            </li>
+						<li class="ps-2 me-3"><p>Status</p><span class="grey"><span class="status-pill-button status-pill-button-{{file.status}}" id="{{file.uuid}}" >{{file.get_status_display}}</span></span></li>
+						{% if file.status == 3 %}
+						<li><p>Download</p><span class="grey">
+							<a href="/media/documents/{{file.existing_path}}" download="{{file.name}}" class="bt p-0"><i class="fa fa-download"></i></a>
+						</span></li>
+						{% endif %}
+					</ul>
+				</div>
+				{% empty %}
+          <div class="no-data-found my-3  bg-white">
+            <div class="div-img-box">
+                <img src="{% static 'images/no-data.png' %}">
+            </div>
+            <h5 class="font-size-24 mt-4">No data found</h5>
+           </div>
+                {% endfor %}
+			</div>
+		</div>
+	</div >
+</div>
+{% endblock %}
+{% block extrajs %}
+{% if generate_uuid %}
+<script type="text/javascript">
+    $('span#{{generate_uuid}}').removeClass('status-pill-button-1').addClass('status-pill-button-2').text('Processing')
+    $.get('/check/process-email-check/{{generate_uuid}}/', function(){
+        window.location.reload()
+    })
+</script>
+{% endif %}
+{% endblock %}

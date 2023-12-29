@@ -1,0 +1,89 @@
+{% extends 'layouts/base_without_login.html' %}
+{% load static %}
+{% block title %}Login{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="fxt-column-wrap justify-content-between">
+                <div class="fxt-animated-img">
+                    <div class="fxt-transformX-L-50 fxt-transition-delay-10">
+                        <img src="{% static 'images/validate_email.png' %}" alt="">
+                    </div>
+                </div>
+                <div class="fxt-transformX-L-50 fxt-transition-delay-5">
+                    <div class="fxt-middle-content">
+                        <h1 class="fxt-main-title">Sign In </h1>
+                        <div class="fxt-switcher-description1">If you don’t have an account You can<a href="{% url 'accounts:signup' %}" class="fxt-switcher-text ms-2">Sign Up</a></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="fxt-column-wrap justify-content-center">
+                <div class="fxt-form">
+                    <form class="form-signin" method="POST">
+                        {% csrf_token %}
+                        {% if form.non_field_errors %}
+                            {% for error in form.non_field_errors %}
+                                <div class="alert alert-danger">
+                                    {{ error }}
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                        <div class="form-group">
+                            <input type="email" id="id_username" class="form-control" name="username" placeholder="Email Address" required="required">
+                        {% if form.username.errors %}
+                            {% for error in form.username.errors %}
+                                <div class="text-end text-danger">
+                                    {{ error }}
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                        </div>
+                        <div class="form-group">
+                            <input id="id_password" type="password" class="form-control" name="password" placeholder="Password" required="required">
+                            <i toggle="#id_password" class="fa fa-fw fa-eye toggle-password field-icon"></i>
+                        {% if form.password.errors %}
+                            {% for error in form.password.errors %}
+                                <div class="text-end text-danger">
+                                    {{ error }}
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                        </div>
+                        <div class="form-group">
+                            <div class="fxt-checkbox-box">
+                            <input class="form-check-input" name="remember_me" type="checkbox" id="remember-check">
+                            <label class="form-check-label font-size-14 ps-4" for="remember-check">
+                                Remember me
+                            </label>
+                        </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="fxt-switcher-description2 text-right">
+                                <a href="{% url 'accounts:forgotpassword' %}" class="fxt-switcher-text">Recovery Password</a>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="fxt-btn-fill">Sign In</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="fxt-style-line">
+                    <span>Or</span>
+                </div>
+                <ul class="fxt-socials">
+                    <li class="">
+                        <a class="btn w-100 font-size-14" href="/accounts/google/login/" role="button" style="text-transform:none">
+                            <img width="35px" class="m-2 ms-0" alt="Google sign-in" src="{% static 'images/google_logo.svg' %}" />
+                            Continue with Google
+                            </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

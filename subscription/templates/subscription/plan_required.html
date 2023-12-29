@@ -1,0 +1,38 @@
+{% extends 'home.html' %}
+{% load static %}
+{% block title %}Plan Expired{% endblock title %}
+{% block content %}
+<div class="main-content">
+
+    <div class="page-content">
+        <div class="container">
+
+
+            <div class="row">
+                <div class="col-lg-12 page-content-div">
+                    <section class="main-section result-signup subscription-thankyou">
+                        <div class="container col-md-6 mt-5">
+                    <div class="card">
+                        <div class="card-body">
+        <div class="result-popup mt-5">
+            <div class="result-content text-center">
+                <div class="icon-section my-4 ">
+                    <img src="{% static 'images/warning.png' %}" alt="Warning icon" class="img-height-lg" height="60" />
+                </div>
+                <h1 class="mb-2">Plan Expired</h1>
+                <p class="mb-3">Please Buy a plan to resume your services.</p>
+                <a href="{% url 'app:home' %}" title="Buy a Plan" class="btn btn-primary fw-bold">Buy a Plan</a>
+            </div>
+        </div>
+    </div>
+</section>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+{% endblock %}
+
+    

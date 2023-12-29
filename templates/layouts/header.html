@@ -1,0 +1,117 @@
+{% load static %}
+    <header id="page-topbar">
+        <div class="navbar-header">
+            <div class="d-flex align-items-center">
+                <!-- LOGO -->
+                    <div class="navbar-brand-box">
+                        <a href="{% url 'app:home' %}" class="logo">
+                            <span class="logo-sm">
+                                <img src="{% static 'images/logo.png' %}" alt="" class="img-height-sm" height="45">
+                            </span>
+                            <span class="logo-lg">
+                                <img src="{% static 'images/logo.png' %}" alt="" class="img-height-lg" height="65">
+                            </span>
+                        </a>
+                    </div>  
+                </div>
+                                
+                <div class="d-flex">                      
+                    <div class="p-0 header-top">
+                        <div class="container-fluid active {% if request.user.is_authenticated %}pt-2{% endif %}">
+                            <nav class="navbar navbar-light navbar-expand-lg topnav-menu active">
+            
+                                <div class="collapse navbar-collapse active d-table-header-group" id="topnav-menu-content">
+                                    <ul class="navbar-nav active">
+                                        
+                                        <li class="nav-item">
+                                            <a class="nav-link arrow-none" href="{% url 'app:home' %}#home">
+                                                <span class="text-black" data-key="t-horizontal">Home</span>
+                                            </a>
+                                        </li>
+                                        
+                                        <li class="nav-item">
+                                            <a class="nav-link arrow-none" href="{% url 'app:home' %}#services">
+                                                <span class="text-black" data-key="t-search">Services</span> 
+                                            </a>
+                                           
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link arrow-none" href="{% url 'app:home' %}#about_us">
+                                                <span class="text-black" data-key="t-search">About Us</span> 
+                                            </a>
+                                           
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link arrow-none" href="{% url 'app:home' %}#pricing">
+                                                <span class="text-black" data-key="t-search">Pricing</span> 
+                                            </a>
+                                           
+                                        </li>
+                                        
+                                        <li class="nav-item">
+                                            <a class="nav-link arrow-none" href="{% url 'app:home' %}#get-started">
+                                                <span class="text-black" data-key="t-search">Get Started</span> 
+                                            </a>
+                                           
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link arrow-none" href="{% url 'app:contact_us' %}">
+                                                <span class="text-black" data-key="t-search">Contact Us</span> 
+                                            </a>
+                                           
+                                        </li>
+            
+                                    </ul>
+                                </div>
+                            </nav>
+                        </div>
+                    </div>                     
+            {% if not request.user.is_authenticated %}
+            
+            <div class="collapse show text-end" id="topnav-menu-content">
+            <ul class="navbar-nav active">
+
+                <li class="nav-item">
+                    <a class="nav-link arrow-none" href="{% url 'accounts:login' %}">
+                        <span class="border border-dark border-2 rounded-pill p-2 text-black" data-key="t-search"><i class="uil uil-user-check font-size-20"></i>Sign In</span> 
+                    </a>
+                   
+                </li>
+                </ul>
+                </div>
+                {% else %}
+
+                    <div class="dropdown d-inline-block">
+                        <button type="button" class="btn header-item user text-start d-flex align-items-center" id="page-header-user-dropdown"
+                            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="rounded-circle header-profile-user"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="27" viewBox="0 0 25 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user icon nav-icon"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg></span>
+                            <span class="ms-2 d-none d-sm-block user-item-desc">
+                                <span class="user-name">{{request.user}}</span>
+                                {% if request.user.is_staff %}
+                                <span class="user-sub-title">{{request.user.user_role}}</span>
+                                {% endif %}
+                            </span>
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-end pt-0">
+                        {% if request.user.is_staff %}
+                        <a class="dropdown-item d-flex align-items-center" href="{% url 'admin:index' %}"><i class="mdi mdi-cog-outline text-muted font-size-16 align-middle me-1"></i> <span class="align-middle">Management</span></a> 
+                        {% endif %}
+
+                        <a class="dropdown-item" href="{% url 'accounts:account_view' %}"><i class="mdi mdi-account-circle text-muted font-size-16 align-middle me-1"></i> <span class="align-middle">Profile</span></a>
+                        {% if not request.user.is_staff %}
+                        <a class="dropdown-item" href="{% url 'accounts:credit' %}"><i class="mdi mdi-wallet text-muted font-size-16 align-middle me-1"></i> <span class="align-middle">Credits</span></a>
+                        {% endif %}
+                        
+                        
+                        <a class="dropdown-item" href="{% url 'accounts:logout' %}"><i class="mdi mdi-logout text-muted font-size-16 align-middle me-1"></i> <span class="align-middle">Logout</span></a>
+                    </div>
+                </div>
+                {% endif %}
+               
+            </div>
+                            
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </header>

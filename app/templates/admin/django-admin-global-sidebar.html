@@ -1,0 +1,30 @@
+{% load django_admin_global_sidebar %}
+
+<div id="django-admin-global-sidebar" class="django-admin-global-sidebar nav-sidebar {%if django_admin_global_sidebar_collapsed_flag%}django-admin-global-sidebar-collapsed{%endif%}">
+   
+
+    <ul>
+        {% for menu in django_admin_global_sidebar_menus%}
+        <li id="{{menu.id}}" class="{% if menu.active %}active {% if django_admin_global_sidebar_collapsed_flag %}open-but-collapsed{% else %}open{% endif %}{% endif %}">
+            <a href="{% menu_url menu %}">
+                <i class="{{menu.icon}}"></i>
+                <span class="title">{{menu.title}}</span>{%if menu.children%}
+                <i class="django-admin-global-sidebar-submenu-toggle-button fa fa-chevron-down"></i>{%endif%}
+            </a>
+            {% if menu.children %}
+            <ul class="django-admin-global-sidebar-submenu">
+                {% for submenu in menu.children %}
+                <li id="{{submenu.id}}" class="{% if submenu.active %}active{% endif %}">
+                    <a href="{% menu_url submenu %}">
+                        <i class='{{submenu.icon|default:"fa fa-circle"}}'></i>
+                        {{submenu.title}}
+                    </a>
+                </li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </li>
+        {% endfor %}
+
+    </ul>
+</div>

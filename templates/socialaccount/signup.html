@@ -1,0 +1,51 @@
+{% extends 'layouts/base_without_login.html' %}
+{% load static %}
+{% block title %}Signup{% endblock %}
+{% block content %}
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="fxt-column-wrap justify-content-between">
+                        <div class="fxt-animated-img">
+                            <div class="fxt-transformX-L-50 fxt-transition-delay-10">
+                                <img src="/static/images/validate_email.png" alt="">
+                            </div>
+                        </div>
+                        <div class="fxt-transformX-L-50 fxt-transition-delay-5">
+                            <div class="fxt-middle-content">
+                                <h1 class="fxt-main-title">Sign Up </h1>
+                                <div class="fxt-switcher-description1">If you don’t have an account You can<a href="{% url 'accounts:login' %}" class="fxt-switcher-text ms-2">Sign In</a></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="fxt-column-wrap justify-content-center">
+                        <div class="fxt-form">
+                            <p>{% with provider_name=account.get_provider.name site_name=site.name %}You are about to use your {{provider_name}} account to login to
+                                {{site_name}}. As a final step, please complete the following form:{% endwith %}</p>
+                            <form method="POST">
+                                {% csrf_token %}
+                                <div class="form-group">
+                                    <input type="email" id="id_email" class="form-control" name="email" placeholder="Email Address" required="required" autocomplete="off" value="{{form.email.value|default:''}}">
+                                    {% if form.email.errors %}
+                                    {% for error in form.email.errors %}
+                                        <div class="text-end text-danger font-size-12 mb-3">
+                                            {{ error }}
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                                </div>
+                                {% if redirect_field_value %}
+                                <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+                                {% endif %}
+                                <div class="form-group">
+                                    <button type="submit" class="fxt-btn-fill">Sign Up</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endblock %}

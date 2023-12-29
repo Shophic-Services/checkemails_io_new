@@ -1,0 +1,140 @@
+{% extends 'home.html' %}
+
+{% load static mathfilters %}
+{% load humanize %} 
+
+{% block content %}
+
+<div class="main-content">
+
+    <div class="page-content">
+        <div class="container-fluid">
+            <div class="col-lg-12 page-content-div">
+            <div class="row">
+                <div class="mt-4 text-start">
+                    <a href="{% url 'app:home' %}" class="btn btn-soft-secondary btn-lg"> <i class="mdi mdi-arrow-left ms-1"></i></a>
+                </div>
+                <div class="col-xl-12 align-items-center text-center my-3">
+                    <h1 class="mb-1 text-truncate text-muted">Email Check and Validation Tool</h1>
+                    <p class="mb-1 text-truncate text-muted font-size-24">Our Features & Services</p>
+                </div>
+                <div class="col-xl-3 col-md-3 col-sm-6 col-xs-12">
+                    <!-- Card -->
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="col-sm-12">
+                                <div class="row mb-3">
+                                    <div class="image-fit">
+                                        <img src="{% static 'images/single_email.png' %}" alt="" >
+                                    </div>
+                                    <div class="text-center">
+                                        
+                                        <div class="d-inline-flex overflow-hidden text-center">
+                                            <div class="avatar-sm me-3">
+                                                <div class="avatar-title bg-soft-primary text-primary rounded-circle font-size-18">
+                                                    <i class="uil uil-at"></i>
+                                                </div>
+                                            </div>
+                                            <p class="mb-1 text-truncate text-muted font-size-18">Single Email Validator</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mt-4 text-center">
+                                    <a href="{% url 'emailtool:single_check' %}" class="btn btn-soft-secondary btn-lg">View <i class="mdi mdi-arrow-right ms-1"></i></a>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-md-3 col-sm-6 col-xs-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="col-sm-12">
+                                <div class="row mb-3">
+                                    <div class="image-fit">
+                                        <img src="{% static 'images/multi_email.png' %}" alt="" >
+                                    </div>
+                                    <div class="text-center">
+                                        <div class="d-inline-flex overflow-hidden text-center">
+                                            <div class="avatar-sm me-3">
+                                                <div class="avatar-title bg-soft-primary text-primary rounded-circle font-size-18">
+                                                    <i class="uil uil-envelopes"></i>
+                                                </div>
+                                            </div>
+                                            <p class="mb-1 text-truncate text-muted font-size-18">Multi Email Validator</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mt-4 text-center">
+                                    <a href="{% url 'emailtool:multi_check' %}" class="btn btn-soft-secondary btn-lg">View <i class="mdi mdi-arrow-right ms-1"></i></a>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-md-3 col-sm-6 col-xs-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="col-sm-12">
+                                <div class="row mb-3">
+                                    
+                                    <div class="image-fit">
+                                        <img src="{% static 'images/spam.png' %}" alt="" >
+                                    </div>
+                                    <div class="text-center">
+                                        <div class="d-inline-flex overflow-hidden text-center">
+                                            <div class="avatar-sm me-3">
+                                                <div class="avatar-title bg-soft-primary text-primary rounded-circle font-size-18">
+                                                    <i class="uil uil-envelope-block"></i>
+                                                </div>
+                                            </div>
+                                            <p class="mb-1 text-truncate text-muted font-size-18">Email Spam Words Checker</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mt-4 text-center">
+                                    <a href="{% url 'emailtool:spam_check' %}" class="btn btn-soft-secondary btn-lg">View <i class="mdi mdi-arrow-right ms-1"></i></a>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-md-3 col-sm-6 col-xs-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="col-sm-12">
+                                <div class="row mb-3">
+                                    
+                                    <div class="image-fit">
+                                        <img src="{% static 'images/bulk-email-validator.png' %}" alt="" >
+                                    </div>
+                                    <div class="text-center">
+                                        <div class="d-inline-flex overflow-hidden text-center">
+                                            <div class="avatar-sm me-3">
+                                                <div class="avatar-title bg-soft-primary text-primary rounded-circle font-size-18">
+                                                    <i class="uil uil-file-upload-alt"></i>
+                                                </div>
+                                            </div>
+                                            <p class="mb-1 text-truncate text-muted font-size-18">Bulk Email Validator</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mt-4 text-center">
+                                    <a href="{% url 'emailtool:bulk_check' %}" class="btn btn-soft-secondary btn-lg">View <i class="mdi mdi-arrow-right ms-1"></i></a>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+            
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

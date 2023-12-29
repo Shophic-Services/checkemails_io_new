@@ -1,0 +1,118 @@
+{% extends 'home.html' %}
+{% load static mathfilters %}
+{% load humanize %} 
+
+{% block titlename %}Email List{% endblock %}
+    {% block common_css %}
+    <!-- Bootstrap Css -->
+    <link href="{% static 'assets/css/bootstrap.min.css' %}" id="bootstrap-style" rel="stylesheet" type="text/css" />
+    <!-- Icons Css -->
+    <link href="{% static 'assets/css/icons.min.css' %}" rel="stylesheet" type="text/css" />
+    <!-- App Css-->
+    <link href="{% static 'assets/css/app.min.css' %}" id="app-style" rel="stylesheet" type="text/css" />
+    <link  rel="stylesheet" type="text/css" href='{% static "assets/css/common-style.css" %}'></link>
+  
+  
+  <link href="{% static 'assets/css/email-validation.css' %}" rel="stylesheet" />
+  <link type="text/css" rel="stylesheet" href="{% static 'assets/css/multiple-emails.css' %}" />
+  {% endblock %}
+
+{% block bodyclass %}search_emails{% endblock %}
+
+    
+
+
+{% block content %}
+<div class="main-content">
+
+  <div class="page-content">
+      <div class="container-fluid">
+
+
+  <div class="row col-md-12 page-content-div justify-content-md-center">
+    
+
+  <div class="col-md-8 mt-5">
+    <div class=" email-search mb-4">
+    <form  method="POST" action="." class="col-md-12 position-relative">
+      
+        {% csrf_token %}
+       <div class="multiple_emails-container">
+        <div class="row col-md-12 text-center justify-content-center">
+        <div class="col-md-4">
+        <input class="text-left form-control email-search__input px-2" value="{{firstname|default:''}}" placeholder="Enter first name" type="text" name="firstname">
+    </div>
+    <div class="col-md-4">
+    <input class="text-left form-control email-search__input px-2" value="{{lastname|default:''}}" placeholder="Enter last name" type="text" name="lastname">
+</div>
+<div class="col-md-1">
+<svg class="email-search__icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="min-width: 24px;" viewBox="0 0 24 24" fill="none">
+    <path d="M16 12C16 14.2091 14.2091 16 12 16C9.79086 16 8 14.2091 8 12C8 9.79086 9.79086 8 12 8C14.2091 8 16 9.79086 16 12ZM16 12V13.5C16 14.8807 17.1193 16 18.5 16V16C19.8807 16 21 14.8807 21 13.5V12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21H16" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+</div>
+<div class="col-md-3">
+    <input class="text-left form-control email-search__input px-2" value="{{domain|default:''}}" placeholder="Enter domain" type="text" name="domain">
+    
+    </div>
+    <button class="btn w-100 btn-primary" type="submit">Validate</button>
+</div>
+        
+      </form>
+      <!-- Tab content -->
+      
+      <div class="col-lg-12 mt-4 result-highlights">
+          <div class="row">
+            <h3>Result</h3>
+            </div><!-- end row -->
+
+    
+      <div class="tab-content">
+          <div class="col-sm-6 mb-2">
+  
+  
+          <div>
+          </div>
+  
+          </div><!-- end col -->
+          <div class="table-responsive">
+            <table class="table">
+                <thead class="thead-light">
+                    <tr>
+                        <!-- <th>
+                            <label class="customcheckbox">
+                                <input type="checkbox" id="mainCheckbox">
+                                <span class="checkmark"></span>
+                            </label>
+                        </th> -->
+                        <th scope="col">Email</th>
+                        <!-- <th scope="col">Action</th> -->
+                    </tr>
+                </thead>
+                <tbody class="customtable">
+                    {% for data in patterns %}
+                    <tr>
+                        <!-- <th>
+                            <label class="customcheckbox">
+                                <input type="checkbox" class="listCheckbox">
+                                <span class="checkmark"></span>
+                            </label>
+                        </th> -->
+                        <td>{{data}}</td>
+                        <!-- <td></td> -->
+                    </tr>
+                    {% endfor %}
+                </tbody>
+        </table>
+  
+          </div>
+          
+</div><!-- end row -->
+    </div>
+    
+
+    </div>
+</div>
+</div>
+</div>
+</div>
+{% endblock %}

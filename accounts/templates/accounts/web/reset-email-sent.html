@@ -1,0 +1,40 @@
+{% extends 'layouts/base_without_login.html' %}
+{% load static %}
+{% block title %}Email Sent{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="fxt-column-wrap justify-content-between">
+                <div class="fxt-animated-img">
+                    <div class="fxt-transformX-L-50 fxt-transition-delay-10">
+                        <img src="/static/images/validate_email.png" alt="">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="fxt-column-wrap justify-content-center">
+                <div class="fxt-form">
+                    <div class="form-container reset-form">
+                        <div class="reset-sucess">
+                            <h3>
+                                <img src="{% static 'images/checked.png' %}" width="25" alt="check"/>
+                                Email sent</h3>
+                            <p>Check your inbox for instructions from us on how to reset your password.</p>
+                            <p>If your account exists with the email you entered, you should receive them shortly.</p>
+                            <a href='{% url "accounts:login" %}'>
+                                <div class="btn-field">
+                                    <button
+                                        class="fxt-btn-fill"
+                                        title="Sign In">Sign IN</button>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

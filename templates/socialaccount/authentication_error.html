@@ -1,0 +1,57 @@
+{% extends 'layouts/base_without_login.html' %}
+{% load static %}
+{% block title %}Social Network Login Failure{% endblock %}
+{% block content %}
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="fxt-column-wrap justify-content-between">
+                        <div class="fxt-animated-img">
+                            <div class="fxt-transformX-L-50 fxt-transition-delay-10">
+                                <img src="{% static 'images/validate_email.png' %}" alt="">
+                            </div>
+                        </div>
+                        <div class="fxt-transformX-L-50 fxt-transition-delay-3">
+                            <a href="{% url 'app:home' %}" class="fxt-logo">
+                                <img src="{% static 'images/logo.png' %}" alt="Logo"  style="
+                                width: 130px;"></a>
+                        </div>
+                        <div class="fxt-transformX-L-50 fxt-transition-delay-5">
+                            <div class="fxt-middle-content">
+                                
+                                <div class="fxt-switcher-description1">If you don’t have an account You can<a href="{% url 'accounts:signup' %}" class="fxt-switcher-text ms-2">Sign Up</a></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="fxt-column-wrap justify-content-center">
+                        <div class="fxt-form">
+                           
+
+
+<div class="alert alert-danger">
+
+    <h3>Social Network Login Failure</h3>
+    
+    <p class="font-size-14">An error occurred while attempting to login via your social network account.</p>
+    
+</div>
+                        </div>
+                        <div class="fxt-style-line">
+                            <span>Or</span>
+                        </div>
+                        <ul class="fxt-socials">
+                            <li class="">
+                                <a class="btn w-100 font-size-14" href="/accounts/google/login/" role="button" style="text-transform:none">
+                                    <img width="35px" class="m-2 ms-0" alt="Google sign-in" src="{% static 'images/google_logo.svg' %}" />
+                                    Continue with Google
+                                  </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+{% endblock %}

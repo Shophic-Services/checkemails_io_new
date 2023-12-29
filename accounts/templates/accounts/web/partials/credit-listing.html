@@ -1,0 +1,87 @@
+{% load static mathfilters %}
+{% load humanize %} 
+<div class="table-responsive mt-4 mt-sm-0">
+    <table class="table align-middle table-nowrap table-check">
+        <thead>
+            <tr class="bg-transparent">
+                <!-- <th style="width: 30px;">
+                    <div class="form-check font-size-16">
+                        <input type="checkbox" name="check" class="form-check-input" id="checkAll">
+                        <label class="form-check-label" for="checkAll"></label>
+                    </div>
+                </th> -->
+                <th>Invoice ID</th>
+                <th>Activated On</th>
+                <th>Expire Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for credit in credit_list %}
+            <tr>
+                <!-- <td>
+                    <div class="form-check font-size-16">
+                        <input type="checkbox" class="form-check-input">
+                        <label class="form-check-label"></label>
+                    </div>
+                </td> -->
+                
+                <td>{{credit.invoice}}</td>
+                
+                <td>
+                    {{credit.activated_on}}
+                </td>
+                <td>
+                    {{credit.expire_date}}
+                </td>
+                
+                
+            </tr><!-- end tr -->
+            {% empty %}
+            <tr>
+                <td colspan="4">
+            <div class="no-data-found my-5">
+                <div class="div-img-box">
+                    <img src="{% static 'images/no-data.png' %}">
+                </div>
+                <h5 class="font-size-24 mt-4">No data found</h5>
+               </div>
+               </td>
+               </tr>
+            {% endfor %}
+            
+        </tbody><!-- end tbody -->
+    </table><!-- end table -->
+</div>
+
+<div class="row g-0 text-center text-sm-start">
+    <div class="col-sm-6">
+        <div>
+            {% if credit_count > 0 %}
+            <p class="mb-sm-0">Showing {{paginate_by|mul:prev_page|add:1|default:1}} to {% if credit_count > paginate_by|mul:current_page %}{{ paginate_by|mul:current_page }}{% else %}{{credit_count}}{% endif %} of {{ credit_count|intword }} entries</p>
+            {% endif %}
+        </div>
+    </div>
+    <!-- end col -->
+    
+    <div class="col-sm-6">
+            <ul class="pagination pagination-rounded mb-sm-0" data-current="{{ current_page }}">
+            {% if prev_page %}
+                <li class="page-item">
+                    <a data-page="{{ prev_page }}" href="#" class="page-link"><i class="mdi mdi-chevron-left"></i></a>
+                </li>
+                {% endif %}
+                {% for count in page_count %}
+                <li class="page-item {% if count == current_page %}active{% endif %}">
+                    <a class="page-link" data-page="{{ count }}" href="#">{{count}}</a>
+                </li>
+                {% endfor %}
+                {% if next_page %}
+                <li class="page-item">
+                    <a href="#" class="page-link" data-page="{{ next_page }}"><i class="mdi mdi-chevron-right"></i></a>
+                </li>
+                {% endif %}
+            </ul><!-- end ul -->
+        
+    </div><!-- end col -->
+    
+</div><!-- end row -->

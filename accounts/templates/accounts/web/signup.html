@@ -1,0 +1,130 @@
+{% extends 'layouts/base_without_login.html' %}
+{% load static %}
+{% block title %}Signup{% endblock %}
+{% block content %}
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="fxt-column-wrap justify-content-between">
+                        <div class="fxt-animated-img">
+                            <div class="fxt-transformX-L-50 fxt-transition-delay-10">
+                                <img src="/static/images/validate_email.png" alt="">
+                            </div>
+                        </div>
+                        <div class="fxt-transformX-L-50 fxt-transition-delay-5">
+                            <div class="fxt-middle-content">
+                                <h1 class="fxt-main-title">Sign Up </h1>
+                                <div class="fxt-switcher-description1">If you have an account You can<a href="{% url 'accounts:login' %}" class="fxt-switcher-text ms-2">Sign In</a></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="fxt-column-wrap justify-content-center">
+                        <div class="fxt-form">
+                            <form method="POST">
+                                {% csrf_token %}
+                                {% if form.non_field_errors %}
+                                    {% for error in form.non_field_errors %}
+                                        <div class="alert alert-danger">
+                                            {{ error }}
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                                <div class="form-group">
+                                    <input type="text" id="id_first_name" class="form-control" name="first_name" placeholder="First Name" required="required" value="{{form.first_name.value|default:''}}">
+                                    {% if form.first_name.errors %}
+                                    {% for error in form.first_name.errors %}
+                                        <div class="text-end text-danger font-size-12 mb-3">
+                                            {{ error }}
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" id="id_last_name" class="form-control" name="last_name" placeholder="Last Name" required="required" value="{{form.last_name.value|default:''}}">
+                                    {% if form.last_name.errors %}
+                                    {% for error in form.last_name.errors %}
+                                        <div class="text-end text-danger font-size-12 mb-3">
+                                            {{ error }}
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                                </div>
+                                <div class="form-group">
+                                    <input type="email" id="id_email" class="form-control" name="email" placeholder="Email Address" required="required" autocomplete="off" value="{{form.email.value|default:''}}">
+                                    {% if form.email.errors %}
+                                    {% for error in form.email.errors %}
+                                        <div class="text-end text-danger font-size-12 mb-3">
+                                            {{ error }}
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                                </div>                                
+                                <div class="form-group">
+                                    <input type="text" max_length="10" id="id_phone" class="form-control" name="phone" placeholder="Contact Number" required="required" value="{{form.phone.value|default:''}}">
+                                    {% if form.phone.errors %}
+                                    {% for error in form.phone.errors %}
+                                        <div class="text-end text-danger font-size-12 mb-3">
+                                            {{ error }}
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                                </div>
+                                <div class="form-group {% if form.password1.errors %}mb-1{% endif %}">
+                                    <input id="password1" type="password" class="form-control" name="password1" placeholder="Password" required="required" autocomplete="off" value="{{form.password1.value|default:''}}">
+                                    <i toggle="#password1" class="fa fa-fw fa-eye toggle-password field-icon"></i>
+                                </div>
+                                    {% if form.password1.errors %}
+                                    {% for error in form.password1.errors %}
+                                        <div class="text-end text-danger font-size-12 mb-3">
+                                            {{ error }}
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                                
+                                <div class="form-group {% if form.password2.errors %}mb-1{% endif %}">
+                                    <input id="password2" type="password" class="form-control" name="password2" placeholder="Confirm Password" required="required" autocomplete="off" value="{{form.password2.value|default:''}}">
+                                    <i toggle="#password2" class="fa fa-fw fa-eye toggle-password field-icon"></i>
+                                </div>
+                                    {% if form.password2.errors %}
+                                    {% for error in form.password2.errors %}
+                                        <div class="text-end text-danger font-size-12 mb-3">
+                                            {{ error }}
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                                <div class="form-group">
+                                    <div class="fxt-checkbox-box">
+                                        {{form.agree}}
+                                        <label for="id_agree" class="ps-4">I agree with <a class="terms-link" href="{% url 'app:tnc' %}">Terms</a> and <a class="terms-link" href="{% url 'app:privacy' %}">Privacy Policy</a></label>
+                                    </div>
+                                    {% if form.agree.errors %}
+                                    {% for error in form.agree.errors %}
+                                        <div class="text-end text-danger font-size-12 mb-3">
+                                            {{ error }}
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                                </div>
+                                <div class="form-group">
+                                    <button type="submit" class="fxt-btn-fill">Sign Up</button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="fxt-style-line">
+                            <span>Or</span>
+                        </div>
+                        <ul class="fxt-socials">
+                            <li class="">
+                                <a class="btn w-100 font-size-14" href="/accounts/google/login/" role="button" style="text-transform:none">
+                                    <img width="35px" class="m-2 ms-0" alt="Google sign-in" src="{% static 'images/google_logo.svg' %}" />
+                                    Continue with Google
+                                  </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endblock %}

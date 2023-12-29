@@ -1,0 +1,153 @@
+/* django admin global sidebar widget main styles */
+.django-admin-global-sidebar {
+    display: block;
+    width: 200px;
+    height: 100%;
+    min-height: 800px;
+    left: 0;
+    background-color: #6092ac;
+}
+.django-admin-global-sidebar .django-admin-global-sidebar-collapse-button {
+    display: block;
+    height: 39.2px;
+    line-height: 39.2px;
+    border-bottom: solid 1px #f8f8f8;
+    color: #fff;
+    text-align: center;
+    cursor: pointer;
+}
+.django-admin-global-sidebar li i.django-admin-global-sidebar-submenu-toggle-button{
+    float: right;
+    height: 38px;
+    line-height: 38px;
+    margin-right: 10px;
+}
+.django-admin-global-sidebar ul a{
+    display: block;
+    min-height: 38px;
+    line-height: 38px;
+    padding-left: 10px;
+    border-bottom: solid 1px #f8f8f8;
+    color: #fff;
+    background-color: #6092ac;
+    text-decoration: none;
+    font-size: 12px;
+}
+.django-admin-global-sidebar a:hover{
+    text-decoration: none;
+}
+.django-admin-global-sidebar .django-admin-global-sidebar-submenu a {
+    padding-left: 35px;
+    background-color: #79aec8;
+}
+.django-admin-global-sidebar li.on > a{
+    background-color: #417690;
+}
+.django-admin-global-sidebar li.active > a{
+    background-color: #417690;
+}
+.django-admin-global-sidebar li.active .django-admin-global-sidebar-submenu li.active a{
+    background-color: #6092ac;
+    border-right: solid 5px #f5dd5d;
+}
+.django-admin-global-sidebar li i {
+    display: inline-block;
+    width: 15px;
+    text-align: center;
+    margin-right: 10px;
+}
+.django-admin-global-sidebar ul{
+    display: block;
+    margin: 0;
+    padding: 0;
+}
+.django-admin-global-sidebar ul li{
+    height: auto;
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
+    cursor: pointer;
+}
+.django-admin-global-sidebar .django-admin-global-sidebar-submenu {
+    display: none;
+}
+.django-admin-global-sidebar li.open .django-admin-global-sidebar-submenu {
+    display: block;
+}
+
+/* django admin global sidebar widget collapsed styles */
+.django-admin-global-sidebar-collapsed{
+    width: 40px;
+}
+.django-admin-global-sidebar-collapsed ul li i {
+    margin-right: 0;
+}
+.django-admin-global-sidebar-collapsed ul li {
+    height: 39px;
+}
+.django-admin-global-sidebar-collapsed ul li .django-admin-global-sidebar-submenu a {
+    padding-left: 20px;
+    text-align: left;
+}
+.django-admin-global-sidebar-collapsed ul li a {
+    padding-left: 0;
+    text-align: center;
+}
+.django-admin-global-sidebar-collapsed li.on .django-admin-global-sidebar-submenu a {
+    padding-left: 20px;
+    text-align: left;
+}
+.django-admin-global-sidebar-collapsed .django-admin-global-sidebar-submenu li i {
+    display: inline-block;
+    width: 15px;
+    text-align: center;
+    margin-right: 10px;
+}
+.django-admin-global-sidebar-collapsed .title {
+    display: none;
+}
+.django-admin-global-sidebar-collapsed li i.django-admin-global-sidebar-submenu-toggle-button {
+    display: none;
+}
+.django-admin-global-sidebar-collapsed .django-admin-global-sidebar-submenu {
+    position: relative;
+    display: none;
+    width: 200px;
+    z-index: 9999;
+    margin-top: -39px;
+    margin-left: 41px;
+    box-shadow: 0 2px 8px 0  rgba(121, 174, 200, 0.5), 0 5px 10px 0 rgba(0, 0, 0, 0.5);
+}
+.django-admin-global-sidebar-collapsed li.on .django-admin-global-sidebar-submenu {
+    display: block;
+}
+/* django admin global sidebar fixing styles for other components */
+.with-django-admin-global-sidebar #content,
+.with-django-admin-global-sidebar div.breadcrumbs,
+.with-django-admin-global-sidebar ul.messagelist {
+    margin-left: 200px;
+}
+.with-django-admin-global-sidebar-collapsed #content,
+.with-django-admin-global-sidebar-collapsed div.breadcrumbs,
+.with-django-admin-global-sidebar-collapsed ul.messagelist {
+    margin-left: 40px;
+}
+#django-admin-global-sidebar {
+    top: 52px;
+}
+/* global style fix */
+.with-django-admin-global-sidebar #branding{
+    height: 32px;
+    line-height: 32px;
+}
+.with-django-admin-global-sidebar div.breadcrumbs {
+    height: 19.2px;
+    line-height: 19.2px;
+}
+
+
+.popup #content,
+.popup div.breadcrumbs,
+.popup ul.messagelist {
+    margin-left: 0;
+}

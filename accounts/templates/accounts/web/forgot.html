@@ -1,0 +1,65 @@
+{% extends 'layouts/base_without_login.html' %}
+{% load static %}
+{% block title %}Forgot Password{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="fxt-column-wrap justify-content-between">
+                <div class="fxt-animated-img">
+                    <div class="fxt-transformX-L-50 fxt-transition-delay-10">
+                        <img src="{% static 'images/validate_email.png' %}" alt="">
+                    </div>
+                </div>
+                <div class="fxt-transformX-L-50 fxt-transition-delay-3">
+                    <a href="{% url 'app:home' %}" class="fxt-logo">
+                        <img src="{% static 'images/logo.png' %}" alt="Logo"  style="
+                        width: 130px;"></a>
+                </div>
+                <div class="fxt-transformX-L-50 fxt-transition-delay-5">
+                    <div class="fxt-middle-content">
+                        <h1 class="fxt-main-title">Forgot Password </h1>
+                        <div class="fxt-switcher-description1">If you have an account You can<a href="{% url 'accounts:login' %}" class="fxt-switcher-text ms-2">Sign In</a></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="fxt-column-wrap justify-content-center">
+                <div class="fxt-form">
+    <h2 class="title">Forgot Password</h2>
+    <div class="trouble-note">
+        <p><strong>Having trouble logging in?</strong>
+            Please enter your registered email id to receive a verification url to reset your
+            password. </p>
+    </div>
+    <form data-toggle="validator" method="POST">
+        {% csrf_token %}
+        {% if form.non_field_errors %}
+            {% for error in form.non_field_errors %}
+                <div class="alert alert-danger">
+                    {{ error }}
+                </div>
+            {% endfor %}
+        {% endif %}
+        <div class="form-group">
+            <input id="id_email" type="email" class="form-control" autocomplete="off" name="email"  required="required" placeholder="Enter email address">
+            <i class="fa fa-fw fa-email field-icon"></i>
+            {% if form.email.errors %}
+            {% for error in form.email.errors %}
+                <div class="text-end text-danger">
+                    {{ error }}
+                </div>
+            {% endfor %}
+        {% endif %}
+        </div>
+        <div class="form-group">
+            <button type="submit" class="fxt-btn-fill">Submit</button>
+        </div>
+    </form>
+</div>
+</div>
+</div>
+</div>
+</div>
+{% endblock %}

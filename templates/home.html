@@ -1,0 +1,98 @@
+{% load static %}
+{% load i18n %}
+<!doctype html>
+<html lang="en">
+
+    <head>
+
+        <meta charset="utf-8" />
+        <title>{% block titlename %}Check Emails{% endblock %}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta content="Check Emails" name="description" />
+        <meta content="Check Emails" name="author" />
+        <!-- App favicon -->
+        <link rel="shortcut icon" href="{% static 'images/logo.png' %}">
+        {% block common_css %}
+        <!-- Bootstrap Css -->
+        <link href="{% static 'assets/css/bootstrap.min.css' %}" id="bootstrap-style" rel="stylesheet" type="text/css" />
+        <!-- Icons Css -->
+        <link href="{% static 'assets/css/icons.min.css' %}" rel="stylesheet" type="text/css" />
+        <!-- App Css-->
+        <link href="{% static 'assets/css/app.min.css' %}" id="app-style" rel="stylesheet" type="text/css" />
+        <link  rel="stylesheet" type="text/css" href='{% static "assets/css/common-style.css" %}'></link>
+        
+    <link rel="stylesheet" href="{% static 'assets/css/base.css' %}">
+        {% endblock %}
+        {% block extra_css %}
+        {% endblock %}
+
+    </head>
+
+    
+    <body data-sidebar-size="lg" class="{% block bodyclass %}{% endblock %}">
+
+        <div id="loader">
+            <div class="spinner"></div>
+          </div>
+          <script>
+          window.addEventListener('load', function load() {
+              const loader = document.getElementById('loader');
+              setTimeout(function () {
+                loader.classList.add('fadeOut');
+              }, 100);
+            });
+          </script>
+  <div id="wrapper">
+      
+      <div id="layout-wrapper">
+        
+        
+        {% include 'layouts/header.html' %}
+        {% block content %}
+        
+        {% endblock %}
+    </div>
+</div>
+<!-- END layout-wrapper -->
+{% if request.user.is_authenticated %}
+
+{% block extra_modal %}
+    {% endblock %}
+    {% endif %}
+    {% block footer %}
+    <footer class="footer {% block footer_class %}{% endblock %}">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-6">
+                    <p class="mb-0">&copy; <script>document.write(new Date().getFullYear())</script> Check Emails.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+    {% endblock %}
+    <!-- Right bar overlay-->
+    <div class="rightbar-overlay"></div>
+
+    <!-- JAVASCRIPT -->
+    
+    {% block common_js %}
+    <script src="{% static 'assets/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'assets/metismenujs/metismenujs.min.js' %}"></script>
+    <script src="{% static 'assets/simplebar/simplebar.min.js' %}"></script>
+    <script src="{% static 'assets/feather-icons/feather.min.js' %}"></script>
+
+    <!-- apexcharts -->
+    <script src="{% static 'assets/apexcharts/apexcharts.min.js' %}"></script>
+    
+    
+    <script src="{% static 'assets/js/jquery-3.4.1.min.js' %}"></script>
+    <script src="{% static 'assets/js/app.js' %}"></script>
+    <script type="text/javascript" src="{% static 'assets/js/multiple-emails.js' %}"></script>
+    <script src="{% static 'assets/js/email-validation.js' %}"></script>
+
+    {% endblock %}
+    {% block extrajs %}
+{% endblock %}
+    </body>
+
+</html>

@@ -1,0 +1,91 @@
+{% extends 'home.html' %}
+{% load static mathfilters %}
+{% load humanize %} 
+
+{% block titlename %}Email Spam Words Checker{% endblock %}
+    {% block common_css %}
+    <!-- Bootstrap Css -->
+    <link href="{% static 'assets/css/bootstrap.min.css' %}" id="bootstrap-style" rel="stylesheet" type="text/css" />
+    <!-- Icons Css -->
+    <link href="{% static 'assets/css/icons.min.css' %}" rel="stylesheet" type="text/css" />
+    <!-- App Css-->
+    <link href="{% static 'assets/css/app.min.css' %}" id="app-style" rel="stylesheet" type="text/css" />
+    <link  rel="stylesheet" type="text/css" href='{% static "assets/css/common-style.css" %}'></link>
+  
+  
+  <link href="{% static 'assets/css/email-validation.css' %}" rel="stylesheet" />
+  {% endblock %}
+
+{% block bodyclass %}search_emails{% endblock %}
+
+    
+
+
+{% block content %}
+<div class="main-content">
+
+  <div class="page-content">
+      <div class="container-fluid">
+
+
+  <div class="row col-md-12 page-content-div  pt-4 justify-content-md-center">
+    <div class="col-md-9">
+        <div class="row email-search mb-5 align-items-baseline">
+            <div class="col-md-8">    
+        <a href="{% url 'emailtool:app_dashboard' %}" class="btn btn-soft-secondary btn-lg"> <i class="mdi mdi-arrow-left ms-1"></i></a>
+        </div>
+        <div class="col-md-8">
+    <div class="text-muted">
+      <h2 class="font-size-24 my-4 text-center">Email Spam Words Checker</h2>
+      <h5><i class="bx bx-info-circle font-size-20"></i>&nbsp;Insert your email body in the field below to identify and remove possible spam trigger words.</h5>
+  </div>
+        <div  class="spam-checker-div">
+
+            <textarea data-spam-keyword="{{ spamcategory }}" id="spam-checker-textarea" style="width: 100%" rows="20" class="border-0"></textarea>
+            </div>
+      <!-- Tab content -->
+      
+      
+    </div>
+    <div class="col-md-4">
+        <div class="text-muted my-4">
+            <h4 class="my-4 text-center">Result Highlights</h4>
+            <!-- <div class="single-chart-div single-chart">
+                <svg viewBox="0 0 36 36" class="circular-chart green">
+                  <path class="circle-bg"
+                    d="M18 2.0845
+                      a 15.9155 15.9155 0 0 1 0 31.831
+                      a 15.9155 15.9155 0 0 1 0 -31.831"
+                  />
+                  <path class="circle"
+                    stroke-dasharray="60, 100"
+                    d="M18 2.0845
+                      a 15.9155 15.9155 0 0 1 0 31.831
+                      a 15.9155 15.9155 0 0 1 0 -31.831"
+                  />
+                  <text x="18" y="20.35" class="percentage">60%</text>
+                </svg>
+              </div> -->
+            <div class="mb-4" id="spam-checker-aside">
+                
+                </div>
+          
+      </div>
+    
+
+    </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+{% endblock %}
+{% block extrajs %}
+
+<script src="{% static 'assets/js/spam-checker.js' %}"></script>
+
+
+
+{% endblock %}

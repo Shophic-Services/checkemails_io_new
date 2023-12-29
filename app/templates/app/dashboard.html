@@ -1,0 +1,170 @@
+{% extends 'home.html' %}
+
+{% load static mathfilters %}
+{% load humanize %} 
+
+{% block content %}
+
+<div class="main-content">
+
+    <div class="page-content">
+        <div class="container">
+            <div class="col-lg-12 page-content-div">
+            <div class="row">
+                <div class="col-xl-12 col-sm-12">
+                    <!-- Card -->
+                    <div class="col-xl-12 align-items-center text-center pt-5"  id="home">
+                        <h1 class="mb-1 text-black pb-2 mt-5">Welcome to checkemails.io<br> Your Premier Email Verification Solution</h1>
+                        <p class="mb-1 text-black font-size-24">Are you tired of wasted resources, low email deliverability rates, and the frustration of reaching the wrong inbox? Look no further than <a href="{% url 'app:home' %}">checkemails.io</a>, your trusted partner for email verification. We offer a comprehensive suite of tools to ensure your email lists are clean, reliable, and ready to engage your target audience effectively.
+                        </p>
+                        <div class="col-xl-12 align-items-center text-center my-4 pt-5">
+                            <a href="{% url 'emailtool:app_dashboard' %}" class="btn btn-warning rounded-pill font-size-26 p-3">Start Check</a>
+                        </div>
+                    </div>
+                    <div class="row col-xl-12 align-items-center text-center pt-5 bg-white" id="services">
+                        <h1 class="mb-1 text-black pb-2 mt-5">Our Services</h1>
+                        <div class="col-xl-4 align-items-center text-center my-4 py-4">
+                            <h2 class="mb-1 text-truncate text-black pb-2">Single Email Check</h2>
+                            <p class="mb-1 text-black font-size-24">Verify the authenticity of a single email address quickly and accurately. Eliminate the risk of sending emails to non-existent or invalid addresses, reducing bounce rates and improving your sender reputation.
+                            </p>
+                        </div>
+                        <div class="col-xl-4 align-items-center text-center my-4 py-4">
+                            <h2 class="mb-1 text-truncate text-black pb-2">Multiple Email Check</h2>
+                            <p class="mb-1 text-black font-size-24">Effortlessly validate an entire list of email addresses in one go. Our bulk email verification service helps you clean your email lists efficiently, ensuring you reach your intended audience every time.
+                            </p>
+                        </div>
+                        <div class="col-xl-4 align-items-center text-center my-4 py-4">
+                            <h2 class="mb-1 text-truncate text-black pb-2">Email Spam Word Checker</h2>
+                            <p class="mb-1 text-black font-size-24">Avoid getting flagged as spam by identifying potentially problematic words and phrases in your email content. Our spam word checker ensures your messages are delivered to the inbox, not the spam folder.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="col-xl-12 align-items-center text-center py-5" id="about_us">
+                        <h2 class="mb-1 text-black mt-5">About us</h2>
+
+                        <p class="mb-1 text-black font-size-18">At ChechEmails.io, we are on a mission to help businesses and individuals achieve email marketing success through impeccable data quality. We believe that every email sent should reach its intended recipient, without bouncing back or ending up in the spam folder. Our goal is to empower you with the tools and knowledge needed to achieve just that.</p>
+
+                        <h2 class="mb-1 text-truncate text-black mt-5">Why use checkemails to check your emails?</h2>
+ 
+    
+                    </div>
+                    <section class="container-fluid w-100 p-4 justify-content-start">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="text-left p-2">
+                                <p class="text-black mb-2 fw-bold font-size-18"><i class="uil uil-check-circle font-size-24"></i> Proprietary Algorithms for Real-Time Verification</p>
+                                
+                            <p class="text-black mb-2">At checkemails.io, we don't just check your email lists; we scrutinize them with precision. Our proprietary algorithms guarantee real-time verification, saving you the trouble of dealing with invalid or non-existent email addresses.</p>
+                            </div>
+                        </div>
+                    </div>
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="text-left p-2">
+                            <p class="text-black mb-2 fw-bold font-size-18"><i class="uil uil-check-circle font-size-24"></i> 100% GDPR-Compliant Email Verification</p>
+                            <p class="text-black mb-2">We take data privacy seriously. checkemails.io is proud to be the only 100% GDPR-compliant email verification solution. Your data is handled with the utmost care, ensuring it remains secure and compliant with international regulations.</p>
+                        </div>
+                    </div>
+                </div>
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="text-left p-2">
+                            <p class="text-black mb-2 fw-bold font-size-18"><i class="uil uil-check-circle font-size-24"></i> Flexible Subscription Plans</p>
+                            
+                            <p class="text-black mb-2">Choose from our scalable subscription plans that suit your unique needs. You have the freedom to upgrade or downgrade your account at any time, giving you complete control over your email verification activities.</p>
+                        </div>
+                    </div>
+                </div>
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="text-left p-2">
+                            <p class="text-black mb-2 fw-bold font-size-18"><i class="uil uil-check-circle font-size-24"></i> Top-Notch Security</p>
+                            
+                            <p class="text-black mb-2">Security is our priority. When you add personal data to our system, rest assured that it is perfectly encrypted and safeguarded. Your data's security is our commitment.</p>
+                        </div>
+                    </div>
+                </div>
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="text-left p-2">
+                            <p class="text-black mb-2 fw-bold font-size-18"><i class="uil uil-check-circle font-size-24"></i> Free Verification Sampling</p>
+                            
+                            <p class="text-black mb-2">Before committing to full verification, try our free verification sampling. Pre-screen your email list to get a glimpse of how checkemails.io can enhance your email marketing efforts.</p>
+                                </div>
+                                </div>
+                            </div>
+                        </ul>
+                    </section>
+
+
+                    <div class="col-xl-12 align-items-center text-center py-5 bg-white" id="pricing">
+
+                        <h2 class="mb-1 text-black pb-2 mt-5">Pricing</h2>
+                    <p class="text-black font-size-16">Discover the perfect plan for your needs. Whether you're an individual, a small business, or a large enterprise,<br> we have flexible pricing options to suit your requirements.</p>
+                    <section class="container-fluid w-100 p-4 pb-4 justify-content-start">
+                        <div class="row col-md-12 justify-content-center">
+                            {% for package in packages %}
+                            <div class="col-md-4">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="text-start p-2">
+                                            <div class="w-100 overflow-hidden text-center mb-3">
+                                            <p class="mb-1 text-truncate text-black font-size-18 fw-bold">{{package.name}}</p>
+                                            <!-- <p class="mb-1 text-truncate text-black font-size-14 fw-bold">No credit card is required</p> -->
+                                            </div>
+                                            <div class="d-inline-flex overflow-hidden text-start mb-3">
+                                                <div class="avatar-sm me-3">
+                                                    <div class="avatar-title bg-soft-primary text-primary rounded-circle font-size-18">
+                                                        <i class="uil uil-dollar-alt font-size-20"></i>
+                                                    </div>
+                                                </div>
+                                                <p class="mb-1 text-black font-size-16 fw-bold">Price: {% if package.price|add:'0' == 0 %}Free{% else %}${{package.price}} USD per month{% endif %}</p>
+                                            </div>
+                                            {% for package_detail in package.plan_descriptions.all %}
+                                            <div class="d-inline-flex overflow-hidden text-start mb-3">
+                                                <div class="avatar-sm me-3 avatar-min-width">
+                                                    <div class="avatar-title bg-soft-primary text-primary rounded-circle font-size-18">
+                                                        <i class="uil uil-check-circle font-size-20"></i>
+                                                    </div>
+                                                </div>
+                                                <p class="mb-1 text-black font-size-16 fw-bold">{{package_detail.description}}</p>
+                                            </div>
+                                            {% endfor %}
+                                            <div class="d-inline-flex overflow-hidden text-start pt-3">
+                                                <p class="mb-1 text-black font-size-16 fw-bold">{{package.information}}</p></div>
+                                            <div class="col-xl-12 align-items-center text-center my-3 pt-4">
+                                                <a href="{% url 'accounts:signup' %}" class="btn btn-warning rounded-pill font-size-16 p-3 px-5">Buy Now</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                            
+                        </div>
+                        
+                    </section>
+                    <p class="text-black font-size-16">Have questions or need a custom plan for your unique requirements? Contact our support team for personalized assistance.</p>
+                    <p class="text-black font-size-16">Ready to get started? Sign up now and unlock the full potential of our service.</p>
+                    <p class="text-black font-size-16">Note: Prices and plans are subject to change. Please refer to our Terms of Service for more details.</p>
+                </div>
+
+                <div class="col-xl-12 align-items-center text-center pt-5"  id="get-started">
+                    <h1 class="mb-1 text-black pb-2 mt-5">Get Started Today</h1>
+                    <p class="mb-1 text-black font-size-24" id="contact-us">Your path to email marketing success starts here. Sign up with checkemails.io and transform the way you communicate with your audience. For any questions or assistance, please don't hesitate to <a
+                        href="{% url 'app:contact_us' %}">contact us</a>. We're here to help you achieve email marketing excellence.
+                    </p>
+                    <div class="col-xl-12 align-items-center text-center my-4 pt-5">
+                       
+                    </div>
+                </div>
+                
+        </div>
+            
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
