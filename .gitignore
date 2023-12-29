@@ -113,7 +113,7 @@ vars.cmd
 .git
 .vscode
 .chache
-public
+public/*
 development.py
 package.install
 **/migrations/*
