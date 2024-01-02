@@ -37,10 +37,6 @@
 	</div>
 	<div class="right-side-bar pt-4">
 		<div class="right-side-searchbar">
-			<div class="inner-search-bar">
-				<i class="fas fa-search"></i>
-				<input type="text" placeholder="Search your complete list">
-			</div>
             
             <div class="data-list" id="uploaded_files">
 
@@ -54,13 +50,13 @@
 						</div>
 						<div class="data-content">
 							<h4>{{file.name}}</h4>
-							<p><span class="green">{{file.email_count|default:"-"}} Emails</span> <i class="far fa-clock"></i> {{file.create_date|date:'Y-m-d H:m:s'}}</p>
+							<p><span class="green">{{file.email_count|default:"-"}} Emails</span> <i class="far fa-clock"></i> {{file.create_date|date:'Y-m-d H:i:s'}}</p>
 						</div>
 					</div>
 					<ul class="data-validation">
 						<li><p>Valid</p><span class="green">{{file.valid_count|default:"-"}}</span></li>
 						<li><p>Invalid</p><span class="red">{{file.invalid_count|default:"-"}}</span></li>
-						<li class="ps-2 me-3"><p>Status</p><span class="grey"><span class="status-pill-button status-pill-button-{{file.status}}">{{file.get_status_display}}</span></span></li>
+						<li class="ps-2 me-3"><p>Status</p><span class="grey"><span class="status-pill-button status-pill-button-{{file.status}}" id="{{file.uuid}}">{{file.get_status_display}}</span></span></li>
 						{% if file.status == 3 %}
 						<li><p>Download</p><span class="grey">
 							<a href="/media/documents/{{file.existing_path}}" download="{{file.name}}" class="bt p-0"><i class="fa fa-download"></i></a>

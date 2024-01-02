@@ -144,7 +144,7 @@ class FileUpload {
                     $('.no-data-found').addClass('d-none')
                 }, 1000);
                 $.ajax({
-                    url: '/check/process-email-check/'+ res.uuid + '/',
+                    url: '/check/bulk-process-email-check/'+ res.uuid + '/',
                     type: 'GET',
                     dataType: 'json',
                     cache: false,

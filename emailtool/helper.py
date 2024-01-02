@@ -155,54 +155,116 @@ class EmailBulkUploadHelper(object):
         self.instance = instance
         self.request = request
 
+    def update_response_validate(self, code, message, email, row, column, response):
+
+        status = 'In-Valid'
+        if code == 250:
+            status = 'Valid'
+        
+        try:
+            response[row]
+        except:
+            response.update({row:{}})
+        
+        try:
+            response[row][column] = {
+                'email': email,
+                'code':code,
+                'message':message,
+                'status':status,
+            }
+        except:
+            response[row] = {column:{
+                'email': email,
+                'code':code,
+                'message':message,
+                'status':status,
+            }}
+
     def get_email_result(self):
         try:
             all = []
+            all_updated = []
             with open('public/media/documents/' + self.instance.existing_path, 'r', encoding='utf-8') as csv_file:
                 dataReader = csv.reader(csv_file, delimiter=',', quotechar='"')
                 self.instance.valid_count = 0
                 self.instance.invalid_count = 0
                 write_row = next(dataReader)
                 index_set = []
-                for row in dataReader:
+                email_addresses = []
+                for row_index, row in enumerate(dataReader):
                     email_regex = re.compile(r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b')
-                    email_addresses = [(index, element) for index, element in enumerate(row) if email_regex.match(element)]
-                    index = 0
-                    for data in email_addresses:
-                        code, message = EmailCheckHelper().validate_email_smtp_dns(data[1])
+                    email_addresses += [(row_index, index, element) for index, element in enumerate(row) if email_regex.match(element)]
+                    all.append(row)
+                
+                self.response = {}
+
+                q = Queue()
+                lock = Lock()
+                for e in email_addresses:
+                    q.put(e)
+
+
+                def process_queue(queue: Queue):
+                    while True:
                         try:
-                            email_data = EmailSearch.objects.get(email_address=data[1])
+                            row, column, email = queue.get(block=False)
+                        except Empty:
+                            break
+                        code, message = EmailCheckHelper().validate_email_smtp_dns(email)
+                        self.update_response_validate(code, message, email,row, column,  self.response)
+                        lock.acquire()
+                        lock.release()
+
+
+                NUM_THREADS = len(email_addresses)
+                threads = []
+
+                for i in range(NUM_THREADS):
+                    thread = Thread(target=process_queue, args=(q,))
+                    thread.start()
+                    threads.append(thread)
+
+                for thread in threads:
+                    thread.join()
+                sorted_data_outer = dict(sorted(self.response.items()))
+                sorted_data_inner = {outer_key: dict(sorted(inner_dict.items())) for outer_key, inner_dict in sorted_data_outer.items()}
+                for row, row_data in sorted_data_inner.items():
+                    index = 0
+                    for column, column_data in row_data.items():
+                        try:
+                            email_data = EmailSearch.objects.get(email_address=column_data['email'])
                         except EmailSearch.MultipleObjectsReturned:
-                            EmailSearch.objects.filter(email_address=data[1]).delete()
-                            email_data = EmailSearch.objects.create(email_address=data[1])
+                            EmailSearch.objects.filter(email_address=column_data['email']).delete()
+                            email_data = EmailSearch.objects.create(email_address=column_data['email'])
                         except EmailSearch.DoesNotExist:
-                            email_data = EmailSearch.objects.create(email_address=data[1])
-                        email_data.message = str(message)
+                            email_data = EmailSearch.objects.create(email_address=column_data['email'])
+                        email_data.message = str(column_data['message'])
                         email_data.verified = False
-                        email_data.code = code
+                        email_data.code = column_data['code']
                         if self.request.user.is_authenticated:
                             email_data.added_by = self.request.user
-                        index_value = data[0]
+                        index_value = column
                         index_set.append(index_value + index)
                         index += 1
-                        if code == 250:
+                        if column_data['code'] == 250:
                             email_data.verified = True
                             self.instance.valid_count += 1
-                            row.insert(index_value + index, 'Valid')
-                            all.append(row)
+                            all[row].insert(index_value + index, 'Valid')
+                            all_updated.append(all[row])
                         else:
                             self.instance.invalid_count += 1
-                            row.insert(index_value + index, 'InValid')
-                            all.append(row)
+                            all[row].insert(index_value + index, 'InValid')
+                            all_updated.append(all[row])
 
                         email_data.save()
                 for data in sorted(set(index_set)):
                     write_row.insert(data+1, 'Output')
-                all.insert(0, write_row)
+                all_updated.insert(0, write_row)
                 self.instance.status = EmailBulkUpload.COMPLETED
             with open('public/media/documents/' + self.instance.existing_path, 'w', encoding='utf-8') as csv_file:            
                 write_file = csv.writer(csv_file, lineterminator='\n')
-                write_file.writerows(all)
+                write_file.writerows(all_updated)
 
         except Exception as ex:
             print(ex)

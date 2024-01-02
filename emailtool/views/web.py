@@ -171,15 +171,12 @@ class SpamEmailCheckView(TemplateView):
             
         return context
 
-class BulkEmailCheckView(TemplateView):
+class BulkEmailCheckView(LoginRequiredMixin, TemplateView):
     template_name = 'emailtool/upload_document.html'
 
     def get_context_data(self, **kwargs):
         context = super(BulkEmailCheckView, self).get_context_data(**kwargs)
-        if self.request.user.is_authenticated:
-            emailuploadfiles = EmailBulkUpload.objects.filter(added_by=self.request.user).order_by('-modify_date')
-        else:
-            emailuploadfiles = EmailBulkUpload.objects.filter(added_by=None).order_by('-modify_date')
+        emailuploadfiles = EmailBulkUpload.objects.filter(added_by=self.request.user).order_by('-modify_date')
 
         
         context.update({
@@ -218,8 +215,7 @@ class BulkEmailCheckView(TemplateView):
                     emailuploadfolder.existing_path = updated_file_name
                     emailuploadfolder.eof = end
                     emailuploadfolder.name = file_name
-                    if request.user.is_authenticated:
-                        emailuploadfolder.added_by = request.user
+                    emailuploadfolder.added_by = request.user
                     emailuploadfolder.email_count = total_email
                     emailuploadfolder.save()
                 if int(end):
@@ -272,7 +268,7 @@ class BulkEmailCheckView(TemplateView):
             return res
 
     
-class ProcessEmailCheckView(LoginRequiredMixin, View):
+class BulkProcessEmailCheckView(LoginRequiredMixin, View):
 
     def get(self, request, *args, **kwargs):
         try:
