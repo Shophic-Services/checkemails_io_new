@@ -14,7 +14,7 @@ urlpatterns = [
     path('bulk-email-check/', BulkEmailCheckView.as_view(), name='bulk_check'),
     path('bulk-process-email-check/<uuid:uuid>/', BulkProcessEmailCheckView.as_view(), name='bulk_process_check'),
     path('email-list/', EmailCheckListView.as_view(), name='email_check_list'),
-    path('process-email-list/<uuid:uuid>/', ProcessEmailCheckView.as_view(), name='process_check'),
+    path('process-email-list/<uuid:uuid>/', ProcessEmailCheckView.as_view(), name='process_list'),
     path('generate-email-list/', GenerateEmailCheckView.as_view(), name='generate_email_list'),
     
 ]

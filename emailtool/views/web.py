@@ -398,7 +398,7 @@ class GenerateEmailCheckView(FormView):
 
 class ProcessEmailCheckView(View):
 
-    def get(self, request, *args, **kwargs):
+    def get(self, request, *args, **kwargs):        
         if request.session.get('uuid'):
             del request.session['uuid']
         try:
@@ -408,31 +408,59 @@ class ProcessEmailCheckView(View):
         emailchecklists.status = EmailListGenerate.INPROGRESS
         emailchecklists.save()       
         try:
-            all = [['Emails']]
-            for data in ast.literal_eval(emailchecklists.patterns):
-                row = []
-                code, message = EmailCheckHelper().validate_email_smtp_dns(data)
-                try:
-                    email_data = EmailSearch.objects.get(email_address=data)
-                except EmailSearch.MultipleObjectsReturned:
-                    EmailSearch.objects.filter(email_address=data).delete()
-                    email_data = EmailSearch.objects.create(email_address=data)
-                except EmailSearch.DoesNotExist:
-                    email_data = EmailSearch.objects.create(email_address=data)
-                email_data.message = str(message)
-                email_data.verified = False
-                email_data.code = code
-                if request.user.is_authenticated:
-                    email_data.added_by = request.user
-                if code == 250:
-                    email_data.verified = True
-                    emailchecklists.email_count += 1
-                    row.append(data)
-                    all.append(row)
-                email_data.save()
+            self.all = [['Emails']]
+            q = Queue()
+            lock = Lock()
+            
+            email_addresses = ast.literal_eval(emailchecklists.patterns)
+            for e in email_addresses:
+                q.put(e)
+
+
+            def process_queue(queue: Queue):
+                while True:
+                    try:
+                        email = queue.get(block=False)
+                    except Empty:
+                        break
+                    code, message = EmailCheckHelper().validate_email_smtp_dns(email)
+                    row = []
+                    try:
+                        email_data = EmailSearch.objects.get(email_address=email)
+                    except EmailSearch.MultipleObjectsReturned:
+                        EmailSearch.objects.filter(email_address=email).delete()
+                        email_data = EmailSearch.objects.create(email_address=email)
+                    except EmailSearch.DoesNotExist:
+                        email_data = EmailSearch.objects.create(email_address=email)
+                    email_data.message = str(message)
+                    email_data.verified = False
+                    email_data.code = code
+                    if request.user.is_authenticated:
+                        email_data.added_by = request.user
+                    if code == 250:
+                        email_data.verified = True
+                        emailchecklists.email_count += 1
+                        row.append(email)
+                        self.all.append(row)
+                    email_data.save()
+                    lock.acquire()
+                    lock.release()
+
+
+            NUM_THREADS = len(email_addresses)
+            threads = []
+
+            for i in range(NUM_THREADS):
+                thread = Thread(target=process_queue, args=(q,))
+                thread.start()
+                threads.append(thread)
+
+            for thread in threads:
+                thread.join()
+
             with open('public/media/documents/' + emailchecklists.existing_path, 'w', encoding='utf-8') as csv_file:            
                 write_file = csv.writer(csv_file, lineterminator='\n')
-                write_file.writerows(all)
+                write_file.writerows(self.all)
             emailchecklists.status = EmailListGenerate.COMPLETED
             emailchecklists.save()
         except Exception as ex:

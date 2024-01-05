@@ -89,7 +89,7 @@
 {% if generate_uuid %}
 <script type="text/javascript">
     $('span#{{generate_uuid}}').removeClass('status-pill-button-1').addClass('status-pill-button-2').text('Processing')
-    $.get('/check/process-email-check/{{generate_uuid}}/', function(){
+    $.get('/check/process-email-list/{{generate_uuid}}/', function(){
         window.location.reload()
     })
 </script>
