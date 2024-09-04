@@ -9,5 +9,6 @@ def load_user_data(request):
         'User': User,
         'current_user_role': request.user.user_role.role if 
             request.user.is_authenticated and request.user.user_role else None,
-        'WEBAPP_NOCACHE_TOKEN': settings.WEBAPP_NOCACHE_TOKEN
+        'WEBAPP_NOCACHE_TOKEN': settings.WEBAPP_NOCACHE_TOKEN,
+        'PAYPAL_CLIENT_ID': settings.PAYPAL_CLIENT_ID
     }

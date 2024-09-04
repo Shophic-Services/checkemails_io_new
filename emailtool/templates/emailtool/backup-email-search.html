@@ -1,0 +1,39 @@
+{% extends 'layouts/home_base.html' %}
+
+{% load static mathfilters %}
+{% load humanize %} 
+
+{% block content %}
+<div class="content-wrapper pt-0">
+
+    <div class="container-fluid position-relative">
+            <div class="col-md-12">
+                <section class="row col-md-12 justify-content-center status-container">
+                <div class="col-12 col-md-6 col-lg-6 stretch-card my-3 mb-lg-0 border-1 aos-init aos-animate" data-aos="zoom-in">
+                    <div class="card customer-cards p-5">
+                        <div class="card-body p-5 text-center">
+                            <svg width="80px" height="80px" viewBox="0 0 50 50" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                <!-- Generator: Sketch 63.1 (92452) - https://sketch.com -->
+                                <desc>Created with Sketch.</desc>
+                                <g id="Artboard" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                        <g id="tick2" fill-rule="nonzero">
+                                                <path d="M25,0 C11.1111111,0 0,11.1111111 0,25 C0,38.8888889 11.1111111,50 25,50 C38.8888889,50 50,38.8888889 50,25 C50,11.1111111 38.8888889,0 25,0 Z" id="Shape" fill="#65BC0D"></path>
+                                                <polygon id="Path" fill="#FFFFFF" points="39.8605957 16.3183594 20.4779053 36.5390625 9.85437012 25.6352539 12.9403076 22.4471436 20.4779053 30.3894043 36.8765869 13.3074951"></polygon>
+                                        </g>
+                                </g>
+                        </svg>
+                        <h5 class="py-3">Backup Success</h5>
+                        <p>Thank you.</p>
+                        </div>
+                    <div class="text-center">
+                    <a href="{% url 'app:home' %}" class="btn btn-rounded btn-outline-primary">Home</a>
+                </div>
+                    </div>
+                </div>
+            </section>
+            </div> 
+    </div>
+</div>
+
+
+{% endblock %}

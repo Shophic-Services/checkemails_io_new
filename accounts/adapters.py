@@ -3,7 +3,7 @@ from allauth.account.adapter import DefaultAccountAdapter
 from allauth.socialaccount.adapter import DefaultSocialAccountAdapter
 
 from subscription.models import ClientCreditSubscription, SubscriptionPackage
-from subscription.utils import CreateSubscriptionData
+from subscription.stripe_utils import StripeSubscriptionHelper
 from dateutil.relativedelta import relativedelta
 
 
@@ -36,21 +36,18 @@ class SocialAccountAdapter(DefaultSocialAccountAdapter):
         sociallogin.user.google_user = True        
         sociallogin.user.user_role = UserRole.objects.filter(
             role=UserRole.CLIENT).first()
+        sociallogin.user.plan_id = request.session.get('plan')
         sociallogin.user.save()
+        if request.session.get('plan'):
+            del request.session['plan']
         plan = SubscriptionPackage.objects.filter(can_change=False, subscription_period=SubscriptionPackage.SUBSCRIPTION_ONE_WEEK).first()
-        obj = ClientCreditSubscription.objects.create(client=sociallogin.user, plan=plan)
-        if obj.plan.subscription_period == SubscriptionPackage.SUBSCRIPTION_TWELVE_MONTH:
-            obj.expire_date = timezone.now() + relativedelta(months=12)
-        if obj.plan.subscription_period == SubscriptionPackage.SUBSCRIPTION_ONE_MONTH:
-            obj.expire_date = timezone.now() + relativedelta(months=1)
-        if obj.plan.subscription_period == SubscriptionPackage.SUBSCRIPTION_ONE_WEEK:
-            obj.expire_date = timezone.now() + timezone.timedelta(days=6)
-        obj.is_activated = True
-        ClientCreditSubscription.objects.filter(client=obj.client).update(is_activated=False, expire_date=timezone.now())
-        helper_class = CreateSubscriptionData(obj, request)
-        obj = helper_class.create_data()    
-        obj.save()
-        helper_class.create_sub_transactions()
+        helper_class = StripeSubscriptionHelper(sociallogin.user, request)
+        helper_class.create_customer()
+        helper_class.create_offline_data(plan) 
+        if sociallogin.user.plan_id and sociallogin.user.plan_id != str(plan.id):
+            ClientCreditSubscription.objects.filter(client=sociallogin.user).update(is_activated=False, is_current=False, expire_date=timezone.now())
+            sociallogin.user.has_plan=False
+            sociallogin.user.save()
         sociallogin.save(request)        
         sociallogin.user.send_email_to_admins(request)
         

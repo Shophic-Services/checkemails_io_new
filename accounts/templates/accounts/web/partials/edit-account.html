@@ -1,58 +1,25 @@
-{% extends 'home.html' %}
-{% load static %}
-{% block content %}
-<div class="main-content page-content-div">
+{% extends 'layouts/home_base.html' %}
 
-    <div class="page-content">
-        <div class="container-fluid">
+{% load static mathfilters %}
+{% load humanize %} 
+
+{% block content %}
+<div class="content-wrapper pt-0">
+
+        <div class="container-fluid position-relative">
+
+            {% include 'accounts/web/partials/sidebar-dashboard.html' %}
+<div class="main">
+    <div class="topnav d-flex justify-content-start">
+        <a class="link {% if request.resolver_match.url_name in "'account_view','account_edit'" %}active{% endif %}" href="{% url 'accounts:account_view' %}">Profile</a>
+        <a class="link {% if request.resolver_match.url_name in "'credit'" %}active{% endif %}" href="{% url 'accounts:credit' %}">Credits</a>
+      </div>
 
 <div class="row">
     <div class="col-md-12">
         <div class="row">
             
-            <div class="col-xxl-3 col-lg-4">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="text-center">
-                            <div class="position-relative d-inline-block mx-auto mb-4">
-                                <div class="profile-img">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="100" height="130" viewBox="0 0 25 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user icon nav-icon"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-                                </div>
-                                <!-- <a href="#" class="d-block position-absolute bottom-0 end-0">
-                                    <div class="avatar-sm">
-                                        <div class="avatar-title rounded-circle bg-light text-primary">
-                                            <i class="mdi mdi-pencil"></i>
-                                        </div>
-                                    </div>
-                                </a> -->
-                            </div>
-
-                        </div>
-                        <hr class="my-4">
-                        <div>
-                            <h5 class="font-size-16">Info :</h5>
-
-                            <div class="mt-4">
-                                <p class="text-muted mb-1">Full Name :</p>
-                                <h5 class="font-size-14 text-truncate">{{request.user.first_name}} {{request.user.last_name}}</h5>
-                            </div>
-
-                            <div class="mt-4">
-                                <p class="text-muted mb-1">E-mail :</p>
-                                <h5 class="font-size-14 text-truncate">{{request.user.email}}</h5>
-                            </div>
-
-                            <div class="mt-4">
-                                <p class="text-muted mb-1">Contact Number :</p>
-                                <h5 class="font-size-14 text-truncate">{{request.user.phone}}</h5>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- end card -->
-
-            </div>
-            <div class="col-xxl-9 col-lg-8">
+            <div class="col-lg-12">
                 <div class="card">
                     <div class="card-body">
                         <div class="row">
@@ -85,18 +52,11 @@
                                 {% endfor %}
                             {% endif %}
                             <div class="row">
-                            <div class="card border shadow-none mb-5">
-                                <div class="card-header d-flex align-items-center">
-                                    <div class="flex-shrink-0 me-3">
-                                        <div class="avatar-sm">
-                                            <div class="avatar-title rounded-circle bg-soft-primary text-primary">
-                                                01
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="flex-grow-1">
-                                        <h5 class="card-title">General Info</h5>
-                                    </div>
+                                
+            <div class="col-xxl-9 col-lg-8">
+                            <div class="card">
+                                <div class="card-header d-flex align-items-center bg-white">
+                                    <h5 class="mb-1 text-truncate steps-heading pb-2" data-counter="1">General Info</h5>
                                 </div>
                                 <div class="card-body">
                                     <div>
@@ -135,7 +95,7 @@
                                             <label for="contact-info-email-input">E-mail</label>
                                             <input type="email" readonly disabled class="form-control" id="contact-info-email-input" value="{{request.user.email}}" placeholder="Enter Email">
                                         </div>
-                                        <div class="form-check mb-3" data-bs-toggle="collapse" data-bs-target="#collapseChangePassword" aria-expanded="false" aria-controls="collapseChangePassword">
+                                        <div class="form-check mb-3" data-toggle="collapse" data-target="#collapseChangePassword" aria-expanded="false" aria-controls="collapseChangePassword">
                                             <input type="checkbox" class="form-check-input" id="gen-info-change-password" {% if form.change_password.errors %}checked{% endif %} name="change_password">
                                             <label class="form-check-label" for="gen-info-change-password">Change password?</label>
                                         </div>
@@ -176,18 +136,12 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="card border shadow-none mb-5">
-                                <div class="card-header d-flex align-items-center">
-                                    <div class="flex-shrink-0 me-3">
-                                        <div class="avatar-sm">
-                                            <div class="avatar-title rounded-circle bg-soft-primary text-primary">
-                                                02
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="flex-grow-1">
-                                        <h5 class="card-title">Contact Info</h5>
-                                    </div>
+                        </div>
+                            
+            <div class="col-xxl-9 col-lg-8">
+                            <div class="card">
+                                <div class="card-header d-flex align-items-center bg-white">
+                                    <h5 class="mb-1 text-truncate steps-heading pb-2" data-counter="2">Contact Info</h5>
                                 </div>
                                 <div class="card-body">
                                     <div class="row">
@@ -207,28 +161,66 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="card border shadow-none d-none">
-                                <div class="card-header d-flex align-items-center">
-                                    <div class="flex-shrink-0 me-3">
-                                        <div class="avatar-sm">
-                                            <div class="avatar-title rounded-circle bg-soft-primary text-primary">
-                                                03
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="flex-grow-1">
-                                        <h5 class="card-title">Email Settings</h5>
-                                    </div>
+                        </div>
+                        <div class="col-xxl-9 col-lg-8">
+                            <div class="card shadow-none ">
+                                <div class="card-header d-flex align-items-center bg-white">
+                                    <h5 class="mb-1 text-truncate steps-heading pb-2" data-counter="3">Billing Info</hh>
                                 </div>
                                 <div class="card-body">
                                     <div class="row">
-                                        <div class="col-lg-6">
-                                            <div class="mb-3">
-                                                <p class="text-muted">Turn on toggle to receive data credit low balance</p>
-                                                <input type="checkbox" id="switch1" switch="none" {% if user.user_profile.balance_notify %}checked {% endif %} name="balance_notify">
-                                                <label for="switch1" data-on-label="On" data-off-label="Off" class="mb-0"></label>
+                                      
+                                    <div class="pr-4 pt-3">
+                                        <div class="row">
+                                            <div class="col-lg-6">
+                                                <div class="form-group">
+                                                    <label>Billing Name</label>
+                                                    {{form.billing_full_name}}
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <div class="form-group">
+                                                    <label>Billing Phone Number</label>
+                                                    {{form.billing_phone}}
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="col-lg-12">
+                                                <div class="form-group">
+                                                    <label>Billing Address</label>
+                                                    {{form.billing_contact_address}}
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="col-lg-6">
+                                                <div class="form-group">
+                                                    <label>Country</label>
+                                                    {{form.billing_contact_country}}
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <div class="form-group">
+                                                    <label>State</label>
+                                                    {{form.billing_contact_province}}
+                                                </div>
+                                            </div>
+
+                                            
+                                            <div class="col-lg-6">
+                                                <div class="form-group">
+                                                    <label>City</label>
+                                                    {{form.billing_contact_city}}
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <div class="form-group">
+                                                    <label>Postal Code</label>
+                                                    {{form.billing_contact_postal_code}}
+                                                </div>
                                             </div>
                                         </div>
+                                    </div>
+                                    
                                         
                                     </div>
                                     
@@ -236,12 +228,13 @@
                             </div>
                         
                     </div>
+                </div>
                             <!-- end card -->
 
 
                             <div class="text-end">
-                                <button type="submit" class="btn btn-info"><i class="uil uil-times me-2"></i> Cancel</button>
-                                <button type="submit" class="btn btn-success"><i class="uil uil-check me-2"></i> Save</button>
+                                <button type="submit" class="btn btn-info"><i class="uil uil-times mr-2"></i> Cancel</button>
+                                <button type="submit" class="btn btn-success"><i class="uil uil-check mr-2"></i> Save</button>
                             </div>
                         </form>
                         <!-- end form -->

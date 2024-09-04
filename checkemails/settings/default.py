@@ -63,6 +63,7 @@ THIRD_PARTY_APP = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google', 
+    'impersonate',
 ]
 
 LOCAL_APPS = [
@@ -88,9 +89,11 @@ MIDDLEWARE = [
     'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
     'app.middleware.AppMiddleware',
+    'impersonate.middleware.ImpersonateMiddleware',
     'log.middleware.LoggingMiddleware',
     'app.middleware.ThreadLocalMiddleware',
     'checkemails.core.subscriptionmiddleware.SubscriptionMiddleware',
+    'checkemails.core.ajax_middleware.AjaxMiddleware',
 ]
 
 ROOT_URLCONF = 'checkemails.urls'
@@ -123,25 +126,19 @@ WSGI_APPLICATION = 'checkemails.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
-CHECK_EMAILS_DATABASE_USER="sophic"
-CHECK_EMAILS_DATABASE_NAME="checkemails"
-CHECK_EMAILS_DATABASE_PASSWORD="x4J9K5dbx8Tv"
-CHECK_EMAILS_DATABASE_HOST="localhost"
-CHECK_EMAILS_DATABASE_PORT=5432
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        # 'NAME': os.environ.get('CHECK_EMAILS_DATABASE_NAME'),
-        # 'USER': os.environ.get('CHECK_EMAILS_DATABASE_USER'),
-        # 'PASSWORD': os.environ.get('CHECK_EMAILS_DATABASE_PASSWORD'),
-        # 'HOST': os.environ.get('CHECK_EMAILS_DATABASE_HOST', 'localhost'),
-        # 'PORT': os.environ.get('CHECK_EMAILS_DATABASE_PORT', 5432),
-        'NAME': CHECK_EMAILS_DATABASE_NAME,
-        'USER': CHECK_EMAILS_DATABASE_USER,
-        'PASSWORD': CHECK_EMAILS_DATABASE_PASSWORD,
-        'HOST': CHECK_EMAILS_DATABASE_HOST,
-        'PORT': CHECK_EMAILS_DATABASE_PORT,
+        'NAME': os.environ.get('CHECK_EMAILS_DATABASE_NAME'),
+        'USER': os.environ.get('CHECK_EMAILS_DATABASE_USER'),
+        'PASSWORD': os.environ.get('CHECK_EMAILS_DATABASE_PASSWORD'),
+        'HOST': os.environ.get('CHECK_EMAILS_DATABASE_HOST', 'localhost'),
+        'PORT': os.environ.get('CHECK_EMAILS_DATABASE_PORT', 5432),
+        # 'NAME': CHECK_EMAILS_DATABASE_NAME,
+        # 'USER': CHECK_EMAILS_DATABASE_USER,
+        # 'PASSWORD': CHECK_EMAILS_DATABASE_PASSWORD,
+        # 'HOST': CHECK_EMAILS_DATABASE_HOST,
+        # 'PORT': CHECK_EMAILS_DATABASE_PORT,
     }
 }
 # Auth User Model
@@ -227,7 +224,7 @@ DEFAULT_LOGOUT = 'accounts:logout'
 
 LOGIN_URL = 'accounts:login'
 
-LOGIN_REDIRECT_URL = 'emailtool:app_dashboard'
+LOGIN_REDIRECT_URL = 'subscription:plan_check'
 
 SESSION_COOKIE_AGE = 1296000 # 15 days to seconds
 CELERY = False
@@ -246,7 +243,8 @@ LST_APP_FOR_LOGGING = [
     'admin',
     'accounts',
     'log',
-    'app'
+    'app',
+    'emailtool'
 ]
 
 PAGINATION_PAGE_SIZE = 20
@@ -270,15 +268,6 @@ ADMIN_TOOLS_INDEX_DASHBOARD = 'checkemails.core.dashboard.CustomIndexDashboard'
 DJANGO_ADMIN_GLOBAL_SIDEBAR_MENUS="checkemails.core.menu.get_menus_by_user"
 
 
-CACHEOPS_REDIS = "redis://localhost:6379/1"
-
-CACHEOPS_DEFAULTS = {
-    'timeout': 2592000
-}
-CACHEOPS = {
-    'app.people': {'ops': 'all'},
-    'app.company': {'ops': 'all'},
-}
 customColorPalette = [
         {
             'color': 'hsl(4, 90%, 58%)',
@@ -368,9 +357,7 @@ CKEDITOR_5_CONFIGS = {
 TIME_ZONE = 'Asia/Kolkata'
 
 
-DEBUG = False
-CELERY = True
-CELERY_ENABLED = True
+DEBUG = True
 
 
 SITE_PROTOCOL = 'https'
@@ -434,5 +421,23 @@ EMAIL_HOST_USER = CHECK_EMAILS_EMAIL_HOST_USER
 EMAIL_HOST_PASSWORD = CHECK_EMAILS_EMAIL_HOST_PASSWORD
 EMAIL_DEFAULT = 'marketing@sophicservices.com'
 REDIS_DB=2
-CELERY = False
-CELERY_ENABLED = False
+CELERY = True
+CELERY_ENABLED = True
+DEFAULT_AUTO_FIELD='django.db.models.AutoField'
+SECURE_CROSS_ORIGIN_OPENER_POLICY='same-origin-allow-popups'
+
+PAYPAL_CLIENT_ID='ASL21awWRBeIlGYZIUVrAj8IYApuKaRBkAV44BsmbbjZwTYFj2MwU6cwmi9bTTi8u0xwu8kRndkaWEs0'
+PAYPAL_CLIENT_SECRET="EKCI-j9EUtVLTHxvWuEJv3CVCQ_2JzIM7okVYpEJT2CuFi_gO-VdtP-Wf0WJr-7zpo8uY1ae0noz_8OG"
+
+
+STRIPE_CLIENT_ID='acct_1OoPsTEnFDB0iJfZ'
+STRIPE_SECRET_KEY='sk_test_51OoPsTEnFDB0iJfZzmzCebwhmOpTzu1ySCVFP838RlAmEFhliYpjFjJ65HrsSjqwgAjFVhGwQlcatJYrE8Ds0OQl003I8cSIxM'
+STRIPE_PUBLISHABLE_KEY='pk_test_51OoPsTEnFDB0iJfZncxGHbNF6A49ZONFTyL2UhJBVb9Pk2gDzJhpv4PLT5pHCLUxYNK9hguw2pc3L3Rb58Juae7w00Pdp4xMRA'
+
+REQUIRE_SUPERUSER = False
+USE_HTTP_REFERER = True
+
+IMPERSONATE = {
+    'REDIRECT_FIELD_NAME': 'next',
+    'SEARCH_FIELDS': ['full_name', 'email',]
+    }

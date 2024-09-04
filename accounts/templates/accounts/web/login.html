@@ -1,7 +1,13 @@
-{% extends 'layouts/base_without_login.html' %}
+{% extends 'layouts/home_base.html' %}
 {% load static %}
 {% block title %}Login{% endblock %}
 {% block content %}
+<section class="fxt-template-animation fxt-template-layout loaded" >
+    <div class="fxt-shape">
+        <div class="fxt-transformX-L-50 fxt-transition-delay-1">
+            <img src="{% static 'images/shape1.png' %}" alt="Shape">
+        </div>
+    </div>
 <div class="container">
     <div class="row">
         <div class="col-lg-8">
@@ -14,13 +20,13 @@
                 <div class="fxt-transformX-L-50 fxt-transition-delay-5">
                     <div class="fxt-middle-content">
                         <h1 class="fxt-main-title">Sign In </h1>
-                        <div class="fxt-switcher-description1">If you don’t have an account You can<a href="{% url 'accounts:signup' %}" class="fxt-switcher-text ms-2">Sign Up</a></div>
+                        <div class="fxt-switcher-description1">If you don’t have an account You can<a href="{% url 'accounts:signup' %}" class="fxt-switcher-text ml-2">Sign Up</a></div>
                     </div>
                 </div>
             </div>
         </div>
         <div class="col-lg-4">
-            <div class="fxt-column-wrap justify-content-center">
+            <div class="fxt-column-wrap justify-content-top">
                 <div class="fxt-form">
                     <form class="form-signin" method="POST">
                         {% csrf_token %}
@@ -55,7 +61,7 @@
                         <div class="form-group">
                             <div class="fxt-checkbox-box">
                             <input class="form-check-input" name="remember_me" type="checkbox" id="remember-check">
-                            <label class="form-check-label font-size-14 ps-4" for="remember-check">
+                            <label class="form-check-label font-size-14 pl-4" for="remember-check">
                                 Remember me
                             </label>
                         </div>
@@ -77,7 +83,7 @@
                 <ul class="fxt-socials">
                     <li class="">
                         <a class="btn w-100 font-size-14" href="/accounts/google/login/" role="button" style="text-transform:none">
-                            <img width="35px" class="m-2 ms-0" alt="Google sign-in" src="{% static 'images/google_logo.svg' %}" />
+                            <img width="35px" class="m-2 ml-0" alt="Google sign-in" src="{% static 'images/google_logo.svg' %}" />
                             Continue with Google
                             </a>
                     </li>
@@ -86,4 +92,6 @@
         </div>
     </div>
 </div>
+
+</section>
 {% endblock %}

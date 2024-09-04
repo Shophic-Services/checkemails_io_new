@@ -5,7 +5,7 @@ import requests, json
 
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
-from celery import shared_task, task
+from celery import shared_task
 
 from log.models import Log
 

@@ -4,13 +4,9 @@
     <table class="table align-middle table-nowrap table-check">
         <thead>
             <tr class="bg-transparent">
-                <!-- <th style="width: 30px;">
-                    <div class="form-check font-size-16">
-                        <input type="checkbox" name="check" class="form-check-input" id="checkAll">
-                        <label class="form-check-label" for="checkAll"></label>
-                    </div>
-                </th> -->
                 <th>Invoice ID</th>
+                <th>Plan Name</th>
+                <th>Plan Price</th>
                 <th>Activated On</th>
                 <th>Expire Date</th>
             </tr>
@@ -18,15 +14,10 @@
         <tbody>
             {% for credit in credit_list %}
             <tr>
-                <!-- <td>
-                    <div class="form-check font-size-16">
-                        <input type="checkbox" class="form-check-input">
-                        <label class="form-check-label"></label>
-                    </div>
-                </td> -->
-                
                 <td>{{credit.invoice}}</td>
+                <td>{{credit.plan_data.name}}</td>
                 
+                <td>{% if credit.plan_data.price > 0 %}${{credit.plan_data.price}}{% else %}Free{% endif %}</td>
                 <td>
                     {{credit.activated_on}}
                 </td>
@@ -39,9 +30,9 @@
             {% empty %}
             <tr>
                 <td colspan="4">
-            <div class="no-data-found my-5">
-                <div class="div-img-box">
-                    <img src="{% static 'images/no-data.png' %}">
+            <div class="no-data-found my-5 text-center">
+                <div class="justify-content-center">
+                    <img height="100" width="200" src="{% static 'images/no-data.png' %}">
                 </div>
                 <h5 class="font-size-24 mt-4">No data found</h5>
                </div>

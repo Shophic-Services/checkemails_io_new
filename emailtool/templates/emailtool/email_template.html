@@ -1,0 +1,61 @@
+
+{% extends 'layouts/base_email.html' %}
+{% load static %}
+{% block alignment %}start{% endblock %}
+{% block email_content %}
+<table cellpadding="0" cellspacing="0" border="0" width="600" align="center">
+    <tbody>
+      <tr>
+        <td
+          style="font-size: 30px;color: #505759; font-weight: bold; font-family: Arial, Helvetica, sans-serif;">
+          {{ description|safe }}</td>
+      </tr>
+
+      <tr>
+        <td height="30" bgcolor="#ffffff">&nbsp;</td>
+      </tr>
+
+      <tr>
+        <td class="start-with-text"
+          style="font-size: 18px;line-height: 1.47;color: #484848; font-family: Arial, Helvetica, sans-serif;">
+          Hello,
+        </td>
+      </tr>
+
+      <tr>
+        <td height="20" bgcolor="#ffffff">&nbsp;</td>
+      </tr>
+
+
+      <tr>
+        <td class="start-with-text"
+          style="font-size: 18px;line-height: 1.47;color: #484848; font-family: Arial, Helvetica, sans-serif;">
+          Please find the attached backup file. <br>The backup includes data as of {{ backup_date }}.
+        </td>
+      </tr>
+      <tr>
+        <td height="20" bgcolor="#ffffff">&nbsp;</td>
+      </tr>
+      <tr>
+        <td class="start-with-text"
+          style="font-size: 18px;line-height: 1.47;color: #484848; font-family: Arial, Helvetica, sans-serif;">
+          <span style="font-weight: 700;font-size: 18px;line-height: 1.47;color: #484848; font-family: Arial, Helvetica, sans-serif;">Additional Information:</span>
+          <p style="font-size: 18px;line-height: 1.47;color: #484848; font-family: Arial, Helvetica, sans-serif;"><strong>Records:</strong> {{ additional_info.records }}</p>
+        </td>
+      </tr>
+
+      <tr>
+        <td height="20" bgcolor="#ffffff">&nbsp;</td>
+      </tr>
+      <tr>
+        <td class="start-with-text"
+          style="font-size: 18px;line-height: 1.47;color: #484848; font-family: Arial, Helvetica, sans-serif;">
+          Thanks,<br />
+          The Team at The Check Emails</td>
+      </tr>
+      <tr>
+        <td height="50" bgcolor="#ffffff">&nbsp;</td>
+      </tr>
+    </tbody>
+  </table>
+  {% endblock %}

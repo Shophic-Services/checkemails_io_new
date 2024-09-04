@@ -18,6 +18,7 @@ urlpatterns = [
     path('home/', HomeView.as_view(), name='home'),
     path('login/', UserLoginView.as_view(), name='login'),
     path('signup/', UserSignupView.as_view(), name='signup'),
+    path('otp/<uuid:token>/', UserOTPView.as_view(), name='otp'),
     path('otp/', UserOTPView.as_view(), name='otp'),
     path('logout/', auth_views.LogoutView.as_view(
         next_page=reverse_lazy('accounts:login'),

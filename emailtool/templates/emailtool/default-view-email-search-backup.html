@@ -1,0 +1,43 @@
+{% extends 'admin/base.html' %}
+{% load i18n static admin_tools_dashboard_tags %}
+{% load humanize %}
+{% load mathfilters %}
+{% load tz %}
+{% block title %}Check Emails Data Management | Manual Backup | Done{% endblock %}
+{% block branding %}<h1 id="site-name"><a href="/console-admin/">Check Emails Data Management</a></h1>{% endblock %}
+{% block breadcrumbs %}
+
+{% endblock %}
+{% block content_title %}{% endblock %}
+{% block content %}
+ <link rel="stylesheet" href="/static/admin_tools/css/dashboard.css"></link>
+<div id="dashboard" class="dashboard-container" style="
+display: flex;
+justify-content: center;
+margin: auto;
+align-items: center;
+min-height: 400px;
+">
+<div class="dashboard-column ui-sortable" style="width:33%;min-height: 200px;"><div id="module_1" class="dashboard-module" style="
+    min-height: 150px; text-align: center;
+">
+    <div class="dashboard-module-content" style="padding: 30px;">
+        
+<svg width="80px" height="80px" viewBox="0 0 50 50" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 63.1 (92452) - https://sketch.com -->
+    <desc>Created with Sketch.</desc>
+    <g id="Artboard" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+            <g id="tick2" fill-rule="nonzero">
+                    <path d="M25,0 C11.1111111,0 0,11.1111111 0,25 C0,38.8888889 11.1111111,50 25,50 C38.8888889,50 50,38.8888889 50,25 C50,11.1111111 38.8888889,0 25,0 Z" id="Shape" fill="#65BC0D"></path>
+                    <polygon id="Path" fill="#FFFFFF" points="39.8605957 16.3183594 20.4779053 36.5390625 9.85437012 25.6352539 12.9403076 22.4471436 20.4779053 30.3894043 36.8765869 13.3074951"></polygon>
+            </g>
+    </g>
+</svg>
+<h1>Backup Success</h1>
+        <ul class="inline"><li class="odd" style="display: block;"><a href="{% url 'admin:emailtool_emailsearch_changelist' %}" style="padding: 10px 20px;background: #f8f8f8;border-radius: 25px;">Ok</a></li></ul>        
+    </div>
+</div></div>
+
+
+</div>
+{% endblock %}

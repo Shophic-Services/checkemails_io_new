@@ -15,10 +15,10 @@ from checkemails.core.email import Email
 from django.contrib.auth import get_user_model
 
 
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from django.conf import settings
 
-from django.utils.encoding import force_text
+from django.utils.encoding import force_str
 from django.contrib.auth.forms import (
     AdminPasswordChangeForm, UserChangeForm, UserCreationForm,
 )
@@ -220,6 +220,56 @@ class UserProfileForm(forms.ModelForm):
         label='Change password?', required=False,
         widget=forms.CheckboxInput
     )
+    
+    billing_full_name = forms.CharField(
+        label='First Name',
+        widget=forms.TextInput(attrs={
+            'class': 'text-left form-control px-2',
+            'placeholder': 'Enter Billing Name'
+        })
+    )
+    billing_phone = forms.CharField(
+        label='Last Name',
+        widget=forms.TextInput(attrs={
+            'class': 'text-left form-control px-2',
+            'placeholder': 'Enter Phone'
+        })
+    )
+    billing_contact_address = forms.CharField(
+        label='Address',
+        widget=forms.TextInput(attrs={
+            'class': 'text-left form-control px-2',
+            'placeholder': 'Enter Address'
+        })
+    )
+    billing_contact_country = forms.CharField(
+        label='Country',
+        widget=forms.TextInput(attrs={
+            'class': 'text-left form-control px-2',
+            'placeholder': 'Enter Country'
+        })
+    )
+    billing_contact_province = forms.CharField(
+        label='State',
+        widget=forms.TextInput(attrs={
+            'class': 'text-left form-control px-2',
+            'placeholder': 'Enter State'
+        })
+    )
+    billing_contact_city = forms.CharField(
+        label='City',
+        widget=forms.TextInput(attrs={
+            'class': 'text-left form-control px-2',
+            'placeholder': 'Enter City'
+        })
+    )
+    billing_contact_postal_code = forms.CharField(
+        label='Postal Code',
+        widget=forms.TextInput(attrs={
+            'class': 'text-left form-control px-2',
+            'placeholder': 'Enter Postal Code'
+        })
+    )
 
     class Meta(object):
         model = UserProfile
@@ -270,7 +320,7 @@ class PasswordField(forms.CharField):
     def to_python(self, value):
         if value in self.empty_values:
             return ""
-        value = force_text(value)
+        value = force_str(value)
         if self.strip:
             value = value.strip()
         return value
@@ -302,6 +352,7 @@ class CreateUserForm(UserCreationForm):
     agree = forms.BooleanField(label=_("Agree"),
         widget=forms.CheckboxInput(), required=False
     )
+
     class Meta:
         model = get_user_model()
         

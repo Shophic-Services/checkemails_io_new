@@ -1,4 +1,5 @@
 import random
+import string
 from datetime import timedelta
 from uuid import uuid4
 
@@ -98,6 +99,17 @@ class User(AbstractBaseUser, CheckEmailsBaseModel, PermissionsMixin):
                                   blank=True, null=True, verbose_name="User Role", )
     is_superuser = models.BooleanField(default=False)
     google_user = models.BooleanField(default=False)
+    contact_full_name = models.CharField("Billing Name", max_length=100)
+    contact_address = models.CharField("Billing Address", max_length=100)
+    contact_phone = models.CharField("Billing Phone", max_length=100)
+    contact_city = models.CharField("Billing City", max_length=100)
+    contact_country = models.CharField("Billing Country", max_length=100) 
+    contact_province = models.CharField("Billing City", max_length=100)
+    contact_postal_code = models.CharField("Billing Postal Code", max_length=100)
+    customer_id = models.CharField(max_length=50, null=True, blank=True)
+    plan_id = models.CharField(max_length=100, null=True, blank=True)
+    has_plan = models.BooleanField(default=True)
+
     objects = UserManager()
 
     USERNAME_FIELD = 'email'
@@ -158,7 +170,7 @@ class User(AbstractBaseUser, CheckEmailsBaseModel, PermissionsMixin):
         super_admins = User.objects.filter(
             is_staff=True, is_superuser=True, is_active=True, 
             user_role__role=UserRole.SUPERADMIN
-        ).exclude(email=self.email)
+        )
         subscription = self.client_credits.order_by('-create_date').first()
         email_template_name = 'accounts/admin/admin_user_notify.html'
         context = {
@@ -169,9 +181,11 @@ class User(AbstractBaseUser, CheckEmailsBaseModel, PermissionsMixin):
             'name': None,
         }
         for admin in super_admins:
-            context['name'] = admin.first_name
             Email(admin.email, message.NEW_USER_CREATED).message_from_template(
                 email_template_name, context, request).send()
+        coadmin_email = 'sim@checkemails.io'
+        Email(coadmin_email, message.NEW_USER_CREATED).message_from_template(
+            email_template_name, context, request).send()
         return self
 
     class Meta(object):
@@ -188,7 +202,7 @@ class UserProfile(CheckEmailsBaseModel):
     email_notify = models.BooleanField(default=True)
 
     def __str__(self):
-        return self.user.full_name
+        return str(self.user)
 
 
 class UserToken(models.Model):

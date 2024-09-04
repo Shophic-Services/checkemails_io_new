@@ -1,38 +1,36 @@
-{% extends 'home.html' %}
+{% extends 'layouts/home_base.html' %}
 {% load static %}
 {% block title %}Plan Expired{% endblock title %}
 {% block content %}
-<div class="main-content">
-
-    <div class="page-content">
-        <div class="container">
-
-
-            <div class="row">
-                <div class="col-lg-12 page-content-div">
-                    <section class="main-section result-signup subscription-thankyou">
-                        <div class="container col-md-6 mt-5">
-                    <div class="card">
-                        <div class="card-body">
-        <div class="result-popup mt-5">
-            <div class="result-content text-center">
-                <div class="icon-section my-4 ">
-                    <img src="{% static 'images/warning.png' %}" alt="Warning icon" class="img-height-lg" height="60" />
+<div class="content-wrapper pt-0">
+    <div class="col-md-12">
+        <section class="row col-md-12 justify-content-center status-container">
+            <div class="col-12 col-md-6 col-lg-6 stretch-card my-3 mb-lg-0 border-1 aos-init aos-animate"
+                data-aos="zoom-in">
+                <div class="card customer-cards p-5">
+                    <div class="card-body p-5 text-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 80 80">
+                            <g fill="none" fill-rule="evenodd">
+                                <g fill-rule="nonzero">
+                                    <g>
+                                        <path fill="#C55A5A"
+                                            d="M40 0C17.818 0 0 17.818 0 40s17.818 40 40 40 40-17.818 40-40S62.182 0 40 0z"
+                                            transform="translate(-720 -285) translate(720 285)" />
+                                        <path fill="#FFF"
+                                            d="M51.565 26.422l2.005 1.97c.573.422.573 1.266 0 1.83l-9.666 9.852 9.545 9.781c.322.247.502.497.542.749l.009.108c0 .433-.322.74-.55.951-.512.473-1.212 1.111-2.101 1.915-.144.281-.573.422-1.003.422-.43 0-.716-.14-1.002-.422L40 44.053l-9.344 9.525c-.286.281-.572.422-1.002.422-.43 0-.86-.14-1.003-.422-.889-.804-1.59-1.442-2.1-1.915-.229-.211-.551-.518-.551-.951 0-.289.184-.574.55-.857l9.545-9.781-9.665-9.853c-.537-.528-.571-1.303-.101-1.745l.1-.084 2.006-1.97c.572-.563 1.432-.563 2.005 0h.143L40 36.073l9.417-9.65h.143c.573-.564 1.433-.564 2.005 0z"
+                                            transform="translate(-720 -285) translate(720 285)" />
+                                    </g>
+                                </g>
+                            </g>
+                        </svg>
+                        <h5 class="py-3">Plan Expired</h5>
+                        <p class="mb-3">Please Buy a plan to resume your services.</p>
+                        <a href="{% url 'subscription:plans' %}" class="btn btn-rounded btn-outline-primary">Buy a
+                            Plan</a>
+                    </div>
                 </div>
-                <h1 class="mb-2">Plan Expired</h1>
-                <p class="mb-3">Please Buy a plan to resume your services.</p>
-                <a href="{% url 'app:home' %}" title="Buy a Plan" class="btn btn-primary fw-bold">Buy a Plan</a>
             </div>
-        </div>
+        </section>
     </div>
-</section>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
 </div>
 {% endblock %}
-
-    

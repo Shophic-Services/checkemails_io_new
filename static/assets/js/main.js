@@ -73,9 +73,10 @@
     /*-------------------------------------
     Preloader
     -------------------------------------*/
-    $('#preloader').fadeOut('slow', function() {
-        $(this).remove();
-    });
+    // setTimeout(function () {$('#preloader').addClass('d-none');}, 200);
+    // $('#preloader').fadeOut('slow', function() {
+    //     $(this).addClass('d-none');
+    // });
 
     /*-------------------------------------
     Multi Steps

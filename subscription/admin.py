@@ -7,8 +7,8 @@ from django.db.models import Q
 from accounts.models import User, UserRole
 from app.middleware import get_current_user
 from subscription.admin_forms import ClientCreditSubscriptionForm
-from subscription.models import ClientCreditSubscription, ClientRecord, SubscriptionPackage, SubscriptionTransaction, PackageDescription
-from subscription.utils import CreateSubscriptionData
+from subscription.models import ClientCreditSubscription, ClientRecord, ReferralCode, SubscriptionPackage, SubscriptionTransaction, PackageDescription
+from subscription.stripe_utils import StripeSubscriptionHelper
 from checkemails.core.admin import CheckEmailsBaseModelAdmin
 from django.utils.translation import gettext_lazy as _
 from dateutil.relativedelta import relativedelta
@@ -29,8 +29,7 @@ class SubscriptionBaseAdmin(CheckEmailsBaseModelAdmin):
     list_display = ('plan', 'client', 'activated_on')
 
     readonly_fields = (
-        'plan_name', 'plan_price', 
-        'plan_descriptions', 'activated_on',
+        'plan_name', 'plan_price', 'activated_on',
         'expire_date', 'is_current','is_activated')
 
     def plan_name(self, obj):
@@ -44,10 +43,10 @@ class SubscriptionBaseAdmin(CheckEmailsBaseModelAdmin):
     plan_price.short_description = 'Plan Price in USD'
 
     
-    def plan_descriptions(self, obj):
-        _ = self.class_error
-        return ", ".join(obj.plan_data.get('plan_descriptions'))
-    plan_descriptions.short_description = 'Plan Description'
+    # def plan_descriptions(self, obj):
+    #     _ = self.class_error
+    #     return ", ".join(obj.plan_data.get('plan_descriptions'))
+    # plan_descriptions.short_description = 'Plan Description'
 
     def get_readonly_fields(self, request, obj=None):
         readonly_fields = self.readonly_fields
@@ -83,11 +82,9 @@ class SubscriptionBaseAdmin(CheckEmailsBaseModelAdmin):
         data_created = False
         if not obj.id:
             data_created = True
-            helper_class = CreateSubscriptionData(obj, request)
-            obj = helper_class.create_data()    
+            helper_class = StripeSubscriptionHelper(obj.client, request)
+            obj = helper_class.create_offline_data(obj.plan)   
         super(SubscriptionBaseAdmin, self).save_model(request, obj, form, change)
-        if data_created:
-            helper_class.create_sub_transactions()
         return obj
 
     class Media:
@@ -102,7 +99,6 @@ class ClientCreditSubscriptionModelAdmin(SubscriptionBaseAdmin):
         "is_activated",)}),
         (_('Info'), {'fields': (
             'plan_name', 'plan_price', 
-        'plan_descriptions',
         "payment_method",
         "activated_on",
         "expire_date")}),
@@ -110,8 +106,7 @@ class ClientCreditSubscriptionModelAdmin(SubscriptionBaseAdmin):
     add_fieldsets = (
         (None, {'fields': ("client",
         "plan",
-        "payment_method",
-        "is_activated",)}),
+        "payment_method",)}),
     )
     empty_value_display = '-'
     autocomplete_fields = ['client']
@@ -123,8 +118,7 @@ class ClientCreditSubscriptionModelAdmin(SubscriptionBaseAdmin):
         "action_button"
     )
     readonly_fields = (
-        'plan_name', 'plan_price', 
-        'plan_descriptions', 'activated_on',
+        'plan_name', 'plan_price', 'activated_on',
         'expire_date', 'is_current',
     )
     # form = ClientCreditSubscriptionForm
@@ -155,8 +149,10 @@ class ClientCreditSubscriptionModelAdmin(SubscriptionBaseAdmin):
             if obj.plan.subscription_period == SubscriptionPackage.SUBSCRIPTION_ONE_MONTH:
                 obj.expire_date = timezone.now() + relativedelta(months=1)
             if obj.plan.subscription_period == SubscriptionPackage.SUBSCRIPTION_ONE_WEEK:
-                obj.expire_date = timezone.now() + timezone.timedelta(days=6)
+                obj.expire_date = timezone.now() + timezone.timedelta(days=7)
             ClientCreditSubscription.objects.filter(client=obj.client).update(is_current=False, is_activated=False, expire_date=timezone.now())
+            obj.client.plan_id = str(obj.plan.id)
+            obj.client.save()
         result = super(ClientCreditSubscriptionModelAdmin, self).save_model(request, obj, form, change)
         
         return result
@@ -172,14 +168,23 @@ class InlinePackageDescriptionAdmin(admin.TabularInline):
     ordering = ('create_date',)
 
 class SubscriptionPackageAdmin(CheckEmailsBaseModelAdmin):
-    fields = ("name",
+    add_fieldsets = ((None, {'fields': ("name",
         "price",
+        "start_date",
+        "end_date",
+        "is_active",
+        "information",
+        "plan_id"
+        )}),)
+    fieldsets = ((None, {'fields': ("name",
+        "price",
+        "can_change",
+        "is_custom",
         "subscription_period",
         "is_active",
-        "is_custom",
-        "can_change",
         "information",
-        )
+        "plan_id"
+        )}),)
     empty_value_display = '-'
     
     list_display = (
@@ -195,10 +200,15 @@ class SubscriptionPackageAdmin(CheckEmailsBaseModelAdmin):
     
     ordering = ('-subscription_period',)
 
-    readonly_fields = ('can_change',)
+    readonly_fields = ('subscription_period','can_change','is_custom',"plan_id")
 
     inlines = [InlinePackageDescriptionAdmin,]
 
+    
+    def get_fieldsets(self, request, obj=None):
+        if not obj:
+            return self.add_fieldsets
+        return super(SubscriptionPackageAdmin, self).get_fieldsets(request, obj)
         
     def action_button(self, obj):
         change_url = reverse(
@@ -223,9 +233,60 @@ class SubscriptionPackageAdmin(CheckEmailsBaseModelAdmin):
         if obj and not obj.can_change:
             return False 
         return True
+    
+class ReferralCodeAdmin(CheckEmailsBaseModelAdmin):
+    fieldsets = ((None, {'fields': ("name",
+                                    "package",
+                                    "referral_user",
+                                    "is_active",
+                                    "user",
+                                    "expire_date",
+        )}),)
+    empty_value_display = '-'
+    
+    list_display = (
+        "name",
+        "referral_user",
+        "user",
+        "package",
+        "is_active",
+        "expire_date",
+        "action_button"
+    )
+    actions = None
+    list_display_links = None
+    
+    def get_readonly_fields(self, request, obj=None):
+        readonly_fields = self.readonly_fields
+        if obj:
+            readonly_fields += (
+                "name",
+              "user",
+              "referral_user",
+        "is_active",
+        "expire_date",
+        "package",
+            )
+        return readonly_fields
+        
+    def action_button(self, obj):
+        change_url = reverse(
+                'admin:%s_%s_change' % (ReferralCode._meta.app_label, ReferralCode._meta.model_name), 
+                args=[force_str(obj.pk)]
+            )
+        return format_html('<a class="changelink" href="{}"></a>', change_url)
+
+    action_button.short_description = 'Action'
+
+
+    
+    def has_delete_permission(self, request, obj=None):
+        
+        return False
 
 
 admin.site.register(ClientCreditSubscription, ClientCreditSubscriptionModelAdmin)
 admin.site.register(ClientRecord)
 admin.site.register(SubscriptionPackage, SubscriptionPackageAdmin)
 admin.site.register(SubscriptionTransaction)
+admin.site.register(ReferralCode, ReferralCodeAdmin)

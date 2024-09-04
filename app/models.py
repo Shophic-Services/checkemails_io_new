@@ -8,7 +8,7 @@ from checkemails.core.base_models import (CheckEmailsBaseModel, CheckEmailsBaseW
 import uuid, os
 from datetime import datetime
 from accounts import constant as account_constant
-from django.contrib.postgres.fields import JSONField
+from django.db.models import JSONField
 
 class EmailMessage(CheckEmailsBaseModel):
     '''

@@ -94,16 +94,16 @@
                         </button>
                         <div class="dropdown-menu dropdown-menu-end pt-0">
                         {% if request.user.is_staff %}
-                        <a class="dropdown-item d-flex align-items-center" href="{% url 'admin:index' %}"><i class="mdi mdi-cog-outline text-muted font-size-16 align-middle me-1"></i> <span class="align-middle">Management</span></a> 
+                        <a class="dropdown-item d-flex align-items-center" href="{% url 'admin:index' %}"><i class="mdi mdi-cog-outline text-muted font-size-16 align-middle mr-1"></i> <span class="align-middle">Management</span></a> 
                         {% endif %}
 
-                        <a class="dropdown-item" href="{% url 'accounts:account_view' %}"><i class="mdi mdi-account-circle text-muted font-size-16 align-middle me-1"></i> <span class="align-middle">Profile</span></a>
+                        <a class="dropdown-item" href="{% url 'accounts:account_view' %}"><i class="mdi mdi-account-circle text-muted font-size-16 align-middle mr-1"></i> <span class="align-middle">Profile</span></a>
                         {% if not request.user.is_staff %}
-                        <a class="dropdown-item" href="{% url 'accounts:credit' %}"><i class="mdi mdi-wallet text-muted font-size-16 align-middle me-1"></i> <span class="align-middle">Credits</span></a>
+                        <a class="dropdown-item" href="{% url 'accounts:credit' %}"><i class="mdi mdi-wallet text-muted font-size-16 align-middle mr-1"></i> <span class="align-middle">Credits</span></a>
                         {% endif %}
                         
                         
-                        <a class="dropdown-item" href="{% url 'accounts:logout' %}"><i class="mdi mdi-logout text-muted font-size-16 align-middle me-1"></i> <span class="align-middle">Logout</span></a>
+                        <a class="dropdown-item" href="{% url 'accounts:logout' %}"><i class="mdi mdi-logout text-muted font-size-16 align-middle mr-1"></i> <span class="align-middle">Logout</span></a>
                     </div>
                 </div>
                 {% endif %}

@@ -71,6 +71,7 @@
 }
 .dashboard-box{
     display: flex;
+    height: calc(100%);
 }
 #content{
     margin-top:0 !important;
@@ -196,7 +197,7 @@
 }
 .form-row .checkbox-row {
     align-items: center;
-    height: 62px;
+    height: 72px;
     display: flex;
 }
 .form-row .checkbox-row .vCheckboxLabel {
@@ -223,12 +224,13 @@
 .modalDialog:target {
 	opacity:1;
 	pointer-events: auto;
+    overflow: hidden;
 }
 
 .modalDialog > div {
-	width: 800px;
+	width: 550px;
 	position: relative;
-	margin: 2% auto;
+	margin: 8% auto;
 	padding: 15px 15px 15px 15px;
 	border-radius: 5px;
 	background: #fff;
@@ -263,7 +265,7 @@
 #result_list .column-action_button, #result_list .field-action_button{
     right: 0px;
     position: sticky;
-    background: #f9f9f9;
+    /* background: #f9f9f9; */
 }
 #result_list .column-action_button{
     background: #f9f9f9;
@@ -274,9 +276,9 @@
 #result_list .row1 .field-action_button{
     background: #fff;
 } 
-#result_list .field-action_button{
+/* #result_list .field-action_button{
     background: #fff;
-} 
+}  */
 
 .form-row{
     width: 46%;
@@ -364,5 +366,20 @@ fieldset .form-row label{
     cursor: pointer;
 }
 .form-row.readonly div{
-    padding: 14px 0;
+    padding: 12px 0;
+}
+.loginlink{
+    padding-left: 16px;
+    background: url(../../images/icon-locklink.svg) 0 1px no-repeat;
+}
+.dashboard-column {
+    min-height: 131px;
+    min-width: 144px;
+}
+.dashboard-module h2 {
+    background: #7daec7 !important;
+    color: #fffff6 !important;
+}
+.dashboard-module {
+    border: 1px solid #6492ab !important;
 }

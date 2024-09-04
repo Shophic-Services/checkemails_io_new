@@ -30,33 +30,16 @@ admin.site.login_template = 'accounts/admin/admin_login.html'
 # from accounts.views.web import DashboardView
 
 urlpatterns = [
-    # path('', RedirectView.as_view(pattern_name=settings.LOGIN_REDIRECT_URL)),
     path('console-admin/login/', RedirectView.as_view(pattern_name=settings.DEFAULT_LOGIN)),
     path('console-admin/logout/', RedirectView.as_view(pattern_name=settings.DEFAULT_LOGOUT)),
-    # path(
-    #     'console-admin/password_reset/',
-    #     auth_views.PasswordResetView.as_view(
-    #         email_template_name='accounts/admin/admin_password_reset_email.html',
-    #         subject_template_name='accounts/admin/admin_password_reset_subject.txt',
-    #         form_class=AdminPasswordResetForm), name='admin_password_reset'
-    # ),
-    # path(
-    #     'console-admin/password_reset/done/',
-    #     auth_views.PasswordResetDoneView.as_view(),
-    #     name='password_reset_done',
-    # ),
     path('console-admin/', admin.site.urls),
+    path('impersonate/', include('impersonate.urls')),
     path('admin_tools/', include('admin_tools.urls')),
     path(
         'reset/<uidb64>/<token>/',
         auth_views.PasswordResetConfirmView.as_view(),
         name='password_reset_confirm',
     ),
-    # path(
-    #     'reset/done/',
-    #     auth_views.PasswordResetCompleteView.as_view(),
-    #     name='password_reset_complete',
-    # ),
     path('accounts/', include('accounts.urls', namespace='accounts')),
     path('accounts/inactive/', RedirectView.as_view(pattern_name=settings.DEFAULT_LOGIN)),
     path(

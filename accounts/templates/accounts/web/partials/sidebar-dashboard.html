@@ -1,0 +1,6 @@
+<div class="sidenav">
+    <a class="link {% if request.resolver_match.url_name in "'account_view','account_edit','credit'" %}active{% endif %}" href="{% url 'accounts:account_view' %}">Dashboard</a>
+    <a class="link {% if request.resolver_match.url_name in "'plans','plans-buy'" %}active{% endif %}" href="{% url 'subscription:plans' %}">Plans</a>
+    <a class="link" href="{% url 'app:tnc' %}">Terms & Conditions</a>
+    <a class="link" href="{% url 'app:privacy' %}">Privacy Policy</a>
+</div>

@@ -111,9 +111,9 @@ class FileUpload {
             error: function (xhr) {
                 $('.validation-info').html(`
                 <ul class="data-validation">
-                <li><p>Valid</p><span class="green">-</span></li>
-                <li><p>Invalid</p><span class="red">-</span></li>
-                <li class="ps-2 me-3"><p>Status</p><span class="grey"><span class="status-pill-button status-pill-button-4">Error</span></span></li>
+                <li><p class="text-black">Valid</p><span class="green">-</span></li>
+                <li><p class="text-black">Invalid</p><span class="red">-</span></li>
+                <li class="ps-2 me-3"><p class="text-black">Status</p><span class="grey"><span class="status-pill-button status-pill-button-4">Error</span></span></li>
                 
             </ul>
                     `);
@@ -131,13 +131,13 @@ class FileUpload {
                     $('.textbox').text(res.data);
                     setTimeout(function () { 
                     $('.validation-info').closest('#uploaded_files').find('.data-content-div').html(`
-                    <p><span class="green">`+ res.email_count +` Emails</span> <i class="far fa-clock"></i> `+ res.date +` </p>
+                    <p><span class="green">`+ res.email_count +` Emails</span><br> <i class="far fa-clock"></i> `+ res.date +` </p>
                     `)
                     $('.validation-info').html(`
                     <ul class="data-validation">
-						<li><p>Valid</p><span class="green">-</span></li>
-						<li><p>Invalid</p><span class="red">-</span></li>
-						<li><p>Status</p><span class="grey">Pending</span></li>
+						<li><p class="text-black">Valid</p><span class="green">-</span></li>
+						<li><p class="text-black">Invalid</p><span class="red">-</span></li>
+						<li class="ps-2 me-3"><p class="text-black">Status</p><span class="grey"><span class="status-pill-button status-pill-button-1">Pending</span></span></li>
 					</ul>
                     `);
                     $('#uploaded_files .validation-info').removeClass('validation-info');

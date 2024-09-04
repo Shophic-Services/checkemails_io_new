@@ -28,7 +28,7 @@ from django.contrib.auth import authenticate, login
 from accounts.utils import CreditQuery
 
 from subscription.models import ClientCreditSubscription, SubscriptionPackage        
-from subscription.utils import CreateSubscriptionData
+from subscription.stripe_utils import StripeSubscriptionHelper
 from dateutil.relativedelta import relativedelta
 
 
@@ -43,6 +43,7 @@ class UserLoginView(LoginView):
     def form_valid(self, form):
         """Security check complete. Log the user in."""
         login(self.request, form.get_user(), backend="django.contrib.auth.backends.ModelBackend")
+        messages.add_message(self.request, messages.SUCCESS, 'Successfully signed in as ' + str(self.request.user))
         return HttpResponseRedirect(self.get_success_url())
 
     def get_success_url(self):
@@ -331,9 +332,8 @@ class UserSignupView(FormView):
 
     form_class = CreateUserForm
     class_error = None
-    success_url = reverse_lazy(
-        'accounts:otp')
-
+    
+    
     @method_decorator(never_cache)
     def dispatch(self, request, *args, **kwargs):
         if self.request.user.is_authenticated:
@@ -343,12 +343,15 @@ class UserSignupView(FormView):
 
     def form_valid(self, form):
         cleaned_data = form.cleaned_data
+        plan = SubscriptionPackage.objects.filter(can_change=False, subscription_period=SubscriptionPackage.SUBSCRIPTION_ONE_WEEK).first()
         user = User.objects.create_user(cleaned_data.get('email'), cleaned_data.get('password1'), False)
         user.first_name=cleaned_data.get('first_name')
         user.last_name=cleaned_data.get('last_name')
         user.phone=cleaned_data.get('phone')
         user.set_password(cleaned_data.get('password1'))
         user.is_active = False
+        user.plan_id = self.request.GET.get('plan',str(plan.id))
+        user.user_role = UserRole.objects.get(role=constant.CLIENT)
         user.save()
         token_link = UserToken.create_token(
                 UserToken.RANDOM_OTP_WEB, 
@@ -357,22 +360,40 @@ class UserSignupView(FormView):
             )
         token_link.send_forgot_password_email(self.request)
         self.request.session['token'] = str(token_link.uuid)
-        plan = SubscriptionPackage.objects.filter(can_change=False, subscription_period=SubscriptionPackage.SUBSCRIPTION_ONE_WEEK).first()
-        obj = ClientCreditSubscription.objects.create(client=user, plan=plan)
-        if obj.plan.subscription_period == SubscriptionPackage.SUBSCRIPTION_TWELVE_MONTH:
-            obj.expire_date = timezone.now() + relativedelta(months=12)
-        if obj.plan.subscription_period == SubscriptionPackage.SUBSCRIPTION_ONE_MONTH:
-            obj.expire_date = timezone.now() + relativedelta(months=1)
-        if obj.plan.subscription_period == SubscriptionPackage.SUBSCRIPTION_ONE_WEEK:
-            obj.expire_date = timezone.now() + timezone.timedelta(days=6)
-        obj.is_activated = True
-        ClientCreditSubscription.objects.filter(client=obj.client).update(is_activated=False, expire_date=timezone.now())
-        helper_class = CreateSubscriptionData(obj, self.request)
-        obj = helper_class.create_data()    
-        obj.save()
-        helper_class.create_sub_transactions()
+        plan_obj = SubscriptionPackage.objects.filter(id=user.plan_id).first()
+        helper_class = StripeSubscriptionHelper(user, self.request)
+        user.customer_id = helper_class.create_customer()    
+        user.save()
+        if plan_obj and plan_obj != plan:
+            ClientCreditSubscription.objects.create(client=user, 
+                                                    plan=plan, 
+                                                    expire_date = timezone.now() + timezone.timedelta(days=7),
+                                                    is_activated = True,
+                                                    is_current=True)
+        else:
+            helper_class = StripeSubscriptionHelper(user, self.request)
+            helper_class.create_offline_data(plan)
 
         return super().form_valid(form)
+    
+    def get_success_url(self):
+        if self.request.session.get('token'):            
+            url = reverse_lazy(
+            'accounts:otp', kwargs={'token': self.request.session.get('token')})
+        else:
+            url = reverse_lazy(
+            'accounts:otp')        
+        return url 
+    
+    
+    def get_context_data(self, **kwargs):
+        context = super(UserSignupView, self).get_context_data(**kwargs)
+        context['plan'] = self.request.GET.get('plan')
+        if self.request.GET.get('plan'):
+            self.request.session['plan'] = self.request.GET.get('plan')
+        elif 'plan' in self.request.session:
+            del self.request.session['plan']
+        return context
 
 
 class UserOTPView(FormView):
@@ -384,7 +405,7 @@ class UserOTPView(FormView):
 
 
     def get(self, request, *args, **kwargs):
-        token = self.get_token(self.request.session.get('token'))
+        token = self.get_token(self.request.session.get('token', kwargs.get('token')))
         if token:
             return super(UserOTPView, self).get(request, *args, **kwargs)
         else:
@@ -407,8 +428,8 @@ class UserOTPView(FormView):
         context = super(UserOTPView, self).get_context_data(**kwargs)
         token = self.request.session.get('token')
         context.update({'token':token})
-        if token:
-            del self.request.session['token']
+        # if token:
+        #     del self.request.session['token']
         return context
 
     def form_valid(self, form):
@@ -420,8 +441,13 @@ class UserOTPView(FormView):
             user.is_active = True
             user.user_role = UserRole.objects.get(role=constant.CLIENT)
             user.save()
-            login(self.request, token.user, backend='django.contrib.auth.backends.ModelBackend')
-            update_session_auth_hash(self.request, token.user)
+            token_link = UserToken.objects.filter(uuid=self.request.session.get('token')).first()
+            if token_link and token_link.user.plan_id:
+                plan_obj = SubscriptionPackage.objects.filter(id=token_link.user.plan_id).first()
+                if plan_obj.subscription_period == SubscriptionPackage.SUBSCRIPTION_ONE_WEEK:
+                    del self.request.session['token']
+                    login(self.request, token.user, backend='django.contrib.auth.backends.ModelBackend')
+                    update_session_auth_hash(self.request, token.user)
             UserToken.objects.filter(
             user=token.user, expire_date__gte=timezone.now(),
             is_active=True, token_type=UserToken.RANDOM_OTP_WEB).update(
@@ -433,6 +459,16 @@ class UserOTPView(FormView):
             return super().form_invalid(form)
 
 
+    def get_success_url(self):  
+        url = self.success_url
+        token_link = UserToken.objects.filter(uuid=self.request.session.get('token')).first()
+        if token_link and token_link.user.plan_id:
+            plan_obj = SubscriptionPackage.objects.filter(id=token_link.user.plan_id).first()
+            if plan_obj.subscription_period != SubscriptionPackage.SUBSCRIPTION_ONE_WEEK:
+                url = reverse_lazy(
+                        'subscription:plan-buy', kwargs={'uuid': token_link.user.plan_id})
+                del self.request.session['token']
+        return url 
 
 
 class CreditAccountsView(LoginRequiredMixin, TemplateView):
@@ -443,6 +479,7 @@ class CreditAccountsView(LoginRequiredMixin, TemplateView):
         context = super(CreditAccountsView, self).get_context_data(**kwargs)
         credit_list = ClientCreditSubscription.objects.filter(client=self.request.user).order_by('-create_date')
         credit_activated = credit_list.filter(is_activated=True).first()
+        
         credit_list = credit_list.exclude(is_activated=True)
         credit_count = credit_list.count()
         page_num = 1
@@ -461,6 +498,8 @@ class CreditAccountsView(LoginRequiredMixin, TemplateView):
             'credit_list': credit_list_obj,
             'credit_count': credit_count ,
             'credit_activated': credit_activated,
+            'credit_days': (credit_activated.expire_date.date() - credit_activated.activated_on.date()).days if credit_activated else None,
+            'credit_days_left': (credit_activated.expire_date.date() - timezone.now().date()).days if credit_activated else None,
             'total_num_pages': total_page_num,
             'page_count': range(1, total_page_num + 1) if total_page_num > 1 else range(0),
             'page_dropdown_count': range(1, total_page_num + 1) if total_page_num > 1 else range(0),
@@ -492,6 +531,12 @@ class CreditAccountsView(LoginRequiredMixin, TemplateView):
             return 'accounts/web/partials/credit-listing.html'
         else:
             return self.template_name
+        
+
+    def post(self, request, *args, **kwargs):
+
+        ClientCreditSubscription.objects.filter(client=request.user, is_current=True).update(is_current=False, is_activated= False, expire_date=timezone.now())
+        return HttpResponseRedirect(reverse_lazy('accounts:credit'))
     
 
 

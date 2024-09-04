@@ -1,7 +1,13 @@
-{% extends 'layouts/base_without_login.html' %}
+{% extends 'layouts/home_base.html' %}
 {% load static %}
 {% block title %}Social Network Login Failure{% endblock %}
 {% block content %}
+<section class="fxt-template-animation fxt-template-layout loaded" >
+    <div class="fxt-shape">
+        <div class="fxt-transformX-L-50 fxt-transition-delay-1">
+            <img src="{% static 'images/shape1.png' %}" alt="Shape">
+        </div>
+    </div>
         <div class="container">
             <div class="row">
                 <div class="col-lg-8">
@@ -11,15 +17,10 @@
                                 <img src="{% static 'images/validate_email.png' %}" alt="">
                             </div>
                         </div>
-                        <div class="fxt-transformX-L-50 fxt-transition-delay-3">
-                            <a href="{% url 'app:home' %}" class="fxt-logo">
-                                <img src="{% static 'images/logo.png' %}" alt="Logo"  style="
-                                width: 130px;"></a>
-                        </div>
                         <div class="fxt-transformX-L-50 fxt-transition-delay-5">
                             <div class="fxt-middle-content">
                                 
-                                <div class="fxt-switcher-description1">If you don’t have an account You can<a href="{% url 'accounts:signup' %}" class="fxt-switcher-text ms-2">Sign Up</a></div>
+                                <div class="fxt-switcher-description1">If you don’t have an account You can<a href="{% url 'accounts:signup' %}" class="fxt-switcher-text ml-2">Sign Up</a></div>
                             </div>
                         </div>
                     </div>
@@ -44,7 +45,7 @@
                         <ul class="fxt-socials">
                             <li class="">
                                 <a class="btn w-100 font-size-14" href="/accounts/google/login/" role="button" style="text-transform:none">
-                                    <img width="35px" class="m-2 ms-0" alt="Google sign-in" src="{% static 'images/google_logo.svg' %}" />
+                                    <img width="35px" class="m-2 ml-0" alt="Google sign-in" src="{% static 'images/google_logo.svg' %}" />
                                     Continue with Google
                                   </a>
                             </li>
@@ -53,5 +54,5 @@
                 </div>
             </div>
         </div>
-    
+    </section>
 {% endblock %}

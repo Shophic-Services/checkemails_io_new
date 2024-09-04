@@ -5,7 +5,7 @@ from django.urls import reverse
 from django.utils.encoding import force_str
 from checkemails.core.admin import CheckEmailsBaseModelAdmin
 from checkemails.core.widgets import CustomRelatedDropdownFilter
-from emailtool.models import EmailSearch, SpamCategory, SpamKeyword
+from emailtool.models import BackupEmailSearch, EmailBulkUpload, EmailListFetch, EmailListGenerate, EmailSearch, SpamCategory, SpamKeyword
 from import_export.admin import ExportActionMixin
 from import_export.formats.base_formats import CSV, XLSX
 from emailtool.model_resources import EmailSearchResource
@@ -16,7 +16,8 @@ from rangefilter.filters import (
     NumericRangeFilterBuilder,
     DateRangeQuickSelectListFilterBuilder,
 )
-
+from import_export.admin import ImportExportModelAdmin
+from import_export import resources
 
 class InlineSpamKeywordModelAdmin(admin.TabularInline):
     model = SpamKeyword
@@ -54,8 +55,9 @@ class SpamCategoryAdmin(CheckEmailsBaseModelAdmin):
 
     def has_edit_permission(self, request, obj=None):
         return False
+    
 
-class EmailSearchAdmin(ExportActionMixin, CheckEmailsBaseModelAdmin):
+class EmailSearchAdmin(ImportExportModelAdmin, ExportActionMixin, CheckEmailsBaseModelAdmin):
     list_display = ['email_address', 'verified','code', 'message', 'added_by', 'modify_date',]
     ordering = ['modify_date']
     
@@ -63,7 +65,7 @@ class EmailSearchAdmin(ExportActionMixin, CheckEmailsBaseModelAdmin):
     list_filter = (('added_by', CustomRelatedDropdownFilter),('modify_date',DateRangeFilterBuilder()),'verified','code')
     search_fields = ( 'email_address',)
     resource_class  = EmailSearchResource
-    formats = (CSV, XLSX,)
+    formats = (CSV,)
     
     def get_export_filename(self, request, queryset, file_format):
             date_str = datetime.now().strftime('%d-%m-%Y-%H-%M-%S')
@@ -75,13 +77,27 @@ class EmailSearchAdmin(ExportActionMixin, CheckEmailsBaseModelAdmin):
     def has_add_permission(self, request, obj=None):
         return False
 
-    def has_delete_permission(self, request, obj=None):
-        return False
-
     def has_edit_permission(self, request, obj=None):
         return False
+    
+    def has_import_permission(self, request, obj=None):
+        return False
+    
+
+class BackupEmailSearchAdmin(CheckEmailsBaseModelAdmin):
+    change_list_template = 'emailtool/default-view-email-search.html'
+
+    def changelist_view(self, request, extra_context=None):
+        extra_context = extra_context or {}
+        extra_context['total_records'] = EmailSearch.objects.all().count()
+        if request.session.get('backup') and 'backup' in request.session.keys():
+            self.change_list_template = 'emailtool/default-view-email-search-backup.html'
+            del request.session['backup']
+        else:
+            self.change_list_template = 'emailtool/default-view-email-search.html'
+        return super(CheckEmailsBaseModelAdmin, self).\
+            changelist_view(request, extra_context=extra_context)
 
 admin.site.register(EmailSearch, EmailSearchAdmin)
-
-
 admin.site.register(SpamCategory, SpamCategoryAdmin)
+admin.site.register(BackupEmailSearch, BackupEmailSearchAdmin)

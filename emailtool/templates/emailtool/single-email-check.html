@@ -1,15 +1,9 @@
-{% extends 'home.html' %}
+{% extends 'layouts/home_base.html' %}
 {% load static mathfilters %}
 {% load humanize %} 
 
 {% block titlename %}Single Email Validator{% endblock %}
     {% block common_css %}
-    <!-- Bootstrap Css -->
-    <link href="{% static 'assets/css/bootstrap.min.css' %}" id="bootstrap-style" rel="stylesheet" type="text/css" />
-    <!-- Icons Css -->
-    <link href="{% static 'assets/css/icons.min.css' %}" rel="stylesheet" type="text/css" />
-    <!-- App Css-->
-    <link href="{% static 'assets/css/app.min.css' %}" id="app-style" rel="stylesheet" type="text/css" />
     <link  rel="stylesheet" type="text/css" href='{% static "assets/css/common-style.css" %}'></link>
   
   
@@ -23,21 +17,19 @@
 
 
 {% block content %}
-<div class="main-content">
-
-  <div class="page-content">
+<div class="content-wrapper pt-0">
       <div class="container-fluid">
 
 
   <div class="row col-md-12 page-content-div justify-content-md-center">
     
 
-  <div class="col-md-6 mt-5">
+  <div class="col-lg-6 mt-5">
     <div class=" email-search mb-4">
     <div class="text-muted">
-        <a href="{% url 'emailtool:app_dashboard' %}" class="btn btn-soft-secondary btn-lg"> <i class="mdi mdi-arrow-left ms-1"></i></a>
+        <a href="{% url 'emailtool:app_dashboard' %}" class="btn btn-soft-secondary btn-info btn-lg"> <i class="mdi mdi-arrow-left ml-1"></i></a>
       <h2 class="font-size-24 my-4 text-center">Single Email Validator</h2>
-      <h5><i class="bx bx-info-circle font-size-20"></i>&nbsp;Enter email continues by pressing enter or click on validate button to check result</h5>
+      <p class="px-3"><i class="bx bx-info-circle font-size-20"></i>&nbsp;Enter email continues by pressing enter or click on validate button to check result</p>
   </div>
     <form  method="POST" action="." class="col-md-12 position-relative d-flex">
       
@@ -48,7 +40,7 @@
        <div class="email-search__result multiple_emails-container">
         <input type="email" id="single-email-id" class="multiple_emails-input text-left form-control email-search__input" name="email_address" keywords="" placeholder="Enter email" value=""></div>
         
-        <button class="email-search__submit btn btn-primary" onclick="single_checker(event)" type="button">Validate</button>
+        <button class="email-search__submit btn btn-info" onclick="single_checker(event)" type="button">Validate</button>
       </form>
       <!-- Tab content -->
       
@@ -103,5 +95,9 @@
 </div>
 </div>
 </div>
-</div>
 {% endblock %}
+
+{% block extra_js %}
+    
+    <script src="{% static 'assets/js/email-validation.js' %}"></script>
+    {% endblock %}

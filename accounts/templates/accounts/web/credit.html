@@ -1,57 +1,101 @@
-{% extends 'home.html' %}
+{% extends 'layouts/home_base.html' %}
 
 {% load static mathfilters %}
 {% load humanize %} 
 
 {% block content %}
-<div class="main-content page-content-div">
+<div class="content-wrapper pt-0">
 
-    <div class="page-content">
-        <div class="container-fluid">
+        <div class="container-fluid position-relative">
 
-<div class="row">
+            {% include 'accounts/web/partials/sidebar-dashboard.html' %}
+<div class="main">
+    <div class="topnav d-flex justify-content-start">
+        <a class="link {% if request.resolver_match.url_name in "'account_view','account_edit'" %}active{% endif %}" href="{% url 'accounts:account_view' %}">Profile</a>
+        <a class="link {% if request.resolver_match.url_name in "'credit'" %}active{% endif %}" href="{% url 'accounts:credit' %}">Credits</a>
+      </div>
     <div class="col-md-12">
-        <div class="card">
-            <div class="card-header bg-transparent">
-                <div class="d-flex align-items-start">
-                    <div class="flex-grow-1">
-                        <h5 class="card-title mb-0">Current Credits Plan ({{credit_activated.activated_on }} - {{credit_activated.expire_date }})</h5>
-                        <p class="text-muted font-size-14 fw-bold my-2">Plan name: {{credit_activated.plan_data.name}}</p>
-                        <p class="text-muted font-size-14 fw-bold my-2">Plan Price in USD: {% if credit_activated.plan_data.price|add:'0' == 0 %}Free{% else %}${{credit_activated.plan_data.price}}{% endif %}</p>
+        <h4 class="my-3">Plan Details</h4>
+        {% if credit_activated %}
+        <div class="card pt-2">
+            <div class="bg-white">
+                <div class="col-6 card-body  border rounded border-outline-info p-4">
+                    <div class="d-flex align-items-start">
+                        <div class="flex-grow-1">
+                            
+                            <div class="card-details text-start pt-2">
+                                <span class="d-flex text-start justify-content-between">
+                            <h5>{{credit_activated.plan_data.name}}</h5>
+                            {% if credit_activated.plan_data.subscription_period != 1 %}
+                            <span class="d-flex text-end justify-content-end">
+                                <p>$</p><h4 >{{credit_activated.plan_data.price}}</h4><p class="pt-1">/ month</p>
+                                </span>
+                                {% endif %}
+                                </span>
+                                <span class="d-flex text-start justify-content-between mt-3">
+                                    <h5 class="text-start text-muted">{{credit_days}} days</h5>
+                                    <h6 class="text-end text-muted">{{credit_days_left}} days left</h6>
+                                </span>
+                                <div class="progress mb-3">
+                                <div class="progress-bar bg-warning" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: {{credit_days_left|div:credit_days|mul:100|floatformat:2}}%">
+                                </div>
+                            </div>
+                            <p class="text-muted font-size-14 fw-bold my-2">Plan start date: {{credit_activated.activated_on }}</p>
+                            <p class="text-muted font-size-14 fw-bold my-2">Plan expire date: {{credit_activated.expire_date }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex text-start justify-content-end pt-3">
+                        <!-- <button type="submit" class="btn btn-rounded btn-outline-danger">Cancel</button> -->
+                        <a href="{% url 'subscription:plans' %}" class="btn btn-rounded btn-outline-success text-end">Change Plan</a>
                     </div>
                 </div>
             </div>
             <!-- end card-body -->
         </div>
+        {% else %}
+        
+        <div class="card pt-2">
+            <div class="bg-white">
+                <div class="col-6 card-body  border rounded border-outline-info p-4">
+            <div class="no-data-found my-5 text-center">
+                <div class="justify-content-center">
+                    <img height="100" width="200" src="{% static 'images/no-data.png' %}">
+                </div>
+                <h5 class="font-size-24 mt-4">No data found</h5>
+               </div>
+        </div>
+    </div>
+    </div>
+        {% endif %}
         <!-- end card -->
     </div>
     <!-- end col -->
 
     
-    <div class="col-md-12">
+    <div class="col-md-12 mt-4">
         <div class="card">
-            <div class="card-header bg-transparent">
+            <div class="card-body bg-outline-info-center">
                 <div class="d-flex align-items-start">
                     <div class="flex-grow-1">
                         <h5 class="card-title mb-0">Credit History</h5>
                     </div>
                 </div>
-            </div>
-            <div class="card-body border-bottom py-4 search-results">
-                {% include 'accounts/web/partials/credit-listing.html' %}
-               
+                <div class="border-bottom py-4 search-results">
+                    {% include 'accounts/web/partials/credit-listing.html' %}
+                   
+                </div>
             </div>
             <!-- end card-body -->
         </div>
         <!-- end card -->
     </div>
-</div>
 </div>
 </div>
 </div>
 {% endblock %}
 
 
-{% block extrajs %}
+{% block extra_js %}
     <script src="{% static 'assets/js/accounts/pagination.js' %}"></script>
 {% endblock %}

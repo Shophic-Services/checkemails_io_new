@@ -1,0 +1,226 @@
+{% extends 'layouts/home_base.html' %}
+
+{% load static mathfilters %}
+{% load humanize %} 
+
+{% block content %}
+<div class="banner pt-5" >
+    <div class="container">
+      <h1 class="font-weight-semibold">Welcome to checkemails.io<br>Your Premier Email Verification Solution</h1>
+      <h6 class="font-weight-normal text-muted pb-3">Are you tired of wasted resources, low email deliverability rates, and the frustration of reaching the wrong inbox? Look no further than checkemails.io, your trusted partner for email verification. We offer a comprehensive suite of tools to ensure your email lists are clean, reliable, and ready to engage your target audience effectively.</h6>
+      <div>
+        <a href="{% url 'emailtool:app_dashboard' %}" class="btn btn-opacity-light mr-1">Get started</a>
+      </div>
+      <img src="{% static 'images/Group171.svg' %}" alt="" class="img-fluid">
+    </div>
+  </div>
+  <div class="content-wrapper">
+    <div class="container">
+      <section class="features-overview" id="services-section" >
+        <div class="content-header">
+          <h2>Our Services</h2>
+          <!-- <h6 class="section-subtitle text-muted">One theme that serves as an easy-to-use operational toolkit<br>that meets customer's needs.</h6> -->
+        </div>
+        <div class="d-md-flex justify-content-between">
+          <div class="grid-margin grid-margin-lg-0 d-grid p-3 justify-content-start">
+            <div class="features-width">
+              <img src="{% static 'images/single_email.png' %}" height="80" alt="" class="img-icons">
+              <h5 class="py-3">Single<br>Email Check</h5>
+              <p class="text-muted">Verify the authenticity of a single email address quickly and accurately. Eliminate the risk of sending emails to non-existent or invalid addresses, reducing bounce rates and improving your sender reputation.</p>
+              <a href="{% url 'emailtool:single_check' %}" class="btn btn-rounded btn-outline-primary">Check</a>  
+            </div>
+          </div>
+          <div class="grid-margin grid-margin-lg-0 d-grid p-3 justify-content-center">
+            <div class="features-width">
+              <img src="{% static 'images/multi_email.png' %}" height="80" alt="" class="img-icons">
+              <h5 class="py-3">Multiple<br>Email Check</h5>
+              <p class="text-muted">Effortlessly validate an entire list of email addresses in one go. Our bulk email verification service helps you clean your email lists efficiently, ensuring you reach your intended audience every time.</p>
+              <a href="{% url 'emailtool:multi_check' %}" class="btn btn-rounded btn-outline-primary">Check</a>
+            </div>
+          </div>
+          <div class="grid-margin grid-margin-lg-0 d-grid p-3 justify-content-end">
+            <div class="features-width">
+              <img src="{% static 'images/spam.png' %}" height="80" alt="" class="img-icons">
+              <h5 class="py-3">Email Spam<br>Word Checker</h5>
+              <p class="text-muted">Avoid getting flagged as spam by identifying potentially problematic words and phrases in your email content. Our spam word checker ensures your messages are delivered to the inbox, not the spam folder.</p>
+              <a href="{% url 'emailtool:spam_check' %}" class="btn btn-rounded btn-outline-primary">Check</a>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 text-center pb-5 pt-3">
+        <a href="{% url 'emailtool:app_dashboard' %}" class="border-bottom border-dark pb-1 px-1">More <i class="mdi mdi-arrow-right"></i></a> 
+      </div>
+      </section>  
+      <section class="features-overview" id="about-us-section" >
+        <div class="content-header">
+          <h2>About us</h2>
+          <h6 class="section-subtitle text-muted">At chechemails.io, we are on a mission to help businesses and individuals achieve email marketing success through impeccable data quality. We believe that every email sent should reach its intended recipient, without bouncing back or ending up in the spam folder. Our goal is to empower you with the tools and knowledge needed to achieve just that.</h6>
+        </div>
+        <div class="col-12 text-center pb-5 pt-3">
+            <h3>Why use checkemails to check your emails?</h3>
+            <!-- <h6 class="section-subtitle text-muted">Lorem ipsum dolor sit amet, tincidunt vestibulum.</h6> -->
+          </div>
+        <div class="row align-items-center">
+          <div class="col-12 col-lg-7 grid-margin grid-margin-lg-0" data-aos="fade-right">
+            <h4 class="m-0">Proprietary Algorithms<br> for Real-Time Verification</h4>
+            <div class="col-lg-7 col-xl-6 p-0">
+              <p class="py-4 m-0 text-muted">At checkemails.io, we don't just check your email lists, we scrutinize them with precision.</p>
+              <p class="font-weight-medium text-muted">Our proprietary algorithms guarantee real-time verification, saving you the trouble of dealing with invalid or non-existent email addresses.</p>
+            </div>    
+          </div>
+          <div class="col-12 col-lg-5 p-0 img-digital grid-margin grid-margin-lg-0" data-aos="fade-left">
+            <img src="{% static 'images/Group1.png' %}" alt="" class="img-fluid">
+          </div>
+        </div>
+        <div class="row align-items-center">
+          <div class="col-12 col-lg-7 text-center flex-item grid-margin grid-margin-lg-0" data-aos="fade-right">
+            <img src="{% static 'images/Group2.png' %}" alt="" class="img-fluid">
+          </div>
+          <div class="col-12 col-lg-5 flex-item grid-margin grid-margin-lg-0" data-aos="fade-left">
+            <h4 class="m-0">100% GDPR-Compliant<br> Email Verification</h4>
+            <div class="col-lg-9 col-xl-8 p-0">
+              <p class="py-4 m-0 text-muted">We take data privacy seriously. checkemails.io is proud to be the only 100% GDPR-compliant email verification solution.</p>
+              <p class="pb-2 font-weight-medium text-muted"> Your data is handled with the utmost care, ensuring it remains secure and compliant with international regulations.</p>
+            </div>
+          </div>
+        </div>
+        <div class="row align-items-center">
+            <div class="col-12 col-lg-7 grid-margin grid-margin-lg-0" data-aos="fade-right">
+              <h4 class="m-0">Flexible Subscription Plans</h4>
+              <div class="col-lg-7 col-xl-6 p-0">
+                <p class="py-4 m-0 text-muted">Choose from our scalable subscription plans that suit your unique needs.</p>
+                <p class="font-weight-medium text-muted">You have the freedom to upgrade or downgrade your account at any time, giving you complete control over your email verification activities.</p>
+              </div>    
+            </div>
+            <div class="col-12 col-lg-5 p-0 img-digital grid-margin grid-margin-lg-0" data-aos="fade-left">
+              <img src="{% static 'images/Group3.png' %}" alt="" class="img-fluid">
+            </div>
+          </div>
+          <div class="row align-items-center">
+            <div class="col-12 col-lg-7 text-center flex-item grid-margin grid-margin-lg-0" data-aos="fade-right">
+              <img src="{% static 'images/Group4.png' %}" alt="" class="img-fluid">
+            </div>
+            <div class="col-12 col-lg-5 flex-item grid-margin grid-margin-lg-0" data-aos="fade-left">
+              <h4 class="m-0">Top-Notch Security</h4>
+              <div class="col-lg-9 col-xl-8 p-0">
+                <p class="py-4 m-0 text-muted">Security is our priority.</p>
+                <p class="pb-2 font-weight-medium text-muted">When you add personal data to our system, rest assured that it is perfectly encrypted and safeguarded. Your data's security is our commitment.</p>
+              </div>
+            </div>
+          </div>
+          
+        <div class="row align-items-center">
+            <div class="col-12 col-lg-7 grid-margin grid-margin-lg-0" data-aos="fade-right">
+              <h4 class="m-0">Free Verification Sampling</h4>
+              <div class="col-lg-7 col-xl-6 p-0">
+                <p class="py-4 m-0 text-muted">Before committing to full verification, try our free verification sampling. </p>
+                <p class="font-weight-medium text-muted">Pre-screen your email list to get a glimpse of how checkemails.io can enhance your email marketing efforts.</p>
+              </div>    
+            </div>
+            <div class="col-12 col-lg-5 p-0 img-digital grid-margin grid-margin-lg-0" data-aos="fade-left">
+              <img src="{% static 'images/Group5.png' %}" alt="" class="img-fluid">
+            </div>
+          </div>
+      </section>     
+      <section class="features-overview" id="pricing-section">
+        <div class="row grid-margin grid-margin-lg-0">
+          <div class="content-header">
+            <h2>Pricing</h2>
+            <h6 class="section-subtitle text-muted">Discover the perfect plan for your needs. Whether you're an individual, a small business, or a large enterprise,
+                we have flexible pricing options to suit your requirements.</h6>
+          </div>
+          <div class="row col-md-12 justify-content-center customer-feedback">
+          {% for package in packages %}
+          <div class="col-12 col-md-6 col-lg-4 stretch-card {% if not forloop.last %}mb-3 mb-lg-0{% endif %} border-1" data-aos="zoom-in" {% if not forloop.first %}data-aos-delay="200"{% endif %}>
+            <div class="card customer-cards px-3 py-4">
+              <div class="card-body p-0">
+                <div class=" d-flex align-items-center justify-content-around">
+                    <div>
+                      <h3 class="pb-2 px-3">{{package.name}}</h3>
+                    </div>
+                  </div>
+                <div class="card-details text-center pt-4">
+                    <span class="d-flex text-center justify-content-center">
+                      {% if package.subscription_period == 1 %}
+                      <h4>Free</h4>{% else %}
+                    <p>$</p><h4>{{package.price}}</h4><p class="pt-1">/ month</p>
+                    {% endif %}
+                  </span>
+                  <p>{% if package.subscription_period == 3 %}Billed yearly{% else %}&nbsp;{% endif %}</p>
+                  {% if request.user.plan_id|stringformat:"s" == package.id|stringformat:"s" %}
+                  <span class="mdi mdi-check-circle text-success"></span> Selected<br><br>
+                  {% endif %}
+                  <a href="{% if request.user.is_authenticated %}{% url 'subscription:plan-buy' package.id %}{% else %}{% url 'accounts:signup' %}{% endif %}" class="btn btn-rounded btn-outline-success {% if request.user.is_staff %}cursor-disabled{% endif %}">{% if package.subscription_period == 1 %}Start Free Trial{% else %}Buy Now{% endif %}</a>
+                  <p class="mt-4">{{package.information}}</p>
+                </div>
+                
+                <div class="card-details text-start pt-4">
+                  {% for package_detail in package.plan_descriptions.all %}
+                  <h6 class="m-2 pb-1"><span class="mdi mdi-check-circle"></span> {{package_detail.description}}</h6>
+                  {% endfor %}
+              </div>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+          
+        </div>
+        <div class="col-12 align-items-center text-center my-3 pt-4">
+          <h6 class="section-subtitle text-muted m-0">Have questions or need a custom plan for your unique requirements? Contact our support team for personalized assistance.</h6>
+                    <h6 class="section-subtitle text-muted m-0">Ready to get started? Sign up now and unlock the full potential of our service.</h6>
+                    <h6 class="section-subtitle text-muted m-0">Note: Prices and plans are subject to change. Please refer to our Terms of Service for more details.</h6>
+        </div>
+        </div>
+      </section>   
+      
+      <section class="features-overview" id="get-started-section" >
+        <div class="content-header">
+          <h2>Get Started Today</h2>
+          <h6 class="section-subtitle text-muted">Your path to email marketing success starts here. Sign up with checkemails.io and transform the way you communicate with your audience. For any questions or assistance, please don't hesitate to contact us. We're here to help you achieve email marketing excellence.</h6>
+        </div>
+      <section class="contact-us">
+        <div class="contact-us-bgimage grid-margin" >
+          <div class="pb-4">
+            <h4 class="px-3 px-md-0 m-0" data-aos="fade-down">Do you have any query?</h4>
+            <h4 class="pt-1" data-aos="fade-down">Contact us</h4>
+          </div>
+          <div data-aos="fade-up">
+            <a href="{% url 'app:contact_us' %}" class="btn btn-rounded btn-outline-danger">Contact us</a>
+          </div>          
+        </div>
+      </section>
+      <!-- Modal for Contact - us Button -->
+      <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title" id="exampleModalLabel">Contact Us</h4>
+            </div>
+            <div class="modal-body">
+              <form>
+                <div class="form-group">
+                  <label for="Name">Name</label>
+                  <input type="text" class="form-control" id="Name" placeholder="Name">
+                </div>
+                <div class="form-group">
+                  <label for="Email">Email</label>
+                  <input type="email" class="form-control" id="Email-1" placeholder="Email">
+                </div>
+                <div class="form-group">
+                  <label for="Message">Message</label>
+                  <textarea class="form-control" id="Message" placeholder="Enter your Message"></textarea>
+                </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-success">Submit</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div> 
+  </div>
+
+
+{% endblock %}

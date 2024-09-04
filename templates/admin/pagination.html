@@ -1,19 +1,20 @@
 {% load admin_list checkemails_tags %}
 {% load i18n %}
-<p class="paginator">
 {% if pagination_required %}
+<p class="paginator">
 {% for i in page_range %}
     {% custom_paginator_number cl i %}
 {% endfor %}
 {% endif %}
-{{ cl.result_count }} {% if cl.result_count == 1 %}{{ cl.opts.verbose_name }}{% else %}{{ cl.opts.verbose_name_plural }}{% endif %}
+{% if cl.formset and cl.result_count %}
+{{ cl.result_count }} {% if cl.result_count == 1 %}{{ cl.opts.verbose_name }}{% else %}{{ cl.opts.verbose_name_plural }}{% endif %}{% endif %}
 {% if show_all_url %}<a href="{{ show_all_url }}" class="showall">{% trans 'Show all' %}</a>{% endif %}
 {% if cl.formset and cl.result_count %}<input type="submit" name="_save" class="default" value="{% trans 'Save' %}">{% endif %}
-
+{% if cl.formset and cl.result_count %}
 <label class="pull-right">
     Page Size:
     <select  onchange="location = window.location.pathname + '{% custom_page_query cl %}page_size='+this.value" name="page_size">
-        {% with page_sizes='50 100 500 1000' %}
+        {% with page_sizes='50 100 500 1000 10000' %}
         {% for size in page_sizes.split %}
         <option value="{{size}}" {% if size|add:0 == cl.list_per_page|add:0 %}selected{% endif %}>{{size}}</option>
       {% endfor %}
@@ -21,3 +22,4 @@
       </select>
     </label>
 </p>
+{% endif %}

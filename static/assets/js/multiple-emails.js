@@ -29,7 +29,23 @@
 		return this.each(function() {
 			//$orig refers to the input HTML node
 			var $orig = $(this);
-			var $list = $('<div class="accordion d-none" id="accordionEmails"><div class="accordion-item"><h2 class="accordion-header" id="headingOne"><button class="accordion-button text-primary collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">View emails</button></h2><div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample"><div class="accordion-body"><ul class="multiple_emails-ul" /></div></div></div>'); // create html elements - list of email addresses as unordered list
+			accordion_html = `
+			<div class="accordion d-none" id="accordionEmails">
+			<div class="card">
+    <div class="card-header p-0 bg-accordion" id="headingOne">
+      <h2 class="mb-0">
+	  <button class="btn btn-link collapsed accordion-button" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+	  View emails</button>
+      </h2>
+    </div>
+
+    <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionEmails">
+      <div class="card-body accordion-body">
+			<ul class="multiple_emails-ul" />
+			</div>
+    </div>
+  </div>`
+			var $list = $(accordion_html); // create html elements - list of email addresses as unordered list
 			// $('.email-search__submit').attr('disabled', true)
 
 			if ($(this).val() != '' && IsJsonString($(this).val())) {

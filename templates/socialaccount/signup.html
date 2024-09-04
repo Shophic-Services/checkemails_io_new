@@ -1,7 +1,13 @@
-{% extends 'layouts/base_without_login.html' %}
+{% extends 'layouts/home_base.html' %}
 {% load static %}
 {% block title %}Signup{% endblock %}
 {% block content %}
+<section class="fxt-template-animation fxt-template-layout loaded" >
+    <div class="fxt-shape">
+        <div class="fxt-transformX-L-50 fxt-transition-delay-1">
+            <img src="{% static 'images/shape1.png' %}" alt="Shape">
+        </div>
+    </div>
         <div class="container">
             <div class="row">
                 <div class="col-lg-8">
@@ -14,7 +20,7 @@
                         <div class="fxt-transformX-L-50 fxt-transition-delay-5">
                             <div class="fxt-middle-content">
                                 <h1 class="fxt-main-title">Sign Up </h1>
-                                <div class="fxt-switcher-description1">If you don’t have an account You can<a href="{% url 'accounts:login' %}" class="fxt-switcher-text ms-2">Sign In</a></div>
+                                <div class="fxt-switcher-description1">If you don’t have an account You can<a href="{% url 'accounts:login' %}" class="fxt-switcher-text ml-2">Sign In</a></div>
                             </div>
                         </div>
                     </div>
@@ -48,4 +54,5 @@
                 </div>
             </div>
         </div>
+        </section>
         {% endblock %}

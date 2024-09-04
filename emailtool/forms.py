@@ -24,3 +24,13 @@ class EmailDataForm(forms.Form):
         })
     )
 EmailDataFormset = formset_factory(EmailDataForm, extra=1)
+
+class FetchWebsiteEmailDataForm(forms.Form):
+    website = forms.CharField(
+        label='First Website',
+        widget=forms.TextInput(attrs={
+            'class': 'text-left form-control px-2',
+            'placeholder': 'Enter Website'
+        })
+    )
+FetchWebsiteEmailDataFormset = formset_factory(FetchWebsiteEmailDataForm, extra=1)

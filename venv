@@ -1,0 +1,26 @@
+SECRET_KEY='3$b)s72656ab2f9&q#hr(u6dqr@lt+@y^p$&@w+_tzw)#bpp7^'
+CHECK_EMAILS_DATABASE_USER=sophic
+CHECK_EMAILS_DATABASE_NAME=checkemails
+CHECK_EMAILS_DATABASE_PASSWORD=x4J9K5dbx8Tv
+CHECK_EMAILS_DATABASE_HOST=localhost
+CHECK_EMAILS_DATABASE_PORT=5432
+CHECK_EMAILS_EMAIL_HOST='smtp.gmail.com'
+CHECK_EMAILS_EMAIL_PORT=587
+CHECK_EMAILS_EMAIL_HOST_USER='marketing@sophicservices.com'
+CHECK_EMAILS_EMAIL_HOST_PASSWORD='8e=CHBg98e=CHBg9'
+CHECK_EMAILS_EMAIL_DEFAULT='marketing@sophicservices.com'
+REDIS_DB=1
+DEFAULT_URL=localhost
+CHECK_EMAILS_LOCAL_IP=127.0.0.1
+CELERY_BIN="/srv/www/public_html/checkemails.io/Project/env/bin/celery"
+CELERY_APP="checkemails"
+CELERYWORKER_NODES="checkemails_worker1"
+CELERYWORKER_CHDIR="/srv/www/public_html/checkemails.io/Project"
+CELERYWORKER_OPTS="--time-limit=300 --concurrency=1"
+CELERYWORKER_LOG_FILE="/srv/www/public_html/checkemails.io/Project/logs/celery/logs/%n%I.log"
+CELERYWORKER_PID_FILE="/srv/www/public_html/checkemails.io/Project/logs/celery/run/%n.pid"
+CELERYWORKER_LOG_LEVEL="INFO"
+CELERYBEAT_LOG_LEVEL="INFO"
+CELERYBEAT_LOG_FILE="/srv/www/public_html/checkemails.io/Project/logs/celery/logs/celerybeat.log"
+CELERYBEAT_PID_FILE="/srv/www/public_html/checkemails.io/Project/logs/celery/run/celerybeat.pid"
+CELERYBEAT_SCHEDULE_FILE="/srv/www/public_html/checkemails.io/Project/logs/celery/run/picha-celerybeat-schedule"

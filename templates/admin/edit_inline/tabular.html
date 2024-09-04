@@ -41,7 +41,7 @@
       <label class="pull-right">
           Page Size:
           <select  onchange="location = window.location.pathname + '?page={{page_obj.number|add:'-1'}}&page_size='+this.value" name="page_size">
-              {% with page_sizes='50 100 500 1000' %}
+              {% with page_sizes='50 100 500 1000 10000' %}
               {% for size in page_sizes.split %}
               <option value="{{size}}" {% if size|add:0 == cl.list_per_page|add:0 %}selected{% endif %}>{{size}}</option>
             {% endfor %}
@@ -192,7 +192,7 @@
       <label class="pull-right">
           Page Size:
           <select  onchange="location = window.location.pathname + '?page={{page_obj.number|add:'-1'}}&page_size='+this.value" name="page_size">
-              {% with page_sizes='50 100 500 1000' %}
+              {% with page_sizes='50 100 500 1000 10000' %}
               {% for size in page_sizes.split %}
               <option value="{{size}}" {% if size|add:0 == cl.list_per_page|add:0 %}selected{% endif %}>{{size}}</option>
             {% endfor %}

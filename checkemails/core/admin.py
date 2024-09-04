@@ -21,7 +21,7 @@ class CheckEmailsBaseModelAdmin(admin.ModelAdmin):
     empty_value_display = '-'
     ordering = ('-modify_date', )
     list_per_page = 20
-    list_page = [50,100,500,1000]
+    list_page = [50,100,500,1000,10000]
     # actions = None
 
     def action(self, obj):

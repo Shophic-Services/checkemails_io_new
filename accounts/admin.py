@@ -11,7 +11,9 @@ from django.utils.html import format_html
 from accounts.proxy_models import ClientUser, ManagerUser, TeamUser
 from app.models import EmailMessage
 
+from checkemails.core.admin import CheckEmailsBaseModelAdmin
 from checkemails.core.admin_list_filters import UserRoleListFilter
+from subscription.models import SubscriptionPackage
 from .models import User, UserToken
 from django.core.exceptions import PermissionDenied
 from django.db import transaction
@@ -37,7 +39,7 @@ csrf_protect_m = method_decorator(csrf_protect)
 sensitive_post_parameters_m = method_decorator(sensitive_post_parameters())
 
 
-class UserAdmin(admin.ModelAdmin):
+class UserAdmin(CheckEmailsBaseModelAdmin):
     def action_button(self, obj):
         change_url = reverse(
                 'admin:%s_%s_change' % (self.model._meta.app_label, self.model._meta.model_name), 
@@ -54,7 +56,7 @@ class UserAdmin(admin.ModelAdmin):
     change_user_password_template = None
     fieldsets = (
         (None, {'fields': ('email', 'password')}),
-        (_('Personal info'), {'fields': ('first_name', 'last_name','user_role')}),
+        (_('Personal info'), {'fields': ('first_name', 'last_name','user_role','referral_code')}),
         (_('Permissions'), {'fields': ('is_active',)}),
         (_('Important dates'), {'fields': ('last_login',)}),
     )
@@ -172,7 +174,7 @@ class UserAdmin(admin.ModelAdmin):
                          IS_POPUP_VAR in request.GET),
             'add': True,
             'change': False,
-            'has_delete_permission': False,
+            'has_delete_permission': True,
             'has_change_permission': True,
             'has_absolute_url': False,
             'opts': self.model._meta,
@@ -222,20 +224,21 @@ class UserAdmin(admin.ModelAdmin):
     def get_queryset(self, request):
         initial_queryset = super(UserAdmin, self).get_queryset(request)
         # All staff who belong to the current reseller or direct model
-        final_queryset = initial_queryset.filter(user_role__role__in=[UserRole.MANAGER])   
+        final_queryset = initial_queryset.filter(user_role__role__in=[UserRole.MANAGER], is_deleted=False)   
         return final_queryset
 
 class ClientAdmin(UserAdmin):
     
     list_filter = ('is_active',)
-    # form = ClientChangeForm
+    form = ClientChangeForm
     add_form = ClientCreationForm
     
-    list_display = ( 'email', 'first_name', 'last_name', 'is_active','google_user','action_button')
+    list_display = ( 'email', 'first_name', 'last_name', 'is_active','google_user','get_impersonate','action_button')
     
     fieldsets = (
         (None, {'fields': ('email', 'password')}),
-        (_('Personal info'), {'fields': ('first_name', 'last_name','user_role','phone',)}),
+        (_('Personal info'), {'fields': ('first_name', 'last_name','user_role','phone','referral_code')}),
+        (_('Plan info'), {'fields': ('get_plan_name',)}),
         (_('Permissions'), {'fields': ('is_active','google_user')}),
         (_('Important dates'), {'fields': ('last_login',)}),
     )
@@ -247,17 +250,33 @@ class ClientAdmin(UserAdmin):
         (_('Personal info'), {'fields': ('first_name', 'last_name','user_role','phone', )}),
         (_('Permissions'), {'fields': ('is_active',)}),
     )
-    
     def get_queryset(self, request):
-        initial_queryset = User.objects.filter(user_role__role__in=[UserRole.CLIENT])   
+        initial_queryset = User.objects.filter(user_role__role__in=[UserRole.CLIENT], is_deleted=False)   
         return initial_queryset
 
     def get_readonly_fields(self, request, obj=None):
         _ = self
-        if obj and obj.socialaccount_set.all():
-                return self.readonly_fields + ('email',)
+        if obj: 
+            if obj.socialaccount_set.all():
+                return self.readonly_fields + ('email','get_plan_name','referral_code')
+            return self.readonly_fields + ('get_plan_name','referral_code')
         else:
             return self.readonly_fields
+    
+    
+    def get_plan_name(self, obj):
+        _ = self
+        return SubscriptionPackage.objects.filter(id=obj.plan_id).first()
+    get_plan_name.short_description = 'Plan'
+    get_plan_name.allow_tags = True
+
+    
+    def get_impersonate(self, obj):
+        _ = self
+        if obj.is_active:
+            return format_html('<a class="loginlink" href="/impersonate/stop/?next=/impersonate/{}/"></a>', obj.pk)
+    get_impersonate.short_description = 'Login'
+    get_impersonate.allow_tags = True
 
 class TeamAdmin(UserAdmin):
     
@@ -266,7 +285,7 @@ class TeamAdmin(UserAdmin):
     add_form = TeamCreationForm
     
     def get_queryset(self, request):
-        initial_queryset = User.objects.filter(user_role__role__in=[UserRole.TEAM])    
+        initial_queryset = User.objects.filter(user_role__role__in=[UserRole.TEAM], is_deleted=False)    
         return initial_queryset
 
 admin.site.register(ManagerUser, UserAdmin)

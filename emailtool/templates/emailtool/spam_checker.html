@@ -1,15 +1,9 @@
-{% extends 'home.html' %}
+{% extends 'layouts/home_base.html' %}
 {% load static mathfilters %}
 {% load humanize %} 
 
 {% block titlename %}Email Spam Words Checker{% endblock %}
     {% block common_css %}
-    <!-- Bootstrap Css -->
-    <link href="{% static 'assets/css/bootstrap.min.css' %}" id="bootstrap-style" rel="stylesheet" type="text/css" />
-    <!-- Icons Css -->
-    <link href="{% static 'assets/css/icons.min.css' %}" rel="stylesheet" type="text/css" />
-    <!-- App Css-->
-    <link href="{% static 'assets/css/app.min.css' %}" id="app-style" rel="stylesheet" type="text/css" />
     <link  rel="stylesheet" type="text/css" href='{% static "assets/css/common-style.css" %}'></link>
   
   
@@ -22,9 +16,8 @@
 
 
 {% block content %}
-<div class="main-content">
 
-  <div class="page-content">
+<div class="content-wrapper pt-0">
       <div class="container-fluid">
 
 
@@ -32,12 +25,12 @@
     <div class="col-md-9">
         <div class="row email-search mb-5 align-items-baseline">
             <div class="col-md-8">    
-        <a href="{% url 'emailtool:app_dashboard' %}" class="btn btn-soft-secondary btn-lg"> <i class="mdi mdi-arrow-left ms-1"></i></a>
+        <a href="{% url 'emailtool:app_dashboard' %}" class="btn btn-soft-secondary btn-info"> <i class="mdi mdi-arrow-left ml-1"></i></a>
         </div>
         <div class="col-md-8">
     <div class="text-muted">
       <h2 class="font-size-24 my-4 text-center">Email Spam Words Checker</h2>
-      <h5><i class="bx bx-info-circle font-size-20"></i>&nbsp;Insert your email body in the field below to identify and remove possible spam trigger words.</h5>
+      <h6><i class="bx bx-info-circle font-size-20"></i>&nbsp;Insert your email body in the field below to identify and remove possible spam trigger words.</h6>
   </div>
         <div  class="spam-checker-div">
 
@@ -79,10 +72,9 @@
 </div>
 </div>
 </div>
-</div>
 
 {% endblock %}
-{% block extrajs %}
+{% block extra_js %}
 
 <script src="{% static 'assets/js/spam-checker.js' %}"></script>
 

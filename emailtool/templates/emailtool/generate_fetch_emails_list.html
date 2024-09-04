@@ -1,0 +1,71 @@
+{% extends 'layouts/home_base.html' %}
+{% load static mathfilters %}
+{% load humanize %} 
+
+{% block titlename %}Email List{% endblock %}
+    {% block common_css %}
+    <link  rel="stylesheet" type="text/css" href='{% static "assets/css/common-style.css" %}'></link>
+  
+  
+  <link href="{% static 'assets/css/email-validation.css' %}" rel="stylesheet" />
+  <link type="text/css" rel="stylesheet" href="{% static 'assets/css/multiple-emails.css' %}" />
+  {% endblock %}
+
+{% block bodyclass %}search_emails{% endblock %}
+
+    
+
+
+{% block content %}
+<div class="content-wrapper pt-0">
+      <div class="container-fluid">
+
+
+  <div class="row col-md-12 page-content-div justify-content-md-center">
+    
+
+  <div class="col-md-8 mt-5">
+    <div class=" email-search mb-4">
+        <a href="{% url 'emailtool:fetch_email_web_list' %}" class="btn btn-soft-secondary btn-info btn-lg mb-3"> <i class="mdi mdi-arrow-left ml-1"></i></a>
+        
+    <form  method="POST" action="." class="col-md-12 position-relative">
+      
+        {% csrf_token %}
+        <div class="col-md-12">
+        <h3 class="">Website Email Fetcher</h3>
+        <h6 class="mb-3"><i class="bx bx-info-circle"></i>&nbsp;Enter website address get emails from it.
+        </h6>
+        </div>
+       <div class="multiple_emails-container">
+           {{ formset.management_form }}
+           {% for form in formset %}
+           <div class="row form-set m-0 text-center justify-content-between">
+            <div class="col-md-11">
+               <div class="input-group mb-3">
+                {{form.website}}
+              </div>
+
+               
+            </div>
+            <div class="col-md-1 text-right">
+            <button type="button" class="btn btn-rounded btn-outline-success add-form-row"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"/></svg></button>
+            </div>
+          </div>
+          {% endfor %}
+    <div class="float-right">
+        <button type="submit" class="btn btn-rounded btn-outline-info">Submit</button>
+    </div>
+        </div>
+      </form>
+      <!-- Tab content -->
+      
+
+    </div>
+</div>
+</div>
+</div>
+</div>
+{% endblock %}
+{% block extra_js %}
+<script src="{% static 'assets/js/multiformset.js' %}"></script>
+{% endblock %}

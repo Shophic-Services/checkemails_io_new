@@ -9,7 +9,7 @@ from django.conf import settings
 from accounts.models import User, UserRole
 
 class CheckEmailsHome(TemplateView):
-    template_name = 'app/dashboard.html'
+    template_name = 'app/dashboard_new.html'
 
     
     def get_context_data(self, **kwargs):
@@ -20,6 +20,7 @@ class CheckEmailsHome(TemplateView):
         packages = SubscriptionPackage.objects.filter(Q(filter_set)).order_by('subscription_period')
         context['packages'] = packages
         return context
+    
 
 class PrivacyPolicyView(TemplateView):
     template_name = 'app/privacy_policy.html'

@@ -1,0 +1,7 @@
+{% load i18n %}
+{% load admin_urls %}
+
+{% if has_export_permission %}
+<li><a href="{% url opts|admin_urlname:'export' %}{{cl.get_query_string}}" class="export_link">{% trans "Export All" %}</a></li>
+<li><a href="{% url 'admin:emailtool_backupemailsearch_changelist' %}" class="export_link">{% trans "Manual Backup" %}</a></li>
+{% endif %}

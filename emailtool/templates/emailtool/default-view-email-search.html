@@ -1,0 +1,140 @@
+{% extends 'admin/base.html' %}
+{% load i18n static admin_tools_dashboard_tags %}
+{% load humanize %}
+{% load mathfilters %}
+{% load tz %}
+{% block title %}Check Emails Data Management | Manual Backup{% endblock %}
+{% block branding %}<h1 id="site-name"><a href="/console-admin/">Check Emails Data Management</a></h1>{% endblock %}
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+    <a href="{% url 'admin:index' %}">{% trans 'Home' %}</a>
+    &rsaquo;
+    <a href="/console-admin/emailtool/">{% trans 'Email Tool' %}</a>
+    &rsaquo;
+    <a href="{% url 'admin:emailtool_emailsearch_changelist' %}">{% trans 'Email Search' %}</a>
+    {% if title %} &rsaquo; Manual Backup{% endif %}
+    </div>
+{% endblock %}
+{% block content_title %}{% endblock %}
+{% block content %}
+ <link rel="stylesheet" href="/static/admin_tools/css/dashboard.css"></link>
+<style>
+    #dashboard.dashboard-container{
+
+        display: flex;
+justify-content: center;
+margin: auto;
+align-items: center;
+min-height: 300px;
+    }
+    #dashboard.dashboard-container .dashboard-column.ui-sortable{
+        float:left;width:33%;min-height: 200px;
+}
+</style>
+<h1>Select Manual Backup Option </h1>
+<p>Total records - {{ total_records }} </p>
+
+<div id="dashboard" class="dashboard-container">
+
+    <div class="dashboard-column ui-sortable"><div id="module_1" class="dashboard-module" style="
+        min-height: 150px;
+    ">
+        <h2>Backup with delete</h2>
+        <div class="dashboard-module-content">
+            <ul class="inline"><li class="odd" style="display: block;"><a href="#modalboxconfirmdelete" style="padding: 10px 20px;background: #80aec6; color: #fffff6;border-radius: 25px;">Start</a></li></ul>
+                <div id="modalboxconfirmdelete" class="modalDialog"> 
+                    <div style="
+                    text-align: center;
+                "> 
+                    <a href="#close" title="Close" class="modalclose">X</a> 
+                    <h1>Do you want to proceed backup with deleting data ?</h1> 
+                    <p><i>Note: Only last 50000 records will be backup and will be deleted</i></p>
+                    <div class="modalBody" style="
+                    display: inline-flex;
+                    justify-content: space-between;
+                    padding: 20px 0px 20px 0;
+                    gap: 100px;
+                "> 
+                        <a href="{% url 'emailtool:backup-email-search-delete' %}" class="confirm-box" style="padding: 10px 20px;background: #80aec6; color: #fffff6;border-radius: 25px;">Yes</a>
+                        <a href="#close" style="padding: 10px 20px;background: #80aec6; color: #fffff6;border-radius: 25px;">No</a>
+                    </div> 
+                    </div> 
+                </div>
+            
+        </div>
+    </div></div>
+
+    
+    <div class="dashboard-column ui-sortable"><div id="module_1" class="dashboard-module" style="
+        min-height: 150px;
+    ">
+        <h2>Backup</h2>
+        <div class="dashboard-module-content">
+            <ul class="inline"><li class="odd" style="display: block;"><a href="#modalboxconfirmbackup" style="padding: 10px 20px;background: #80aec6; color: #fffff6;border-radius: 25px;">Start</a></li></ul>
+            <div id="modalboxconfirmbackup" class="modalDialog"> 
+                <div style="
+                text-align: center;
+            "> 
+                <a href="#close" title="Close" class="modalclose">X</a> 
+                <h1>Do you want to proceed backup ?</h1> 
+                <p><i>Note: Only last 50000 records will be backup</i></p>
+                <div class="modalBody" style="
+                display: inline-flex;
+                justify-content: space-between;
+                padding: 20px 0px 20px 0;
+                gap: 100px;
+            "> 
+                    <a href="{% url 'emailtool:backup-email-search' %}" class="confirm-box" style="padding: 10px 20px;background: #80aec6; color: #fffff6;border-radius: 25px;">Yes</a>
+                    <a href="#close" style="padding: 10px 20px;background: #80aec6; color: #fffff6;border-radius: 25px;">No</a>
+                </div> 
+                </div> 
+            </div>
+        </div>
+    </div></div>
+
+
+</div>
+<div id="modalboxconfirmbacking" class="modalDialog"> 
+    <div style="
+    text-align: center;
+"> 
+    <h1>Backing in progress</h1> 
+    <div class="modalBody" style="
+    display: inline-flex;
+    justify-content: space-between;
+    padding: 20px 0px 20px 0;
+    gap: 100px;
+"> 
+<svg version="1.1" id="L5" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 100 100" enable-background="new 0 0 0 0" xml:space="preserve" style="    
+width: 100px;
+height: 100px;
+margin: 20px;
+display: inline-block;
+">
+<circle fill="#333" stroke="none" cx="6" cy="50" r="6">
+<animateTransform attributeName="transform" dur="1s" type="translate" values="0 15 ; 0 -15; 0 15" repeatCount="indefinite" begin="0.1"></animateTransform>
+</circle>
+<circle fill="#333" stroke="none" cx="30" cy="50" r="6">
+<animateTransform attributeName="transform" dur="1s" type="translate" values="0 10 ; 0 -10; 0 10" repeatCount="indefinite" begin="0.2"></animateTransform>
+</circle>
+<circle fill="#333" stroke="none" cx="54" cy="50" r="6">
+<animateTransform attributeName="transform" dur="1s" type="translate" values="0 5 ; 0 -5; 0 5" repeatCount="indefinite" begin="0.3"></animateTransform>
+</circle>
+</svg>
+    </div> 
+    </div> 
+</div>
+<script>
+    $(window).on('load', function(){
+        
+    $(document).on('click','.confirm-box', function(){
+
+        window.location.hash = "#modalboxconfirmbacking"
+    })
+    var stg_check = 'modalbox'
+	if(window.location.hash.indexOf(stg_check) != -1){
+        window.location.hash = '#close'
+    }
+})
+</script>
+{% endblock %}

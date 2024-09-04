@@ -27,14 +27,6 @@ class CustomMenu(Menu):
                 _('Applications'),
                 exclude=('django.contrib.*',)
             ),
-            # items.AppList(
-            #     _('Administration'),
-            #     models=('django.contrib.*',)
-            # ),
-            # items.ModelList(
-            #     'Test app menu',
-            #     ['test_app.models.Bar', 'django.contrib.auth.*']
-            # )
         ]
 
     def init_with_context(self, context):
@@ -130,7 +122,13 @@ def get_menus_by_user(request):
                 "icon": "fas fa-dollar-sign",
                 "model": "subscription.clientcreditsubscription",
                 "permissions": ["subscription.view_clientcreditsubscription",],
-            }
+            },
+            # {
+            #     "title": "Referral Code",
+            #     "icon": "fas fa-qrcode",
+            #     "model": "subscription.referralcode",
+            #     "permissions": ["subscription.view_referralcode",],
+            # }
         ]
     },
     

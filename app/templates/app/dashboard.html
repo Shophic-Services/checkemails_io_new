@@ -5,9 +5,7 @@
 
 {% block content %}
 
-<div class="main-content">
-
-    <div class="page-content">
+<div class="content-wrapper pt-0">
         <div class="container">
             <div class="col-lg-12 page-content-div">
             <div class="row">
@@ -114,7 +112,7 @@
                                             <!-- <p class="mb-1 text-truncate text-black font-size-14 fw-bold">No credit card is required</p> -->
                                             </div>
                                             <div class="d-inline-flex overflow-hidden text-start mb-3">
-                                                <div class="avatar-sm me-3">
+                                                <div class="avatar-sm mr-3">
                                                     <div class="avatar-title bg-soft-primary text-primary rounded-circle font-size-18">
                                                         <i class="uil uil-dollar-alt font-size-20"></i>
                                                     </div>
@@ -123,7 +121,7 @@
                                             </div>
                                             {% for package_detail in package.plan_descriptions.all %}
                                             <div class="d-inline-flex overflow-hidden text-start mb-3">
-                                                <div class="avatar-sm me-3 avatar-min-width">
+                                                <div class="avatar-sm mr-3 avatar-min-width">
                                                     <div class="avatar-title bg-soft-primary text-primary rounded-circle font-size-18">
                                                         <i class="uil uil-check-circle font-size-20"></i>
                                                     </div>
@@ -166,5 +164,4 @@
         </div>
     </div>
 </div>
-
 {% endblock %}

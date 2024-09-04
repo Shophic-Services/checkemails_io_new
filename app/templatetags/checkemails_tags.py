@@ -37,17 +37,18 @@ def custom_paginator_number(cl, i):
     page_number = ''
     if get_current_request() and 'page_size' in parse_qs(get_current_request().META.get('QUERY_STRING')):
         page_number = '&page_size='+ ','.join(parse_qs(get_current_request().META.get('QUERY_STRING')).get('page_size'))
-    if i == DOT:
-        return '… '
-    elif i == cl.page_num:
-        return format_html('<span class="this-page">{}</span> ', i + 1)
+    if i == cl.paginator.ELLIPSIS:
+        return format_html('{} ', cl.paginator.ELLIPSIS)
+    elif int(i) == cl.page_num:
+        return format_html('<span class="this-page">{}</span> ', int(i))
     else:
         return format_html(
             '<a href="{}"{}>{}</a> ',
             cl.get_query_string({PAGE_VAR: i}) + page_number,
-            mark_safe(' class="end"' if i == cl.paginator.num_pages - 1 else ''),
-            i + 1,
+            mark_safe(' class="end"' if int(i) == cl.paginator.num_pages - 1 else ''),
+            int(i),
         )
+    
 
 @register.simple_tag
 def custom_page_query(cl):
@@ -68,4 +69,10 @@ def format_html_data(value):
 
 @register.filter(name="obj_field_list")
 def obj_field_list(obj, field):
-    return ast.literal_eval(getattr(obj, field))
+    return getattr(obj, field)
+
+
+
+@register.filter(name="obj_field_list_eval")
+def obj_field_list_eval(obj, field):
+    return ast.literal_eval(obj_field_list(obj, field))

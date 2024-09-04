@@ -1,4 +1,179 @@
-{% extends 'admin_tools/dashboard/dashboard.html' %}
+{% load i18n static admin_tools_dashboard_tags %}
+{% load humanize %}
+{% load mathfilters %}
+{% load tz %}
+{% block dashboard_scripts %}
+<script type="text/javascript" src="{% static "admin_tools/js/utils.js" %}"></script>
+
+<script type="text/javascript" charset="utf-8">
+    // Load js files syncronously and conditionally
+
+    var js_files = [
+        {
+            src : '{% static "admin_tools/js/jquery/jquery.min.js" %}',
+            test: function() { return typeof(jQuery) == 'undefined'; }
+        },
+        {
+            src : '{% static "admin_tools/js/jquery/jquery-ui.min.js" %}',
+            test: function() { return typeof(jQuery.ui) == 'undefined'; }
+        },
+        {
+            src : '{% static "admin_tools/js/json.min.js" %}',
+            test: function() { return typeof(JSON.stringify) == 'undefined'; }
+        },
+        {
+            src : '{% static "admin_tools/js/jquery/jquery.cookie.min.js" %}',
+            test: function() { return typeof(jQuery.cookie) == 'undefined'; }
+        },
+        {
+            src : '{% static "admin_tools/js/jquery/jquery.dashboard.js" %}',
+            test: function() { return true; }
+        },
+        {
+            src : '{% static "admin_tools/js/dashboard.js" %}',
+            test: function() { return true; }
+        }{% for js in dashboard.Media.js %},
+        {
+            src : '{% static js %}',
+            test: function() { return true; }
+        }{% endfor %}
+    ];
+
+    loadScripts(js_files, function(){
+        jQuery(function($) {
+            init_dashboard(
+                '{{ dashboard.get_id }}',
+                {{ dashboard.columns }},
+                {% autoescape off %}{{ dashboard_preferences }}{% endautoescape %},
+                '{% url 'admin-tools-dashboard-set-preferences' dashboard.get_id %}'
+            );
+        });
+    });
+</script>
+{% endblock %}
+
+{% block dashboard_title %}
+{% if dashboard.title %}
+<h1 class="dashboard-title">{{ dashboard.title|capfirst }}</h1>
+{% endif %}
+{% endblock %}
 
 {% block dashboard_panel %}
 {% endblock %}
+{% block dashboard_container %}
+<div id="{{ dashboard.get_id }}" class="dashboard-container">
+    {% for module in dashboard.children %}
+{% admin_tools_render_dashboard_module module %}{% endfor %}
+</div>
+{% endblock %}
+
+<style>
+    .bar-chart {
+      height: 160px;
+      padding-top: 60px;
+      display: flex;
+      justify-content: space-around;
+      overflow: hidden;
+    
+    }
+    .bar-chart .bar {
+        background-color: #79aec8;
+        flex: 100%;
+        align-self: flex-end;
+        margin-right: 2px;
+        position: relative;
+    }
+    .bar-chart .bar:last-child {
+        margin: 0;
+    }
+    .bar-chart .bar:hover {
+        background-color: #417690;
+    }
+    
+    .bar-chart .bar .bar-tooltip {
+        user-select: none;
+        -moz-user-select: none;
+        -webkit-user-select: none;
+        -ms-user-select: none;
+        position: relative;
+        z-index: 999;
+    }
+    .bar-chart .bar .bar-tooltip {
+        position: absolute;
+        top: -60px;
+        left: 50%;
+        transform: translateX(-50%);
+        text-align: center;
+        font-weight: bold;
+        opacity: 0;
+    }
+    .bar-chart .bar:first-child .bar-tooltip {
+        transform: initial;
+        text-align: initial;
+        left: 0;
+    }
+    .bar-chart .bar:last-child .bar-tooltip {
+        transform: initial;
+        text-align: right;
+        right: 0;
+        left: initial;
+    }
+    .bar-chart .bar:hover .bar-tooltip {
+        opacity: 1;
+    }
+    .p-10{
+        padding: 10px;
+    }
+    table{
+        width: 100%;
+    }
+    .clear-fix{
+        clear: both;
+    }
+    </style>
+    <p class="clear-fix"></p>
+    <h1 class="dashboard-title"> {% blocktrans %} Sales {% endblocktrans %} </h1>
+    <div class="dashboard-container p-10">
+    
+    <table>
+        <thead>
+            <tr>
+                <th> <div class="text"> <a href="#">Plan </a> </div> </th>
+                <th> <div class="text"> <a href="#">Total </a> </div> </th>
+                <th> <div class="text"> <a href="#">Total Sales </a> </div> </th>
+                <th> <div class="text"> <a href="#"><strong>% Of Total Sales</strong></a> </div> </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in dashboard.summary %}
+            <tr class="{% cycle 'row1' 'row2' %}">
+                <td> {{ row.plan__name }} </td>
+                <td> {{ row.total }} </td>
+                <td> {{ row.total_sales | default:0 }} </td>
+                <td><strong> {{ row.total_sales | default:0 | div:dashboard.summary_total.total_sales|mul:100 }} </strong> </td>
+            </tr>
+            {% endfor %}
+            <tr style="font-weight:bold; border-top:2px solid #DDDDDD;">
+                <td> Total </td>
+                <td> {{ dashboard.summary_total.total | intcomma }} </td>
+                <td> {{ dashboard.summary_total.total_sales | default:0 }} </td>
+                <td> 100% </td>
+            </tr>
+        </tbody>
+    </table>
+    
+<!-- <div class="results">
+    <h2> {% blocktrans %} Sales past 12 months {% endblocktrans %} </h2>
+    <div class="bar-chart">
+        {% for x in dashboard.summary_over_time %}
+            <div class="bar" style="height:{{x.pct}}%">
+                <div class="bar-tooltip">
+                    {{x.total }}<br>
+                    {{x.period | date:"d/m/Y"}}
+                </div>
+            </div>
+        {% endfor %}
+        </div>
+    </div> -->
+</div>
+

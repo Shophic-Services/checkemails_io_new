@@ -1,7 +1,13 @@
-{% extends 'layouts/base_without_login.html' %}
+{% extends 'layouts/home_base.html' %}
 {% load static %}
 {% block title %}Contact Us{% endblock %}
 {% block content %}
+<section class="fxt-template-animation fxt-template-layout loaded" >
+    <div class="fxt-shape">
+        <div class="fxt-transformX-L-50 fxt-transition-delay-1">
+            <img src="{% static 'images/shape1.png' %}" alt="Shape">
+        </div>
+    </div>
 <div class="container">
     <div class="row">
         <div class="col-lg-8">
@@ -14,7 +20,7 @@
             </div>
         </div>
         <div class="col-lg-4">
-            <div class="fxt-column-wrap justify-content-center">
+            <div class="fxt-column-wrap justify-content-top">
                 <div class="fxt-form">
     <h2 class="title">Contact Us</h2>
     <form data-toggle="validator" method="POST">
@@ -81,6 +87,6 @@
 </div>
 </div>
 </div>
-
+</section>
 
 {% endblock %}
