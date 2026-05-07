@@ -1,0 +1,411 @@
+{% extends 'layout/base.html' %}
+{% load static mathfilters donut_chart %}
+
+{% block sub_title %}| Bulk Validation{% endblock %}
+
+{% block content %}
+<div class="w-full max-w-[1600px] mx-auto relative main-div ">
+    <div id="headingDiv" class="mb-6">
+        <h2 class="text-xl font-bold text-gray-700">Bulk Validation</h2>
+        <div class="w-8 h-1 bg-primary mt-1 rounded-full"></div>
+    </div>
+    <div id="statusDiv" class="flex flex-col md:flex-row justify-between items-center mb-8 border-b border-border pb-4">
+        <div class="flex gap-8 text-base font-bold text-gray-400 mb-4 md:mb-0">
+            {% for label in status_tabs %}
+                <span
+                data-status="{{ label }}"
+                class="pb-4 cursor-pointer status-tab
+                {% if current_status == label %}
+                    text-primary border-b-2 border-primary
+                {% else %}
+                    text-gray-400 hover:text-gray-600
+                {% endif %}">
+                {{ label }}
+                </span>
+            {% endfor %}
+            </div>
+        <div class="flex gap-3">
+            {% csrf_token %}
+            <button
+                class="bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 px-4 py-2 rounded text-lg font-medium flex items-center gap-2 transition-colors add-multiple-emails"><svg
+                    xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    class="lucide lucide-clipboard-list" aria-hidden="true">
+                    <rect width="8" height="4" x="8" y="2" rx="1" ry="1"></rect>
+                    <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2">
+                    </path>
+                    <path d="M12 11h4"></path>
+                    <path d="M12 16h4"></path>
+                    <path d="M8 11h.01"></path>
+                    <path d="M8 16h.01"></path>
+                </svg>Add Multiple Emails</button><button id="openUploadModal"
+                class="bg-primary hover:bg-blue-600 text-white px-4 py-2 rounded text-lg font-medium flex items-center gap-2 transition-colors"><svg
+                    xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    class="lucide lucide-circle-plus" aria-hidden="true">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <path d="M8 12h8"></path>
+                    <path d="M12 8v8"></path>
+                </svg>Upload List</button></div>
+    </div>
+    <div class="min-h-[600px]">
+        <div id="preparingState" class="w-full animate-in fade-in duration-500 hidden">
+            <div class="mb-6">
+                <h2 class="text-xl font-bold text-gray-700">Preparing Your List</h2>
+                <div class="w-8 h-1 bg-primary mt-1 rounded-full"></div>
+            </div>
+            <div class="bg-white rounded border border-border p-12 flex items-center justify-between shadow-sm">
+                <div class="max-w-xl w-full">
+                    <h3 class="text-xl font-bold text-gray-700 mb-2 upload-message-text">Uploading and Preparing your List...</h3>
+                    <p class="text-gray-500 text-base mb-6 upload-message-div">We have queued your list and it will be prepared shortly for validation.
+                        Please don’t leave this window. You’ll be redirected to your active lists once the analysis is complete.</p>
+                    <div class="mb-6">
+                        <div class="flex justify-between items-center mb-2"><span
+                                class="text-base font-bold text-primary uppercase tracking-wider error-class">Analysis Progress</span><span
+                                class="text-base font-bold text-primary progress-info error-class">0%</span></div>
+                        <div class="w-full bg-blue-50 h-3 rounded-full overflow-hidden border border-blue-100 error-class-progress">
+                            <div class="bg-primary h-full transition-all duration-300 ease-out progress-bar error-bar" style="width: 0%;"></div>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2 text-primary font-medium text-base processing-div">
+                        <div class="w-4 h-4 border-2 border-primary border-t-transparent rounded-full animate-spin"></div><span class="result-text">Queued for
+                        Preparing, Please Wait...</span>
+                    </div>
+                    <div class="py-3 mb-6 animate-in slide-in-from-top-2 processing-error-div hidden">
+                        <div class="flex items-start gap-2">
+                            <!-- Alert Icon -->
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-red-500 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01M12 3.75l9 15.5H3l9-15.5z"></path>
+                            </svg>
+                    
+                            <div class="flex-1">
+                                
+                                <p class="text-base text-red-600 leading-relaxed font-medium">
+                                    <!-- Error message -->
+                                    We couldn’t process your request at this time. This may be due to invalid data or insufficient account credits. Please review and try again.
+                                </p>
+                            </div>
+                        </div>
+                    
+                        <div class="mt-5 flex gap-3">
+                            <button class="bg-red-600 hover:bg-red-700 text-white text-base font-bold py-2 px-5 rounded-sm shadow-md transition-colors flex items-center gap-2 validate-emails">
+                                <!-- Refresh Icon -->
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v6h6M20 20v-6h-6M5 19a9 9 0 0014-7M19 5a9 9 0 00-14 7"></path>
+                                </svg>
+                                Retry Analysis
+                            </button>
+                    
+                            <button class="bg-white border border-red-200 text-red-600 hover:bg-red-50 text-base font-bold py-2 px-5 rounded-sm transition-colors">
+                                Cancel
+                            </button>
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="hidden md:block ml-12"><svg xmlns="http://www.w3.org/2000/svg" width="80" height="80"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" class="lucide lucide-search text-primary animate-pulse" aria-hidden="true">
+                        <path d="m21 21-4.34-4.34"></path>
+                        <circle cx="11" cy="11" r="8"></circle>
+                    </svg></div>
+            </div>
+        </div>
+        
+        <div id="previewState" class="w-full animate-in fade-in slide-in-from-bottom-4 duration-500 hidden">
+            <div class="text-start mb-4">
+                <h2 class="text-xl font-extrabold text-[#0b1b39]">Match the columns in your file</h2>
+<div class="w-8 h-1 bg-primary mt-1 rounded-full"></div>
+                <p class="text-gray-600 text-base font-semibold tracking-wide mt-5">Displaying the first few rows of your file: <span class="underline decoration-[#a78bfa]/50 upload-file-name"></span></p>
+                <input type="hidden" id="selected_email_column">
+            </div>
+            <div class="bg-white rounded-xl border border-gray-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] overflow-hidden mb-10 p-5 w-100">
+                <div class="overflow-x-auto">
+                    <table id="previewTable" class="w-full border-collapse">
+                        <thead>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="px-6 py-4 bg-gray-50/30 border-t border-gray-100 text-center">
+                    <p class="text-base text-gray-400 font-bold uppercase tracking-widest">Selected columns will be extracted
+                        for validation</p>
+                </div>
+            </div>
+            <div class="flex flex-col md:flex-row items-center justify-start gap-12 mb-12">
+                <div class="flex flex-col items-start text-center">
+                    <div class="flex items-center gap-6 mb-3"><span class="text-base font-bold text-gray-800">Does your first row
+                            contain labels?</span>
+                        <div class="flex items-center gap-6"><!-- YES -->
+                            <label class="group flex items-center gap-2.5 cursor-pointer group select-none">
+                                <input
+                                    type="radio"
+                                    name="email_first_row_label"
+                                    class="peer hidden"
+                                    value="yes"
+                                    checked
+                                />
+                        
+                                <div class="w-5 h-5 rounded-full border-2 flex items-center justify-center
+                                            border-gray-300
+                                            peer-checked:border-primary
+                                            peer-checked:ring-4 peer-checked:ring-primary/10
+                                            transition-all">
+                                    <div class="w-2.5 h-2.5 rounded-full bg-primary
+                                    opacity-0 group-has-[input:checked]:opacity-100
+                    transition-opacity duration-200"></div>
+                                </div>
+                        
+                                <span class="text-base font-bold
+                                             text-gray-400
+                                             peer-checked:text-gray-900
+                                             transition-colors">
+                                    Yes
+                                </span>
+                            </label>
+                        
+                            <!-- NO -->
+                            <label class="group flex items-center gap-2.5 cursor-pointer group select-none">
+                                <input
+                                    type="radio"
+                                    name="email_first_row_label"
+                                    class="peer hidden"
+                                    value="no"
+                                />
+                        
+                                <div class="w-5 h-5 rounded-full border-2 flex items-center justify-center
+                                            border-gray-300
+                                            peer-checked:border-primary
+                                            peer-checked:ring-4 peer-checked:ring-primary/10
+                                            transition-all">
+                                    <div class="w-2.5 h-2.5 rounded-full bg-primary
+                                    opacity-0 group-has-[input:checked]:opacity-100
+                                    transition-opacity duration-200"></div>
+                                </div>
+                        
+                                <span class="text-base font-bold
+                                             text-gray-400
+                                             peer-checked:text-gray-900
+                                             transition-colors">
+                                    No
+                                </span>
+                            </label></div>
+                    </div>
+                    <p class="text-base text-gray-400 font-medium tracking-wide">If your file contains a header, we'll skip
+                        it.</p>
+                </div>
+                <div class="flex flex-col items-start text-center">
+                    <div class="flex items-center gap-6 mb-3"><span class="text-base font-bold text-gray-800">Can we remove
+                            duplicate emails?</span>
+                        <div class="flex items-center gap-6"><!-- YES -->
+                            <label class="group flex items-center gap-2.5 cursor-pointer group select-none">
+                                <input
+                                    type="radio"
+                                    name="email_duplicate_confirm"
+                                    value="yes"
+                                    class="peer hidden"
+                                    checked
+                                />
+                        
+                                <div class="w-5 h-5 rounded-full border-2 flex items-center justify-center
+                                            border-gray-300
+                                            peer-checked:border-primary
+                                            peer-checked:ring-4 peer-checked:ring-primary/10
+                                            transition-all">
+                                    <div class="w-2.5 h-2.5 rounded-full bg-primary
+                                                opacity group-has-[input:checked]:opacity-100
+                                                transition-opacity duration-200"></div>
+                                </div>
+                        
+                                <span class="text-base font-bold
+                                             text-gray-400
+                                             peer-checked:text-gray-900
+                                             transition-colors">
+                                    Yes
+                                </span>
+                            </label>
+                        
+                            <!-- NO -->
+                            <label class="group flex items-center gap-2.5 cursor-pointer group select-none">
+                                <input
+                                    type="radio"
+                                    name="email_duplicate_confirm"
+                                    value="no"
+                                    class="peer hidden"
+                                />
+                        
+                                <div class="w-5 h-5 rounded-full border-2 flex items-center justify-center
+                                            border-gray-300
+                                            peer-checked:border-primary
+                                            peer-checked:ring-4 peer-checked:ring-primary/10
+                                            transition-all">
+                                    <div class="w-2.5 h-2.5 rounded-full bg-primary
+                                                opacity-0 group-has-[input:checked]:opacity-100
+                                                transition-opacity duration-200"></div>
+                                </div>
+                        
+                                <span class="text-base font-bold
+                                             text-gray-400
+                                             peer-checked:text-gray-900
+                                             transition-colors">
+                                    No
+                                </span>
+                            </label></div>
+                    </div>
+                    <p class="text-base text-gray-400 font-medium tracking-wide">Repeated emails will be counted as 1 record.
+                    </p>
+                </div>
+            </div>
+            <div class="flex flex-row items-start gap-4"><button disabled class="bg-primary hover:bg-blue-600 text-white font-medium py-2 px-6 rounded shadow-sm text-base transition-colors border border-transparent hover:shadow-md flex items-center gap-2 validate-emails disabled:opacity-70 disabled:cursor-not-allowed">Submit Emails</button><button class="text-base font-bold text-gray-400 hover:text-gray-600 transition-colors py-2 flex-center" style="
+    align-self: center;
+">Cancel and try
+                    again</button></div>
+        </div>
+        <div id="bulkListDiv">
+          
+           {% include 'components/bulk-list.html' %}
+        </div>
+    </div>
+</div>
+
+
+<div class="w-full max-w-[1600px] mx-auto relative report-div hidden">
+{% include 'components/bulk-report.html' %}
+</div>
+
+{% endblock %}
+
+{% block page_models %}
+<div id="uploadModal" class="fixed inset-0 bg-black/50 z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-lg shadow-xl w-full max-w-2xl overflow-hidden animate-in fade-in zoom-in duration-200">
+        <div class="flex justify-center items-center p-6 border-b border-gray-100 relative">
+            <div class="text-center">
+                <div class="mx-auto mb-3 text-primary"><svg width="64" height="64" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="1" class="mx-auto text-blue-500">
+                        <rect x="4" y="4" width="16" height="16" rx="2" fill="#eff6ff" stroke="#3b82f6"></rect>
+                        <line x1="8" y1="9" x2="16" y2="9"></line>
+                        <line x1="8" y1="13" x2="16" y2="13"></line>
+                        <line x1="8" y1="17" x2="12" y2="17"></line>
+                    </svg></div>
+                <h3 class="text-xl font-bold text-primary">Select a file to Upload!</h3>
+            </div><button class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 upload-close-modal"><svg
+                    xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    class="lucide lucide-x" aria-hidden="true">
+                    <path d="M18 6 6 18"></path>
+                    <path d="m6 6 12 12"></path>
+                </svg></button>
+        </div>
+        <div class="p-8">
+            <p class="text-gray-500 text-base mb-4 text-center">Select a .CSV or .XLSX file containing your
+                emails.<br><span class="italic text-base text-gray-400">TIP: The order of emails at the report will be the
+                    same as your uploaded list.</span></p>
+            <div class="mb-2"><label class="block text-primary text-base font-medium mb-2">Select a File</label>
+                <div class="flex gap-2"><input id="fileInput" accept=".csv,.xlsx" class="hidden" type="file">
+                    <div  id="fileTrigger"
+                        class="flex-1 bg-gray-50 border border-gray-200 rounded px-4 py-2 text-base flex items-center cursor-pointer hover:bg-gray-100 transition-colors truncate text-gray-400">
+                        Choose List</div><button id="submitUpload"
+                        class="bg-primary hover:bg-blue-600 text-white px-6 py-2 rounded text-base font-medium transition-colors shadow-sm flex gap-2">Submit</button>
+                </div>
+                <p class="text-base text-gray-400 mt-2 hidden">Maximum Allowed Emails per File: <span
+                        class="bg-gray-100 px-1 rounded border border-gray-200">100K</span>.</p>
+            </div>
+            <div id="uploadError" class="mt-4 p-3 bg-red-50 border border-red-100 rounded text-red-600 text-base flex items-center gap-2 animate-in fade-in slide-in-from-top-1 duration-300 hidden"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-alert shrink-0" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><line x1="12" x2="12" y1="8" y2="12"></line><line x1="12" x2="12.01" y1="16" y2="16"></line></svg>Please upload a .CSV or .XLSX file only.</div>
+        </div>
+    </div>
+</div>
+
+<div id="ConfirmModal" class="fixed inset-0 bg-black/50 z-50 hidden flex items-center justify-center p-4">
+  <div class="bg-white rounded-lg shadow-xl w-full max-w-lg overflow-hidden animate-in fade-in zoom-in duration-200">
+
+    <!-- Header -->
+    <div class="flex justify-center items-center p-6 border-b border-gray-100 relative">
+      <div class="text-center">
+        <div class="mx-auto mb-3 text-red-500">
+          <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"
+               class="mx-auto">
+            <rect x="4" y="4" width="16" height="16" rx="2" fill="#fee2e2" stroke="#ef4444"></rect>
+            <line x1="8" y1="8" x2="16" y2="16"></line>
+            <line x1="16" y1="8" x2="8" y2="16"></line>
+          </svg>
+        </div>
+        <h3 class="text-xl font-bold text-red-600">Confirm Delete</h3>
+      </div>
+
+      <button class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 delete-close-modal">
+        ✕
+      </button>
+    </div>
+
+    <!-- Body -->
+    <div class="p-8 text-center">
+      <p class="text-gray-600 text-base mb-4">
+        Are you sure you want to delete the following file?
+      </p>
+
+      <div class="bg-gray-50 border rounded p-4 text-base text-left mb-6">
+        <p><strong>File Name:</strong> <span id="confirmFileName">—</span></p>
+      </div>
+
+      <div class="flex justify-center gap-4">
+        <button id="confirmDeleteYes"
+                class="flex bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded text-base font-medium">
+          Yes, Delete
+        </button>
+
+        <button class="delete-close-modal bg-gray-100 hover:bg-gray-200 px-6 py-2 rounded text-base font-medium">
+          No, Cancel
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div id="addEmailsModal" class="fixed inset-0 bg-black/50 z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-lg shadow-xl w-full max-w-xl overflow-hidden animate-in fade-in zoom-in duration-200">
+        <div class="flex justify-between items-center p-6 border-b border-gray-100">
+            <h3 class="text-xl font-bold text-gray-700">Add Multiple Emails</h3><button
+                class="text-gray-400 hover:text-gray-600 close-modal"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round" class="lucide lucide-x" aria-hidden="true">
+                    <path d="M18 6 6 18"></path>
+                    <path d="m6 6 12 12"></path>
+                </svg></button>
+        </div>
+        <div class="p-6">
+            <p class="text-gray-500 text-base mb-3">Copy and paste your emails below.</p><textarea
+                class="w-full h-48 border border-gray-300 rounded p-3 focus:outline-none focus:border-primary text-base placeholder-gray-300 resize-none mb-4 font-mono text-black input-emails" id="emailInput"
+                placeholder="email1@example.com
+email2@example.com"></textarea>
+<p id="emptyWarning" class="text-base text-red-500 mb-2 hidden">Please enter at least one email address.</p>
+        <!-- Summary badges -->
+        <div id="summary" class="hidden mb-3">
+          <div class="flex flex-wrap gap-2 mb-3">
+            <span id="validBadge"  class="text-base px-3 py-1 rounded-full bg-green-100 text-green-700 font-medium hidden"></span>
+            <span id="invalidBadge" class="text-base px-3 py-1 rounded-full bg-red-100 text-red-700 font-medium hidden"></span>
+            <span id="dupBadge"   class="text-base px-3 py-1 rounded-full bg-yellow-100 text-yellow-700 font-medium hidden"></span>
+          </div>
+ 
+          <!-- Invalid list -->
+          <div id="errorSection" class="hidden">
+            <p class="text-base font-semibold text-red-600 mb-2">Invalid entries:</p>
+            <div id="errorItems" class="flex flex-col gap-1"></div>
+          </div>
+        </div>
+            <div class="flex justify-end gap-3"><button
+                    class="px-4 py-2 bg-gray-200 text-gray-600 hover:bg-gray-100 rounded text-base font-medium close-modal">Cancel</button><button
+                    class="bg-primary hover:bg-blue-600 text-white px-6 py-2 rounded text-base font-medium transition-colors shadow-sm" id="continueBtn" >Continue</button>
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<script src="{% static 'js/bulk_validation.js' %}"></script>
+{% endblock %}

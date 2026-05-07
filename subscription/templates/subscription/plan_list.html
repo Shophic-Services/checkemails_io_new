@@ -1,0 +1,78 @@
+{% extends 'layouts/home_base.html' %}
+
+{% load static mathfilters %}
+{% load humanize %}
+
+{% block content %}
+<div class="content-wrapper pt-0">
+
+  <div class="container-fluid position-relative">
+
+    {% include 'accounts/web/partials/sidebar-dashboard.html' %}
+    <div class="main">
+      <div class="col-md-12">
+        <div class="card">
+          <section class="features-overview" id="pricing-section">
+            <div class="row grid-margin grid-margin-lg-0">
+              <div class="content-header p-3">
+                <h3>Plans</h3>
+              </div>
+              <div class="row col-md-12 justify-content-start customer-feedback">
+                {% for package in packages %}
+                <div
+                  class="col-12 col-md-6 col-lg-4 stretch-card {% if not forloop.last %}mb-3 mb-lg-0{% endif %} border-1"
+                  data-aos="zoom-in" {% if not forloop.first %}data-aos-delay="200" {% endif %}>
+                  <div class="card plan-cards px-3 py-4">
+                    <div class="card-body p-0">
+                      <div class=" d-flex align-items-center justify-content-around">
+                        <div>
+                          <h3 class="pb-2 px-3">{{package.name}}</h3>
+                        </div>
+                      </div>
+                      <div class="card-details text-center pt-4">
+                        <span class="d-flex text-center justify-content-center">
+                          {% if package.subscription_period == 1 %}
+                          <h4>Free</h4>{% else %}
+                          <p>$</p>
+                          <h4>{{package.price}}</h4>
+                          <p class="pt-1">/ month</p>
+                          {% endif %}
+                        </span>
+                        <p>{% if package.subscription_period == 3 %}Billed yearly{% else %}&nbsp;{% endif %}</p>
+                        {% if request.user.plan_id|stringformat:"s" == package.id|stringformat:"s" %}
+                        <span class="mdi mdi-check-circle text-success"></span> Selected<br><br>
+                        {% endif %}
+                        <a href="{% url 'subscription:plans-buy' package.id %}"
+                          class="btn btn-rounded btn-outline-success">Buy Now</a>
+                        <p class="mt-4">{{package.information}}</p>
+                      </div>
+
+                      <div class="card-details text-start pt-4">
+                        {% for package_detail in package.plan_descriptions.all %}
+                        <h6 class="m-2 pb-1"><span class="mdi mdi-check-circle"></span> {{package_detail.description}}
+                        </h6>
+                        {% endfor %}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                {% endfor %}
+
+              </div>
+            </div>
+          </section>
+        </div>
+        <!-- end card -->
+      </div>
+      <!-- end col -->
+
+
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+
+{% block extra_js %}
+<script src="{% static 'assets/js/accounts/pagination.js' %}"></script>
+{% endblock %}

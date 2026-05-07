@@ -1,0 +1,115 @@
+{% extends 'layout/base.html' %}
+{% load static %}
+
+
+{% block content %}
+                    <div class="w-full max-w-[1600px] mx-auto">
+                        <div class="mb-6">
+                            <h2 class="text-xl font-bold text-gray-700">Email Finder</h2>
+                            <div class="w-8 h-1 bg-primary mt-1 rounded-full"></div>
+                        </div>
+                        <div class="bg-white p-8 rounded shadow-sm border border-border mb-8">
+                            <div class="flex items-start mb-8">
+                                <div
+                                    class="p-3 bg-blue-50 rounded-full text-primary mr-4 flex items-center justify-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round" class="lucide lucide-user-plus" aria-hidden="true">
+                                        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                                        <circle cx="9" cy="7" r="4"></circle>
+                                        <line x1="19" x2="19" y1="8" y2="14"></line>
+                                        <line x1="22" x2="16" y1="11" y2="11"></line>
+                                    </svg></div>
+                                <div>
+                                    <h3 class="text-lg font-bold text-gray-700">Find Someone's Email Address</h3>
+                                    <p class="text-gray-500 text-base mt-1">Find possible email address derived from the first name, last name, and company domain.</p>
+                                </div>
+                            </div>
+                            <div class="border-t border-gray-100 pt-6">
+                                <h4 class="text-primary text-base font-medium mb-4">Requested Information</h4>
+                                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
+                                    <div><label class="block text-gray-500 text-base font-bold mb-2">First
+                                            Name</label><input placeholder="Firstname, ex: john"
+                                            class="w-full border border-gray-300 rounded p-2.5 focus:outline-none focus:border-primary text-base placeholder-gray-300 bg-white text-black"
+                                            type="text">
+                                        <p class="text-base text-gray-400 mt-1">Minimum of 2 characters</p>
+                                    </div>
+                                    <div><label class="block text-gray-500 text-base font-bold mb-2">Last
+                                            Name</label><input placeholder="Lastname, ex: smith"
+                                            class="w-full border border-gray-300 rounded p-2.5 focus:outline-none focus:border-primary text-base placeholder-gray-300 bg-white text-black"
+                                            type="text">
+                                        <p class="text-base text-gray-400 mt-1">Minimum of 2 characters</p>
+                                    </div>
+                                    <div><label class="block text-gray-500 text-base font-bold mb-2">Domain
+                                            Address</label><input placeholder="Domain, ex: apple.com"
+                                            class="w-full border border-gray-300 rounded p-2.5 focus:outline-none focus:border-primary text-base placeholder-gray-300 bg-white text-black"
+                                            type="text"></div>
+                                </div>
+                                <button
+                                    class="bg-primary hover:bg-blue-600 text-white font-medium py-2 px-6 rounded shadow-sm text-base transition-colors border border-transparent hover:shadow-md flex items-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed">Find
+                                    Email Address</button>
+                            </div>
+                        </div>
+                        <div class="bg-white p-8 rounded shadow-sm border border-border">
+                            <div class="mb-6">
+                                <h3 class="text-lg font-bold text-gray-700">Lookup History</h3>
+                                <p class="text-gray-400 text-base mt-1">Your recent searches.</p>
+                            </div>
+                            <div class="overflow-x-auto">
+                                <table class="w-full min-w-[800px]">
+                                    <thead>
+                                        <tr class="border-b border-gray-200">
+                                            <th class="py-3 px-2 text-base font-bold text-gray-400 uppercase tracking-wider text-left">
+                                                #</th>
+                                            <th class="py-3 px-2 text-base font-bold text-gray-400 uppercase tracking-wider text-left">
+                                                NAME</th>
+                                            <th class="py-3 px-2 text-base font-bold text-gray-400 uppercase tracking-wider text-left">
+                                                EMAIL ADDRESS</th>
+                                            <th class="py-3 px-2 text-base font-bold text-gray-400 uppercase tracking-wider text-left">
+                                                ROLE</th>
+                                            <th class="py-3 px-2 text-base font-bold text-gray-400 uppercase tracking-wider text-left">
+                                                SOCIAL LINKS</th>
+                                            <th class="py-3 px-2 text-base font-bold text-gray-400 uppercase tracking-wider text-left">
+                                                STATUS</th>
+                                            <th class="py-3 px-2 text-base font-bold text-gray-400 uppercase tracking-wider text-left">
+                                                DATE</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="border-b border-gray-100 hover:bg-gray-50 text-lg">
+                                            <td class="py-4 px-2 text-center text-gray-500">1</td>
+                                            <td class="py-4 px-2 text-gray-700 font-medium">Corentin Brossault</td>
+                                            <td class="py-4 px-2 text-gray-500">corentin@checkemails.io</td>
+                                            <td class="py-4 px-2 text-gray-500">Co-founder &amp; CEO</td>
+                                            <td class="py-4 px-2">
+                                                <div class="flex items-center gap-3"><a href="#" class="text-[#0077b5] hover:opacity-80"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-linkedin" aria-hidden="true">
+                                                            <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z">
+                                                            </path>
+                                                            <rect width="4" height="12" x="2" y="9"></rect>
+                                                            <circle cx="4" cy="4" r="2"></circle>
+                                                        </svg></a><a href="#" class="text-black hover:opacity-80"><svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor">
+                                                            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z">
+                                                            </path>
+                                                        </svg></a><a href="#" class="text-[#E1306C] hover:opacity-80"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-instagram" aria-hidden="true">
+                                                            <rect width="20" height="20" x="2" y="2" rx="5" ry="5">
+                                                            </rect>
+                                                            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z">
+                                                            </path>
+                                                            <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"></line>
+                                                        </svg></a><a href="#" class="text-[#1877F2] hover:opacity-80"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-facebook" aria-hidden="true">
+                                                            <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z">
+                                                            </path>
+                                                        </svg></a></div>
+                                            </td>
+                                            <td class="py-4 px-2 text-left"><span class="inline-flex items-center px-2 py-0.5 rounded text-base font-medium bg-green-100 text-green-800"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-check-big mr-1" aria-hidden="true">
+                                                        <path d="M21.801 10A10 10 0 1 1 17 3.335"></path>
+                                                        <path d="m9 11 3 3L22 4"></path>
+                                                    </svg> Found</span></td>
+                                            <td class="py-4 px-2 text-left text-gray-500">Just now</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+{% endblock %}

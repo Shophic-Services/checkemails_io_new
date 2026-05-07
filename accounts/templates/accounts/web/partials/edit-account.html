@@ -1,0 +1,255 @@
+{% extends 'layouts/home_base.html' %}
+
+{% load static mathfilters %}
+{% load humanize %} 
+
+{% block content %}
+<div class="content-wrapper pt-0">
+
+        <div class="container-fluid position-relative">
+
+            {% include 'accounts/web/partials/sidebar-dashboard.html' %}
+<div class="main">
+    <div class="topnav d-flex justify-content-start">
+        <a class="link {% if request.resolver_match.url_name in "'account_view','account_edit'" %}active{% endif %}" href="{% url 'accounts:account_view' %}">Profile</a>
+        <a class="link {% if request.resolver_match.url_name in "'credit'" %}active{% endif %}" href="{% url 'accounts:credit' %}">Credits</a>
+      </div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="row">
+            
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                        <div class="col-md-6">
+                            <h5 class="card-title mb-4">My Account</h5>
+                        </div>
+                    </div>
+                        <div class="row no-gutters align-items-center">
+                            {% if messages %}
+                            <ul class="messages">
+                                {% for msg in messages %}       
+                                <li>
+                                    <div class="alert alert-{{msg.level_tag}}" role="alert">
+                                    {{msg.message}}
+                                    </div>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                            {% endif %}
+                    </div>
+                        <form method="POST" action=".">
+                            {% csrf_token %}
+                            
+                            {{ form.user.as_hidden }}
+                            {% if form.non_field_errors %}
+                                {% for error in form.non_field_errors %}
+                                    <div class="alert alert-danger">
+                                        {{ error }}
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+                            <div class="row">
+                                
+            <div class="col-xxl-9 col-lg-8">
+                            <div class="card">
+                                <div class="card-header d-flex align-items-center bg-white">
+                                    <h5 class="mb-1 text-truncate steps-heading pb-2" data-counter="1">General Info</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div>
+                                                
+                                        <div class="row">
+                                            <div class="col-lg-6">
+                                                <div class="mb-3">
+                                                    <label class="form-label" for="first-name-input">First Name</label>
+                                                    <input type="text" name="first_name" class="form-control" required value="{{user.first_name}}" id="first-name-input">
+                                                </div>
+                                                {% if form.first_name.errors %}
+                                                    {% for error in form.first_name.errors %}
+                                                        <div class="text-end text-danger">
+                                                            <span> {{ error }} </span>
+                                                        </div>
+                                                    {% endfor %}
+                                                {% endif %}
+                                                
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <div class="mb-3">
+                                                    <label class="form-label" for="last-name-input">Last Name</label>
+                                                    <input type="text" name="last_name" class="form-control" required value="{{user.last_name}}" id="last-name-input">
+                                                </div>
+                                                {% if form.last_name.errors %}
+                                                    {% for error in form.last_name.errors %}
+                                                        <div class="text-end text-danger">
+                                                            <span> {{ error }} </span>
+                                                        </div>
+                                                    {% endfor %}
+                                                {% endif %}
+                                            </div>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label for="contact-info-email-input">E-mail</label>
+                                            <input type="email" readonly disabled class="form-control" id="contact-info-email-input" value="{{request.user.email}}" placeholder="Enter Email">
+                                        </div>
+                                        <div class="form-check mb-3" data-toggle="collapse" data-target="#collapseChangePassword" aria-expanded="false" aria-controls="collapseChangePassword">
+                                            <input type="checkbox" class="form-check-input" id="gen-info-change-password" {% if form.change_password.errors %}checked{% endif %} name="change_password">
+                                            <label class="form-check-label" for="gen-info-change-password">Change password?</label>
+                                        </div>
+
+                                        <div class="collapse {% if form.change_password.errors %}show{% endif %}" id="collapseChangePassword">
+                                            <div class="card border shadow-none card-body">
+                                                <div class="row">
+                                                    <div class="col-lg-4">
+                                                        <div class="mb-lg-0">
+                                                            <label for="current-password-input" class="form-label">Current password</label>
+                                                            <input type="password" class="form-control" placeholder="Enter Current password" id="current-password-input" name="old_password">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <div class="mb-lg-0">
+                                                            <label for="new-password-input" class="form-label">New password</label>
+                                                            <input type="password" class="form-control" placeholder="Enter New password" id="new-password-input" name="new_password1">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <div class="mb-lg-0">
+                                                            <label for="confirm-password-input" class="form-label">Confirm password</label>
+                                                            <input type="password" class="form-control" placeholder="Enter Confirm password" id="confirm-password-input" name="new_password2">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                
+                                            </div>
+                                        </div>
+                                        {% if form.change_password.errors %}
+                                                    {% for error in form.change_password.errors %}
+                                                        <div class="text-end text-danger">
+                                                            <span> {{ error }} </span>
+                                                        </div>
+                                                    {% endfor %}
+                                                {% endif %}
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                            
+            <div class="col-xxl-9 col-lg-8">
+                            <div class="card">
+                                <div class="card-header d-flex align-items-center bg-white">
+                                    <h5 class="mb-1 text-truncate steps-heading pb-2" data-counter="2">Contact Info</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="mb-md-0">
+                                                <label for="contact-number-input" class="form-label">Contact Number</label>
+                                                <input type="text" name="phone" class="form-control" value="{{form.phone.value|default:user.phone}}" required="" id="id_phone">
+                                            </div>
+                                            {% if form.phone.errors %}
+                                                    {% for error in form.phone.errors %}
+                                                        <div class="text-end text-danger">
+                                                            <span> {{ error }} </span>
+                                                        </div>
+                                                    {% endfor %}
+                                                {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xxl-9 col-lg-8">
+                            <div class="card shadow-none ">
+                                <div class="card-header d-flex align-items-center bg-white">
+                                    <h5 class="mb-1 text-truncate steps-heading pb-2" data-counter="3">Billing Info</hh>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                      
+                                    <div class="pr-4 pt-3">
+                                        <div class="row">
+                                            <div class="col-lg-6">
+                                                <div class="form-group">
+                                                    <label>Billing Name</label>
+                                                    {{form.billing_full_name}}
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <div class="form-group">
+                                                    <label>Billing Phone Number</label>
+                                                    {{form.billing_phone}}
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="col-lg-12">
+                                                <div class="form-group">
+                                                    <label>Billing Address</label>
+                                                    {{form.billing_contact_address}}
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="col-lg-6">
+                                                <div class="form-group">
+                                                    <label>Country</label>
+                                                    {{form.billing_contact_country}}
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <div class="form-group">
+                                                    <label>State</label>
+                                                    {{form.billing_contact_province}}
+                                                </div>
+                                            </div>
+
+                                            
+                                            <div class="col-lg-6">
+                                                <div class="form-group">
+                                                    <label>City</label>
+                                                    {{form.billing_contact_city}}
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <div class="form-group">
+                                                    <label>Postal Code</label>
+                                                    {{form.billing_contact_postal_code}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                        
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        
+                    </div>
+                </div>
+                            <!-- end card -->
+
+
+                            <div class="text-end">
+                                <button type="submit" class="btn btn-info"><i class="uil uil-times mr-2"></i> Cancel</button>
+                                <button type="submit" class="btn btn-success"><i class="uil uil-check mr-2"></i> Save</button>
+                            </div>
+                        </form>
+                        <!-- end form -->
+                    </div>
+                    <!-- end card body -->
+                </div>
+                <!-- end card -->
+            </div>
+            <!-- end col -->
+        </div>
+                   
+                
+</div>
+</div>
+</div>
+</div>
+</div>
+{% endblock %}

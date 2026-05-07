@@ -1,0 +1,416 @@
+{% load static %}
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Checkemails {% block sub_title %}{% endblock %}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap"
+        rel="stylesheet">
+
+  <link rel="shortcut icon" type="image/x-icon" href="{% static 'images/logo.png' %}">
+
+    <style>
+        @import url(https://fonts.googleapis.com/css?family=Google+Sans+Text);
+
+        html {
+            font-family: 'Google Sans Text', 'Google Sans';
+            font-size: 14px;
+            color-scheme: light dark;
+            background: light-dark(white, black);
+            color: light-dark(black, white);
+        }
+
+        body {
+            background-color: #f8f9fc;
+        }
+
+        /* Custom scrollbar to match clean UI */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+    <style>/* Global Styles */
+        body {
+          background-color: #f8f9fc;
+          color: #333;
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+          width: 6px;
+          height: 6px;
+        }
+        
+        ::-webkit-scrollbar-track {
+          background: #f1f1f1;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+          background: #cbd5e1;
+          border-radius: 3px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+          background: #94a3b8;
+        }
+        
+        /* Shared Component Classes */
+        .form-input {
+          width: 100%;
+          border: 1px solid #e5e7eb;
+          border-radius: 0.25rem;
+          padding: 0.625rem;
+          font-size: 0.875rem;
+          color: #374151;
+          background-color: #fff;
+          outline: none;
+          transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        
+        .form-input:focus {
+          border-color: #3b82f6;
+          box-shadow: 0 0 0 1px #3b82f6;
+        }
+        
+        /* Animations */
+        @keyframes spin-slow {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+        }
+        
+        .animate-spin-slow {
+          animation: spin-slow 3s linear infinite;
+        }
+        
+        /* Tailwind-style Entry Animations */
+        .animate-in {
+          animation-duration: 500ms;
+          animation-fill-mode: both;
+        }
+        
+        .fade-in {
+          animation-name: fadeIn;
+        }
+        
+        .zoom-in {
+          animation-name: zoomIn;
+        }
+        
+        .slide-in-from-bottom-2 {
+          animation-name: slideInBottom2;
+        }
+        
+        .slide-in-from-bottom-4 {
+          animation-name: slideInBottom4;
+        }
+        
+        .slide-in-from-bottom-8 {
+          animation-name: slideInBottom8;
+        }
+        
+        .slide-in-from-right-4 {
+          animation-name: slideInRight4;
+        }
+        
+        .slide-in-from-top-1 {
+          animation-name: slideInTop1;
+        }
+        
+        @keyframes fadeIn {
+          from { opacity: 0; }
+          to { opacity: 1; }
+        }
+        
+        @keyframes zoomIn {
+          from { opacity: 0; transform: scale(0.95); }
+          to { opacity: 1; transform: scale(1); }
+        }
+        
+        @keyframes slideInBottom2 {
+          from { transform: translateY(0.5rem); opacity: 0; }
+          to { transform: translateY(0); opacity: 1; }
+        }
+        
+        @keyframes slideInBottom4 {
+          from { transform: translateY(1rem); opacity: 0; }
+          to { transform: translateY(0); opacity: 1; }
+        }
+        
+        @keyframes slideInBottom8 {
+          from { transform: translateY(2rem); opacity: 0; }
+          to { transform: translateY(0); opacity: 1; }
+        }
+        
+        @keyframes slideInRight4 {
+          from { transform: translateX(1rem); opacity: 0; }
+          to { transform: translateX(0); opacity: 1; }
+        }
+        
+        @keyframes slideInTop1 {
+          from { transform: translateY(-0.25rem); opacity: 0; }
+          to { transform: translateY(0); opacity: 1; }
+        }</style>
+        <style>/* Global Styles */
+body {
+  background-color: #f8f9fc;
+  color: #333;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Shared Component Classes */
+.form-input {
+  width: 100%;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.25rem;
+  padding: 0.625rem;
+  font-size: 0.875rem;
+  color: #374151;
+  background-color: #fff;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-input:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 1px #3b82f6;
+}
+
+/* Animations */
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.animate-spin-slow {
+  animation: spin-slow 3s linear infinite;
+}
+
+/* Tailwind-style Entry Animations */
+.animate-in {
+  animation-duration: 500ms;
+  animation-fill-mode: both;
+}
+
+.fade-in {
+  animation-name: fadeIn;
+}
+
+.zoom-in {
+  animation-name: zoomIn;
+}
+
+.slide-in-from-bottom-2 {
+  animation-name: slideInBottom2;
+}
+
+.slide-in-from-bottom-4 {
+  animation-name: slideInBottom4;
+}
+
+.slide-in-from-bottom-8 {
+  animation-name: slideInBottom8;
+}
+
+.slide-in-from-right-4 {
+  animation-name: slideInRight4;
+}
+
+.slide-in-from-top-1 {
+  animation-name: slideInTop1;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes zoomIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes slideInBottom2 {
+  from { transform: translateY(0.5rem); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes slideInBottom4 {
+  from { transform: translateY(1rem); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes slideInBottom8 {
+  from { transform: translateY(2rem); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes slideInRight4 {
+  from { transform: translateX(1rem); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes slideInTop1 {
+  from { transform: translateY(-0.25rem); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}</style>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+          theme: {
+            extend: {
+              fontFamily: {
+                sans: ['Inter', 'sans-serif'],
+              },
+              colors: {
+                primary: '#3b82f6', // bright blue
+                sidebar: '#ffffff',
+                background: '#f8f9fc',
+                textMain: '#333333',
+                textMuted: '#6c757d',
+                border: '#eef2f7',
+              }
+            }
+          }
+        }
+      </script>
+    <link rel="stylesheet" href="{% static 'assets/css/loader.css' %}">
+ 
+
+</head>
+
+<body>
+   <div id="loader-wrapper">
+	<div class="loading"><i></i><i></i><i></i><i></i></div>
+</div>
+{% if messages %}
+<div class="fixed top-5 left-1/2 transform -translate-x-1/2 z-50 space-y-3">
+    
+    {% for msg in messages %}
+    <div class="message-box flex items-center gap-3 px-4 py-3 rounded-lg shadow-lg border text-base font-medium
+        {% if msg.level_tag == 'success' %}
+            bg-green-100 border-green-300 text-green-800
+        {% elif msg.level_tag == 'error' %}
+            bg-red-100 border-red-300 text-red-800
+        {% elif msg.level_tag == 'warning' %}
+            bg-yellow-100 border-yellow-300 text-yellow-800
+        {% else %}
+            bg-blue-100 border-blue-300 text-blue-800
+        {% endif %}
+        animate-slide-in">
+
+        <!-- Message -->
+        <span>{{ msg.message }}</span>
+
+        <!-- Close -->
+        <button onclick="this.parentElement.remove()" class="ml-2 opacity-70 hover:opacity-100">
+            ✕
+        </button>
+    </div>
+    {% endfor %}
+
+</div>
+{% endif %}
+
+
+          <script>
+          window.addEventListener('load', function load() {
+              const loader = document.getElementById('loader-wrapper');
+              setTimeout(function () {
+                loader.classList.add('fadeOut');
+              }, 100);
+            });
+            
+            // Track any user interaction
+// document.addEventListener("click", () => {
+//     const navEntries = performance.getEntriesByType("navigation");
+//     debugger;
+//     if (navEntries.length > 0 && navEntries[0].type === "reload") {
+//     sessionStorage.setItem("user_interacted", "true");
+
+//         const loader = document.getElementById('loader-wrapper');
+//         loader.classList.remove('fadeOut');
+//     }
+// });
+
+// Detect refresh
+window.addEventListener("load", () => {
+    const navEntries = performance.getEntriesByType("navigation");
+    if (navEntries.length > 0 && navEntries[0].type === "reload") {
+        
+        const loader = document.getElementById('loader-wrapper');
+        loader.classList.remove('fadeOut');
+
+        if (sessionStorage.getItem("user_interacted")) {
+        loader.classList.remove('fadeOut');
+        }
+    }
+});
+
+            document.body.addEventListener("click", function (event) {
+    const navEntries = performance.getEntriesByType("navigation");
+
+    if (navEntries[0].type === "reload") {
+    }
+});
+
+setTimeout(() => {
+    document.querySelectorAll('[class*="message-box"]').forEach(el => el.remove());
+}, 3000);
+</script>
+    <div id="root">
+        <div class="flex h-screen bg-background overflow-hidden font-sans text-sm">
+            {% include 'partial/sidebar.html' %}
+            <div class="flex-1 flex flex-col h-screen overflow-hidden w-full relative">
+               {% include 'partial/header.html' %}
+                <main class="flex-1 overflow-y-auto scroll-smooth w-full p-4 md:p-6">
+    {% block content %}
+
+    {% endblock %}
+</main>
+</div>
+</div>
+</div>
+{% block page_models %}
+
+{% endblock %}
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="{% static 'assets/js/common.js' %}"></script>
+{% block extra_js %}
+    {% endblock %}
+</body>
+
+</html>

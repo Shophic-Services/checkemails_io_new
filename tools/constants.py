@@ -1,0 +1,4 @@
+SINGLE = 1
+BULK = 2
+WEBSITE = 3
+LEAD = 4

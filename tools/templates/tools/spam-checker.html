@@ -1,0 +1,76 @@
+{% extends 'layout/base.html' %}
+{% load static %}
+
+
+{% block content %}
+                    <div class="w-full max-w-[1600px] mx-auto font-sans">
+                        <div class="mb-8">
+                            <h2 class="text-lg font-bold text-gray-700">Email Spam Words Checker</h2>
+                            <div class="w-8 h-1 bg-primary mt-1 rounded-full"></div>
+                        </div>
+                        <div class="grid grid-cols-1 xl:grid-cols-3 gap-12 items-start">
+                            <div class="xl:col-span-2">
+                                <div class="bg-white p-8 rounded-lg shadow-sm border border-border min-h-[600px]">
+                                    <div class="text-base text-gray-800 leading-8 outline-none whitespace-prewrap font-medium"
+                                        contenteditable="true">
+                                        <p class="mb-3">Hello <span
+                                                class="bg-gray-200 px-1 rounded-sm mx-0.5">friend</span>,</p>
+                                        <p class="mb-3">My <span class="bg-[#e9e3ce] px-1 rounded-sm mx-0.5">name</span>
+                                            is James, and I’m a freelance marketer.</p>
+                                        <p class="mb-3">Since I have such a passion for <span
+                                                class="bg-gray-200 px-1 rounded-sm mx-0.5">marketing</span>, I’d love to
+                                            utilise my abilities and insights to write an article for your firm.</p>
+                                        <p class="mb-3">As I saw your Freelance job post, I appreciate the <span
+                                                class="bg-[#e9e3ce] px-1 rounded-sm mx-0.5">opportunity</span> to <span
+                                                class="bg-[#80ff84] px-1 rounded-sm mx-0.5">quote</span> this job, I
+                                            charge a monthly fee of 500$ <span
+                                                class="inline-block w-8 h-5 align-middle bg-[#80ff84] rounded mx-1"></span>
+                                        </p>
+                                        <p class="mb-3">I can provide your firm with a <span
+                                                class="bg-[#fccb83] px-1 rounded-sm mx-0.5">20%</span> (ROI) <span
+                                                class="bg-[#fccb83] px-1 rounded-sm mx-0.5">guaranteed</span></p>
+                                        <p><span class="bg-[#e9e3ce] px-1 rounded-sm mx-0.5">Please</span> reply to me
+                                            <span class="bg-[#fd9ea0] px-1 rounded-sm mx-0.5">asap</span>.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="xl:col-span-1">
+                                <div class="bg-white rounded-lg shadow-sm border border-border p-8">
+                                    <div class="space-y-4 mb-8">
+                                        <div class="flex justify-between items-center"><span
+                                                class="text-gray-500 font-medium">Overall score:</span><span
+                                                class="text-[#ef4444] font-bold text-lg">Poor</span></div>
+                                        <div class="flex justify-between items-center"><span
+                                                class="text-gray-500 font-medium">Words:</span><span
+                                                class="text-gray-700 font-bold">71</span></div>
+                                        <div class="flex justify-between items-center"><span
+                                                class="text-gray-500 font-medium">Read time:</span><span
+                                                class="text-gray-700 font-bold">a few seconds</span></div>
+                                    </div>
+                                    <div class="space-y-3">
+                                        <div
+                                            class="bg-[#fd9ea0] rounded-full py-3 px-4 flex items-center text-gray-700 shadow-sm">
+                                            <span class="mr-2 text-lg filter drop-shadow-sm">🚫</span><span
+                                                class="font-medium text-gray-600">Urgency (1)</span></div>
+                                        <div
+                                            class="bg-[#d8d3b8] rounded-full py-3 px-4 flex items-center text-gray-700 shadow-sm">
+                                            <span class="mr-2 text-lg filter drop-shadow-sm">🕵️</span><span
+                                                class="font-medium text-gray-600">Shady (3)</span></div>
+                                        <div
+                                            class="bg-[#fccb83] rounded-full py-3 px-4 flex items-center text-gray-700 shadow-sm">
+                                            <span class="mr-2 text-lg filter drop-shadow-sm">😈</span><span
+                                                class="font-medium text-gray-600">Overpromise (2)</span></div>
+                                        <div
+                                            class="bg-[#80ff84] rounded-full py-3 px-4 flex items-center text-gray-700 shadow-sm">
+                                            <span class="mr-2 text-lg filter drop-shadow-sm">🤑</span><span
+                                                class="font-medium text-gray-600">Money (2)</span></div>
+                                        <div
+                                            class="bg-[#d1d5db] rounded-full py-3 px-4 flex items-center text-gray-700 shadow-sm">
+                                            <span class="mr-2 text-lg filter drop-shadow-sm">🤖</span><span
+                                                class="font-medium text-gray-600">Unnatural (2)</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+{% endblock %}

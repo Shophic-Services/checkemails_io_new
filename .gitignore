@@ -1,0 +1,67 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual Environment
+env/
+venv/
+checkemails_env/
+
+# Django
+*.log
+db.sqlite3
+db.sqlite3-journal
+
+# Static & Media Cache
+staticfiles/
+media/
+
+# Environment Variables
+.env
+.env.*
+*.env
+
+# VS Code / IDE
+.vscode/
+.idea/
+
+# OS Files
+.DS_Store
+Thumbs.db
+
+# Logs
+logs/
+log/
+*.log
+
+# Gunicorn / Socket Files
+*.sock
+gunicorn*.sock
+
+# Node Modules
+node_modules/
+
+# Python Packaging
+build/
+dist/
+*.egg-info/
+
+# Cache
+.cache/
+.pytest_cache/
+.mypy_cache/
+
+# Celery
+celerybeat-schedule
+
+# Coverage
+htmlcov/
+.coverage
+.coverage.*
+
+# Temporary files
+*.swp
+*.swo
+checkemails_env/
+checkemails_env

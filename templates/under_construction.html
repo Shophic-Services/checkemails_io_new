@@ -1,0 +1,39 @@
+{% extends 'layouts/home_base.html' %}
+
+{% block content %}
+        <div class="construct-text">
+        <!-- {% if request.user.is_authenticated %}
+            Hi {{request.user}} &nbsp; | &nbsp; <a href={% url 'accounts:logout' %}>Logout</a>
+        {% else %}
+        <a href="{% url 'accounts:login' %}">Click here to login</a>
+        {% endif %} -->
+        </div>
+        <div class="machine-bg"></div>
+        <div class="machine-wrap">
+            <div class="machine">
+                <div class="machine-roof">
+                    <div class="machine-silencer">
+                        <div class="machine-smoke"></div>
+                    </div>
+                </div>
+                <div class="machine-main">
+                    <div class="machine-body"></div>
+                    <div class="machine-back"></div>
+                    <div class="machine-front"></div>
+                </div>	
+            </div>
+            <div class="road">
+                <div class="mud-wrap clearfix">
+                    <div class="mud"></div>
+                    <div class="mud"></div>
+                    <div class="mud"></div>
+                    <div class="mud"></div>
+                </div>
+            </div>
+            <div class="construct-text">
+                Under construction!<br><br><br>
+                <a href="/" class="border-bottom border-dark pb-1 px-1"><i class="mdi mdi-arrow-left"></i> Home </a>
+            </div>
+        </div>
+        
+{% endblock %}

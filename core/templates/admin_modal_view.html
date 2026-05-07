@@ -1,0 +1,16 @@
+<div id="modalbox{{obj.company.pk}}" class="modalDialog"> 
+	<div> 
+	<a href="#close" title="Close" class="modalclose">X</a> 
+	<h2>{{heading}}</h2> 
+    <div class="modalBody"> 
+    <table> 
+		{% for row in data_set %}
+			<tr class="{% cycle "row1" "row2" %}"> 
+				<td>{{row.field}}</td>
+				<td>{{row.value}}</td>
+			</tr>
+		{% endfor %}
+	</table> 
+    </div> 
+	</div> 
+</div>

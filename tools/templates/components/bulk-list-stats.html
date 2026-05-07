@@ -1,0 +1,290 @@
+     
+{% load static mathfilters donut_chart %}
+     {% for data in verification_list %}
+                                
+                <div data-id="{{data.uuid}}" data-status="{{data.status}}" 
+                    class="bg-white rounded shadow-sm border border-border p-8 relative min-h-[500px] verification-list-stats {% if not forloop.first %}hidden{% endif %}">
+                    
+                    
+                    <div data-id="{{ data.uuid }}"
+  data-filename="{{ data.name }}" class="absolute top-6 right-8 text-gray-500 hover:text-red-500 cursor-pointer transition-colors delete-list {% if data.status != 1 %}hidden{% endif %}"><svg
+                            xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="lucide lucide-trash2 lucide-trash-2" aria-hidden="true">
+                            <path d="M10 11v6"></path>
+                            <path d="M14 11v6"></path>
+                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"></path>
+                            <path d="M3 6h18"></path>
+                            <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                        </svg></div>
+                    <div class="flex flex-col xl:flex-row items-center gap-6 2xl:gap-0">
+                        <div class="flex-1 grid gap-x-8 gap-y-6 px-0 xl:px-8 pt-3">
+                    <div class="text-center mb-4">
+                        <div class="mx-auto mb-2 text-gray-500"><svg
+                                xmlns="http://www.w3.org/2000/svg" width="34" height="34"
+                                viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                class="lucide lucide-file-text mx-auto" aria-hidden="true">
+                                <path
+                                    d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z">
+                                </path>
+                                <path d="M14 2v5a1 1 0 0 0 1 1h5"></path>
+                                <path d="M10 9H8"></path>
+                                <path d="M16 13H8"></path>
+                                <path d="M16 17H8"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-lg font-bold text-gray-700 uppercase mb-2 stats-name">{{data.name}}</h3>
+                        
+                    
+                    
+                    <span class="text-base text-red-500 font-bold uppercase tracking-wider stats-status-failed {% if data.status != 4 %}hidden{% endif %}">Failed</span>
+                    <span class="text-base text-green-700 font-bold uppercase tracking-wider stats-status-completed {% if data.status != 5 %}hidden{% endif %}">Completed</span>
+                        <div
+                            class="flex items-center justify-center gap-2 text-gray-600 font-bold uppercase tracking-wider text-base stats-status-processing {% if data.status != 2 and data.status != 3 %}hidden{% endif %}">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                class="lucide lucide-loader-circle animate-spin text-primary"
+                                aria-hidden="true">
+                                <path d="M21 12a9 9 0 1 1-6.219-8.56"></path>
+                            </svg>VALIDATING...</div>
+
+                        <p class="text-base text-primary font-black uppercase tracking-[0.2em] stats-status-ready {% if data.status != 1 %}hidden{% endif %}">READY FOR VALIDATION</p>
+                    </div>
+                  
+                    <div class="flex justify-center gap-8 pb-2">
+                        <div class="text-center">
+                            <div class="text-base text-gray-400 font-bold uppercase mb-1">RECORDS
+                            </div>
+                            <div class="text-2xl font-bold text-primary stats-records">{{data.total_items}}</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-base text-gray-400 font-bold uppercase mb-1">SOURCE
+                            </div>
+                            <div class="text-2xl font-bold text-primary uppercase stats-format">{{data.source_format}}</div>
+                        </div>
+                    </div>
+
+                        <div class="mb-12 flex flex-col justify-between items-center gap-6 stats-status-completed-div {% if data.status != 5 %}hidden{% endif %}">
+                            <div class="flex flex-row gap-1">
+                                <div class="text-base text-gray-500 font-bold uppercase tracking-wide"><div class="text-base text-gray-500 flex items-center gap-1 stats-status-completed-text"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check text-green-500" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg>Finished at {{data.completed_at}}</div></div>
+                                
+                            </div>
+                        </div>
+                        
+</div>
+                            <div class="w-[200px] h-[200px] relative shrink-0 list-chart self-start {% if data.status == 1 %}hidden{% endif %}">
+                                <div class="recharts-responsive-container" style="width: 100%; height: 100%; min-width: 0px;">
+                                    <div style="width: 0px; height: 0px; overflow: visible;">
+                                        <div class="recharts-wrapper" style="position: relative; cursor: default; width: 200px; height: 200px;" width="200" height="200">
+                                            
+                                       
+                                {% donut_chart data 'Deliverable' %}
+
+  
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                    
+
+                    <div class="ongoing-verification-div mb-5 {% if data.status <= 1 %}hidden{% endif %}">
+                        <div class="flex flex-col 2xl:flex-row gap-12 2xl:gap-0 pt-8 border-t border-gray-100">
+                                <div class="flex-1 grid grid-cols-2 gap-x-16 gap-y-12 px-0 xl:px-4">
+                                    <div class="flex items-center gap-4">
+                                        <div class="w-12 h-12 bg-white flex items-center justify-center relative"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-mail text-gray-300" aria-hidden="true">
+                                                <path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7"></path>
+                                                <rect x="2" y="4" width="20" height="16" rx="2"></rect>
+                                            </svg><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-check text-[#2dd4bf] absolute bottom-1 right-1 bg-white rounded-full" aria-hidden="true">
+                                                <circle cx="12" cy="12" r="10"></circle>
+                                                <path d="m9 12 2 2 4-4"></path>
+                                            </svg></div>
+                                        <div>
+                                            <div class="flex items-center gap-1.5 text-gray-400 text-base font-bold uppercase tracking-wider mb-0.5">
+                                                DELIVERABLE <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-info cursor-help" aria-hidden="true">
+                                                    <circle cx="12" cy="12" r="10"></circle>
+                                                    <path d="M12 16v-4"></path>
+                                                    <path d="M12 8h.01"></path>
+                                                </svg></div>
+                                            <div class="text-[22px] font-black text-gray-800 stats-valid">{{data.valid_count}}</div>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center gap-4">
+                                        <div class="w-12 h-12 bg-white flex items-center justify-center relative"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-mail text-gray-300" aria-hidden="true">
+                                                <path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7"></path>
+                                                <rect x="2" y="4" width="20" height="16" rx="2"></rect>
+                                            </svg><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-triangle-alert text-[#fbbf24] absolute bottom-1 right-1 bg-white rounded-full" aria-hidden="true">
+                                                <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"></path>
+                                                <path d="M12 9v4"></path>
+                                                <path d="M12 17h.01"></path>
+                                            </svg></div>
+                                        <div>
+                                            <div class="flex items-center gap-1.5 text-gray-400 text-base font-bold uppercase tracking-wider mb-0.5">
+                                                RISKY <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-info cursor-help" aria-hidden="true">
+                                                    <circle cx="12" cy="12" r="10"></circle>
+                                                    <path d="M12 16v-4"></path>
+                                                    <path d="M12 8h.01"></path>
+                                                </svg></div>
+                                            <div class="text-[22px] font-black text-gray-800 stats-risky">{{data.risky_count}}</div>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center gap-4">
+                                        <div class="w-12 h-12 bg-white flex items-center justify-center relative"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-mail text-gray-300" aria-hidden="true">
+                                                <path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7"></path>
+                                                <rect x="2" y="4" width="20" height="16" rx="2"></rect>
+                                            </svg><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-x text-[#f87171] absolute bottom-1 right-1 bg-white rounded-full" aria-hidden="true">
+                                                <circle cx="12" cy="12" r="10"></circle>
+                                                <path d="m15 9-6 6"></path>
+                                                <path d="m9 9 6 6"></path>
+                                            </svg></div>
+                                        <div>
+                                            <div class="flex items-center gap-1.5 text-gray-400 text-base font-bold uppercase tracking-wider mb-0.5">
+                                                UNDELIVERABLE <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-info cursor-help" aria-hidden="true">
+                                                    <circle cx="12" cy="12" r="10"></circle>
+                                                    <path d="M12 16v-4"></path>
+                                                    <path d="M12 8h.01"></path>
+                                                </svg></div>
+                                            <div class="text-[22px] font-black text-gray-800 stats-invalid">{{data.invalid_count}}</div>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center gap-4">
+                                        <div class="w-12 h-12 bg-white flex items-center justify-center relative"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-mail text-gray-300" aria-hidden="true">
+                                                <path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7"></path>
+                                                <rect x="2" y="4" width="20" height="16" rx="2"></rect>
+                                            </svg><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-question-mark text-gray-500 absolute bottom-1 right-1 bg-white rounded-full" aria-hidden="true">
+                                                <circle cx="12" cy="12" r="10"></circle>
+                                                <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                                                <path d="M12 17h.01"></path>
+                                            </svg></div>
+                                        <div>
+                                            <div class="flex items-center gap-1.5 text-gray-400 text-base font-bold uppercase tracking-wider mb-0.5">
+                                                UNKNOWN <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-info cursor-help" aria-hidden="true">
+                                                    <circle cx="12" cy="12" r="10"></circle>
+                                                    <path d="M12 16v-4"></path>
+                                                    <path d="M12 8h.01"></path>
+                                                </svg></div>
+                                            <div class="text-[22px] font-black text-gray-800 stats-unknown">{{data.unknown_count}}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="hidden 2xl:block w-[1px] h-40 bg-gray-100 shrink-0 mx-4"></div>
+                                    <div class="flex-2 grid grid-cols-1 gap-x-16 gap-y-4 px-0 xl:px-4">
+                                    <div class="flex items-center justify-between gap-4 group">
+                                            <div class="flex items-center gap-2.5">
+                                                <div class="p-1 rounded bg-blue-50/50 group-hover:bg-blue-50 transition-colors"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user-check text-[#38bdf8]" aria-hidden="true">
+                                                        <path d="m16 11 2 2 4-4"></path>
+                                                        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                                                        <circle cx="9" cy="7" r="4"></circle>
+                                                    </svg></div><span class="text-gray-500 text-[14px] font-bold">Catch-All:</span>
+                                            </div>
+                                            <div class="flex items-center gap-1.5"><span class="text-gray-800 text-[14px] font-bold stats-catch-all">{{data.catch_all_count}}</span><span class="w-3 h-3 flex items-center justify-center"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-info text-gray-200 cursor-help hover:text-gray-500 transition-colors" aria-hidden="true">
+                                                        <circle cx="12" cy="12" r="10"></circle>
+                                                        <path d="M12 16v-4"></path>
+                                                        <path d="M12 8h.01"></path>
+                                                    </svg></span></div>
+                                        </div><div class="flex items-center justify-between gap-4 group">
+                                            <div class="flex items-center gap-2.5">
+                                                <div class="p-1 rounded bg-blue-50/50 group-hover:bg-blue-50 transition-colors"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-users text-[#38bdf8]" aria-hidden="true">
+                                                        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                                                        <path d="M16 3.128a4 4 0 0 1 0 7.744"></path>
+                                                        <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+                                                        <circle cx="9" cy="7" r="4"></circle>
+                                                    </svg></div><span class="text-gray-500 text-[14px] font-bold">Role account:</span>
+                                            </div>
+                                            <div class="flex items-center gap-1.5"><span class="text-gray-800 text-[14px] font-bold stats-role">{{data.role_based_count}}</span><span class="w-3 h-3 flex items-center justify-center"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-info text-gray-200 cursor-help hover:text-gray-500 transition-colors" aria-hidden="true">
+                                                        <circle cx="12" cy="12" r="10"></circle>
+                                                        <path d="M12 16v-4"></path>
+                                                        <path d="M12 8h.01"></path>
+                                                    </svg></span></div>
+                                        </div><div class="flex items-center justify-between gap-4 group">
+                                            <div class="flex items-center gap-2.5">
+                                                <div class="p-1 rounded bg-blue-50/50 group-hover:bg-blue-50 transition-colors"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-mail text-[#38bdf8]" aria-hidden="true">
+                                                        <path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7"></path>
+                                                        <rect x="2" y="4" width="20" height="16" rx="2"></rect>
+                                                    </svg></div><span class="text-gray-500 text-[14px] font-bold">Disposable:</span>
+                                            </div>
+                                            <div class="flex items-center gap-1.5"><span class="text-gray-800 text-[14px] font-bold stats-disposable">{{data.disposable_count}}</span><span class="w-3 h-3 flex items-center justify-center"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-info text-gray-200 cursor-help hover:text-gray-500 transition-colors" aria-hidden="true">
+                                                        <circle cx="12" cy="12" r="10"></circle>
+                                                        <path d="M12 16v-4"></path>
+                                                        <path d="M12 8h.01"></path>
+                                                    </svg></span></div>
+                                        </div>
+
+                                <div class="flex items-center justify-between gap-4 group">
+                                            <div class="flex items-center gap-2.5">
+                                                <div class="p-1 rounded bg-blue-50/50 group-hover:bg-blue-50 transition-colors">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-repeat-icon lucide-repeat text-[#38bdf8]"><path d="m17 2 4 4-4 4"/><path d="M3 11v-1a4 4 0 0 1 4-4h14"/><path d="m7 22-4-4 4-4"/><path d="M21 13v1a4 4 0 0 1-4 4H3"/></svg></div><span class="text-gray-500 text-[14px] font-bold">Duplicate:</span>
+                                            </div>
+                                            <div class="flex items-center gap-1.5"><span class="text-gray-800 text-[14px] font-bold stats-duplicate">{{data.total_duplicate}}</span><span class="w-3 h-3 flex items-center justify-center"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-info text-gray-200 cursor-help hover:text-gray-500 transition-colors" aria-hidden="true">
+                                                        <circle cx="12" cy="12" r="10"></circle>
+                                                        <path d="M12 16v-4"></path>
+                                                        <path d="M12 8h.01"></path>
+                                                    </svg></span></div>
+                                        </div>
+                            </div>
+                        </div>
+                        <div class="mt-6 pt-8 border-t border-gray-50 flex justify-center gap-3 shrink-0 download-button {% if data.status != 5 %}hidden{% endif %}">
+                            <a href="{% url 'tools:bulk_validation_detail' data.uuid %}" class="w-full bg-white border border-gray-200 flex items-center justify-center gap-2 hover:bg-gray-50 text-gray-700 font-bold py-3 rounded shadow-sm text-base transition-colors"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-file-text" aria-hidden="true">
+                                <path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z">
+                                </path>
+                                <path d="M14 2v5a1 1 0 0 0 1 1h5"></path>
+                                <path d="M10 9H8"></path>
+                                <path d="M16 13H8"></path>
+                                <path d="M16 17H8"></path>
+                            </svg>View Detailed Results</a>
+                            <button class="bg-primary text-white px-8 py-3 rounded-lg font-bold text-base flex items-center justify-center gap-2 shadow-lg shadow-blue-100 transition-all active:scale-95 w-full export-report" data-id="{{data.uuid}}"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-download" aria-hidden="true">
+            <path d="M12 15V3"></path>
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <path d="m7 10 5 5 5-5"></path>
+        </svg>Download Report</button>
+                        </div>
+                    </div>
+
+
+                    <div class="start-verification-div {% if data.status != 1 %}hidden{% endif %}">
+                        <div class="grid grid-cols-1 gap-x-8 gap-y-6 mb-2 px-5 text-base">
+                            <div>
+                                <div class="flex justify-between mb-1.5 text-gray-500 font-medium"><span
+                                        class="text-primary">To be verified</span><span
+                                        class="text-gray-500">{{data.total_items}}</span></div>
+                                <div class="w-full bg-blue-50 h-2 rounded-full overflow-hidden">
+                                    <div class="h-full bg-primary" style="width: 100%;"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex-1 flex flex-col items-center justify-center text-center px-4 py-8 status-start-div">
+                            <p class="text-gray-500 text-base mb-8 leading-relaxed">This list is uploaded and analyzed. Start the validation
+                                process to get detailed results.</p><button
+                                class="w-full bg-primary hover:bg-blue-600 text-white font-bold py-3 rounded shadow-lg shadow-blue-200/50 transition-all transform text-base uppercase tracking-widest initiate-verification flex justify-center">Start
+                                Verification</button>
+                            <p class="text-base text-gray-500 mt-4 font-bold tracking-tight">You will pay {{data.total_items}} credits for this validation.</p>
+                        </div>
+                    </div>
+
+                    <div class="flex-1 flex flex-col items-center justify-center text-center mt-3 border-t border-gray-100 p-4 stats-status-failed-div {% if data.status != 4 %}hidden{% endif %}">
+                        <div class="bg-red-50 p-4 rounded-full mb-4"><svg xmlns="http://www.w3.org/2000/svg" width="48" height="48"
+                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="lucide lucide-circle-alert text-red-500" aria-hidden="true">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <line x1="12" x2="12" y1="8" y2="12"></line>
+                                <line x1="12" x2="12.01" y1="16" y2="16"></line>
+                            </svg></div>
+                        <h4 class="text-red-600 font-bold mb-2 text-base">Process Terminated</h4>
+                        <p class="text-gray-500 font-bold text-base my-3 leading-relaxed mx-auto">The server was unable to process the email addresses in this file.</p>
+                        <p class="text-gray-500 text-base mb-8 leading-relaxed mx-auto">This may be due to invalid formatting, unsupported data, or insufficient credit balance.<br>Please review the file and your available credits, then try again.</p>
+                        <button
+                            class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 rounded shadow-lg shadow-blue-200/50 transition-all transform text-base uppercase tracking-widest flex justify-center"><svg
+                                xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                class="lucide lucide-rotate-ccw mr-3" aria-hidden="true">
+                                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
+                                <path d="M3 3v5h5"></path>
+                            </svg>Restart Verification</button>
+
+                            <p class="text-base text-gray-500 mt-4 font-bold tracking-tight error-count">You will pay {{data.total_items|sub:data.completed_count}} credits for this validation.</p>
+                    </div>
+                </div>
+                {% endfor %}

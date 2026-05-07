@@ -1,0 +1,191 @@
+{% load mathfilters %}
+
+<header
+    class="h-20 bg-sidebar border-b border-border flex items-center justify-between px-4 md:px-8 shadow-sm z-10 sticky top-0 md:justify-end">
+
+    <button class="md:hidden p-2 -ml-2 rounded-lg hover:bg-gray-100 dark:hover:bg-slate-800 text-gray-500 dark:text-gray-400 transition-colors" aria-label="Open Sidebar"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-menu" aria-hidden="true"><path d="M4 5h16"></path><path d="M4 12h16"></path><path d="M4 19h16"></path></svg></button>
+    <div class="flex items-center gap-6">
+
+        <div class="flex items-center bg-gray-50 p-1 rounded-lg border border-gray-100">
+            {% if request.user.is_staff %}
+            <button
+            class="group p-1.5 rounded-md transition-all flex items-center gap-2 px-3 text-gray-500 hover:text-gray-700"
+            title="Management"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                class="lucide lucide-layout-dashboard" aria-hidden="true">
+                <rect width="7" height="9" x="3" y="3" rx="1"></rect>
+                <rect width="7" height="5" x="14" y="3" rx="1"></rect>
+                <rect width="7" height="9" x="14" y="12" rx="1"></rect>
+                <rect width="7" height="5" x="3" y="16" rx="1"></rect>
+            </svg><a href="{% url 'admin:index' %}" class="text-lg font-bold uppercase tracking-tighter
+            opacity-100 max-w-100 overflow-hidden
+            md:group-hover:max-w-[120px]
+            transition-all duration-200">Management</a></button>
+            {% endif %}
+            <a href="{% url 'core:home' %}"
+                class="group p-1.5 rounded-md transition-all flex items-center gap-2 px-3 text-gray-500 hover:text-gray-700"
+                title="Home">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    class="lucide lucide-house" aria-hidden="true">
+                    <path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"></path>
+                    <path
+                        d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z">
+                    </path>
+                </svg><span class="text-lg font-bold uppercase tracking-tighter
+         opacity-100 max-w-100 overflow-hidden
+         md:group-hover:max-w-[120px]
+         transition-all duration-200">Home</span></a>
+                
+                <button
+                class="group p-1.5 rounded-md transition-all flex items-center gap-2 px-3 bg-white text-primary shadow-sm ring-1 ring-gray-100"
+                title="Dashboard">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chart-no-axes-column" aria-hidden="true">
+                    <path d="M5 21v-6"></path>
+                    <path d="M12 21V3"></path>
+                    <path d="M19 21V9"></path>
+                </svg><span class="text-lg font-bold uppercase tracking-tighter">Dashboard</span></button>
+                <!-- <button
+                class="group p-1.5 rounded-md transition-all flex items-center gap-2 px-3 text-gray-500 hover:text-gray-700"
+                title="Contacts"><svg
+                xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                class="lucide lucide-users" aria-hidden="true">
+                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                <path d="M16 3.128a4 4 0 0 1 0 7.744"></path>
+                <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+                <circle cx="9" cy="7" r="4"></circle>
+            </svg><span class="text-lg font-bold uppercase tracking-tighter
+         opacity-0 max-w-0 overflow-hidden
+         md:group-hover:opacity-100 md:group-hover:max-w-[120px]
+         transition-all duration-200">Contacts</span></button>
+                <button
+                class="group p-1.5 rounded-md transition-all flex items-center gap-2 px-3 text-gray-500 hover:text-gray-700"
+                title="Companies"><svg
+                xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                class="lucide lucide-building2 lucide-building-2" aria-hidden="true">
+                <path d="M10 12h4"></path>
+                <path d="M10 8h4"></path>
+                <path d="M14 21v-3a2 2 0 0 0-4 0v3"></path>
+                <path d="M6 10H4a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-2">
+                </path>
+                <path d="M6 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16"></path>
+            </svg><span class="text-lg font-bold uppercase tracking-tighter
+         opacity-0 max-w-0 overflow-hidden
+         md:group-hover:opacity-100 md:group-hover:max-w-[120px]
+         transition-all duration-200">Companies</span></button> -->
+                
+            </div>
+
+            {% if active_subscription %}
+        <div class="relative">
+
+        <div class="flex items-center">
+            <span class="text-gray-500 mr-2 hidden xl:inline">Credit Balance:</span><span class="text-gray-500 mr-2 xl:hidden">Credits:</span>
+               
+            <div class="flex items-center bg-gray-100 p-1 rounded-lg border border-gray-100 rounded px-2 py-2 text-base font-bold shadow-sm text-blue-600">
+                <span class="available-balance">{% if request.user.is_superuser %}<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-infinity-icon lucide-infinity"><path d="M6 16c5 0 7-8 12-8a4 4 0 0 1 0 8c-5 0-7-8-12-8a4 4 0 1 0 0 8"/></svg>{% else %}{% if active_subscription %}{{active_subscription.credit_balance|sub:active_subscription.credit_reserved}}{% else %}-{% endif %}{% endif %}</span>
+                
+        {% if active_subscription %}
+                <button
+                    class="ml-2 rounded-sm flex items-center justify-center transition-colors credit-action" data-dropdown="credit">                    
+                   <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="15px" height="15px">
+<path d="M12 17V11" stroke-width="1.5" stroke-linecap="round" stroke="#3B82F6"></path>
+<circle cx="1" cy="1" r="1" transform="matrix(1 0 0 -1 11 9)" fill="#3B82F6"></circle>
+<path d="M7 3.33782C8.47087 2.48697 10.1786 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 10.1786 2.48697 8.47087 3.33782 7" stroke-width="1.5" stroke-linecap="round" stroke="#3B82F6"></path>
+</svg>
+
+</button>
+                {% endif %}
+            </div>
+        </div>
+         <div
+                    class="absolute right-0 top-full mt-3 w-72 bg-white dark:bg-slate-900 rounded-xl shadow-2xl border border-gray-100 dark:border-slate-800 p-5 animate-in fade-in zoom-in-95 duration-200 z-[60] credit-action-div hidden" data-dropdown-menu="credit">
+                    <div class="flex items-center justify-between mb-4">
+                        <h4 class="text-xs font-black text-gray-500 dark:text-gray-500 uppercase tracking-widest">Credit Summary</h4>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="lucide lucide-sparkles text-primary animate-pulse" aria-hidden="true">
+                            <path
+                                d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z">
+                            </path>
+                            <path d="M20 2v4"></path>
+                            <path d="M22 4h-4"></path>
+                            <circle cx="4" cy="20" r="2"></circle>
+                        </svg>
+                    </div>
+                    <div class="space-y-3 mb-5">
+                        <div class="flex justify-between items-center group">
+                            <div class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-green-500"></span><span
+                                    class="text-base font-medium text-gray-600 dark:text-gray-300">Available Balance</span></div><span
+                                class="text-base font-black text-gray-900 dark:text-white available-balance">{{active_subscription.credit_balance}}</span>
+                        </div>
+                        <div class="flex justify-between items-center group">
+                            <div class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-yellow-500"></span><span
+                                    class="text-base font-medium text-gray-600 dark:text-gray-300">Reserved Credit</span>
+                                <div class="group/info relative"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12"
+                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round" class="lucide lucide-info text-gray-400 cursor-help" aria-hidden="true">
+                                        <circle cx="12" cy="12" r="10"></circle>
+                                        <path d="M12 16v-4"></path>
+                                        <path d="M12 8h.01"></path>
+                                    </svg>
+                                    <div
+                                        class="absolute left-1/2 -translate-x-1/2 bottom-full mb-2 w-48 p-2 bg-gray-800 text-white text-[10px] rounded opacity-0 invisible group-hover/info:opacity-100 group-hover/info:visible transition-all z-10 pointer-events-none shadow-xl border border-gray-700">
+                                        Credits locked for currently processing lists.</div>
+                                </div>
+                            </div><span class="text-base font-black text-gray-900 dark:text-white credit-reserved">{{active_subscription.credit_reserved}}</span>
+                        </div>
+                        <div class="pt-3 border-t border-gray-50 dark:border-slate-800 flex justify-between items-center"><span
+                                class="text-base font-bold text-gray-800 dark:text-gray-100">Credit Balance</span>
+                            <div class="text-lg font-black text-primary credit-balance">{{active_subscription.credit_balance|sub:active_subscription.credit_reserved}}</div>
+                        </div>
+                    </div>
+                    <div
+                        class="w-full bg-blue-50 dark:bg-slate-800 h-1.5 rounded-full overflow-hidden mb-5 border border-gray-100 dark:border-slate-800">
+                        <div class="bg-primary h-full transition-all duration-1000 w-[{{active_subscription.credit_balance|sub:active_subscription.credit_reserved|div:active_subscription.total_credit|mul:100}}%]"></div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        
+        <div class="relative">
+            <div class="flex items-center gap-3 cursor-pointer group pl-2 select-none profile-action" data-dropdown="profile">
+                <div
+                    class="w-9 h-9 rounded-full bg-gray-200 overflow-hidden ring-2 ring-transparent group-hover:ring-blue-100 transition-all">
+                    <img alt="User" class="w-full h-full object-cover" src="https://ui-avatars.com/api/?name={{request.user}}&background=e0e7ff&color=3b82f6&bold=true">
+                </div>
+                <div class="hidden sm:flex flex-col"><span
+                        class="font-semibold text-gray-800 text-base leading-tight">{{request.user}}</span><span
+                        class="text-[10px] text-gray-500 uppercase tracking-wider font-medium">{{request.user.user_role}}</span>
+                </div><span class="text-gray-500 text-base transition-transform duration-200 "><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down text-gray-400 transition-transform" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></span>
+            </div>
+            <div
+                class="profile-action-div absolute right-0 top-full mt-2 w-48 bg-white rounded-lg shadow-xl border border-gray-100 py-2 animate-in fade-in zoom-in-95 duration-200 z-50 hidden" data-dropdown-menu="profile">
+                <a href="{% url 'accounts:account-update' %}"
+                    class="w-full text-left px-5 py-3 text-base text-gray-600 hover:bg-gray-50 hover:text-primary flex items-center gap-3 transition-colors"><svg
+                        xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
+                        class="lucide lucide-user" aria-hidden="true">
+                        <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                    </svg>Profile</a>
+                    <form method="post" action="{% url 'accounts:logout' %}" class="w-full mb-0">
+    {% csrf_token %}
+    <button type="submit"
+        class="w-full text-left px-5 py-3 text-base text-gray-600 hover:bg-gray-50 hover:text-primary flex items-center gap-3 transition-colors bg-transparent border-0">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+             viewBox="0 0 24 24" fill="none" stroke="currentColor"
+             stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
+             class="lucide lucide-power" aria-hidden="true">
+            <path d="M12 2v10"></path>
+            <path d="M18.4 6.6a9 9 0 1 1-12.77.04"></path>
+        </svg>
+        Sign Out
+    </button>
+</form>
+                </div>
+        </div>
+    </div>
+</header>
